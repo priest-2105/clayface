@@ -89,17 +89,15 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async signIn({ user, account, profile }) {
-            if (!user?.id) {
-                return false;
-            }
+            if (user?.id) {
+                const currentUser = await prisma.user.findUnique({
+                    where: { id: user.id },
+                    select: { disabledAt: true },
+                });
 
-            const currentUser = await prisma.user.findUnique({
-                where: { id: user.id },
-                select: { disabledAt: true },
-            });
-
-            if (currentUser?.disabledAt) {
-                return false;
+                if (currentUser?.disabledAt) {
+                    return false;
+                }
             }
 
             if (account?.provider === "google") {

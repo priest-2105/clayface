@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { PasswordField } from "@/components/auth/PasswordField";
+import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 type ChangePasswordFormProps = {
     hasPassword: boolean;
@@ -39,7 +40,7 @@ export function ChangePasswordForm({ hasPassword }: ChangePasswordFormProps) {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            setError(typeof data?.error === "string" ? data.error : "Failed to change password.");
+            setError(readAuthErrorMessage(data, "Failed to change password."));
             setSubmitting(false);
             return;
         }
@@ -62,46 +63,31 @@ export function ChangePasswordForm({ hasPassword }: ChangePasswordFormProps) {
             <CardContent>
                 <form className="grid gap-6" onSubmit={handleSubmit}>
                     {hasPassword && (
-                        <div className="grid gap-2">
-                            <label className="text-sm font-medium leading-none" htmlFor="currentPassword">
-                                Current Password
-                            </label>
-                            <Input
-                                id="currentPassword"
-                                type="password"
-                                autoComplete="current-password"
-                                value={currentPassword}
-                                onChange={(event) => setCurrentPassword(event.target.value)}
-                                required
-                            />
-                        </div>
+                        <PasswordField
+                            id="currentPassword"
+                            label="Current Password"
+                            autoComplete="current-password"
+                            value={currentPassword}
+                            onChange={setCurrentPassword}
+                            required
+                        />
                     )}
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="newPassword">
-                            New Password
-                        </label>
-                        <Input
-                            id="newPassword"
-                            type="password"
-                            autoComplete="new-password"
-                            value={newPassword}
-                            onChange={(event) => setNewPassword(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="confirmPassword">
-                            Confirm New Password
-                        </label>
-                        <Input
-                            id="confirmPassword"
-                            type="password"
-                            autoComplete="new-password"
-                            value={confirmPassword}
-                            onChange={(event) => setConfirmPassword(event.target.value)}
-                            required
-                        />
-                    </div>
+                    <PasswordField
+                        id="newPassword"
+                        label="New Password"
+                        autoComplete="new-password"
+                        value={newPassword}
+                        onChange={setNewPassword}
+                        required
+                    />
+                    <PasswordField
+                        id="confirmPassword"
+                        label="Confirm New Password"
+                        autoComplete="new-password"
+                        value={confirmPassword}
+                        onChange={setConfirmPassword}
+                        required
+                    />
                     <p className="text-xs text-text-secondary">
                         Passwords must be at least 10 characters and include uppercase, lowercase, and a number.
                     </p>

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { getActiveSession } from "@/lib/auth";
+import { AUTH_ERROR_MESSAGES } from "@/lib/auth-errors";
 
 export default async function ResetPasswordPage({
     searchParams,
@@ -24,7 +25,7 @@ export default async function ResetPasswordPage({
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold tracking-tight">Invalid reset link</CardTitle>
                     <CardDescription>
-                        This password reset link is missing a token or was copied incorrectly.
+                        {AUTH_ERROR_MESSAGES.INVALID_RESET_LINK}
                     </CardDescription>
                 </CardHeader>
                 <CardContent />

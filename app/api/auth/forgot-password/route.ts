@@ -8,6 +8,7 @@ import {
     normalizeEmail,
     recordRateLimitHit,
 } from "@/lib/auth-security";
+import { authErrorResponse } from "@/lib/auth-errors";
 
 const GENERIC_SUCCESS = {
     ok: true,
@@ -23,11 +24,11 @@ export async function POST(request: Request) {
         const protocol = requestHeaders.get("x-forwarded-proto") || "http";
 
         if (origin && host && origin !== `${protocol}://${host}`) {
-            return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+            return authErrorResponse("INVALID_REQUEST_ORIGIN", 403);
         }
 
         if (secFetchSite === "cross-site") {
-            return NextResponse.json({ error: "Cross-site reset requests are blocked." }, { status: 403 });
+            return authErrorResponse("CROSS_SITE_BLOCKED", 403);
         }
 
         const json = await request.json().catch(() => ({}));
@@ -41,10 +42,7 @@ export async function POST(request: Request) {
         const requestIp = getRequestIp(requestHeaders);
 
         if (recordRateLimitHit(`forgot:${requestIp}:${email}`, 5, 15 * 60 * 1000)) {
-            return NextResponse.json(
-                { error: "Too many reset attempts. Please try again later." },
-                { status: 429 }
-            );
+            return authErrorResponse("FORGOT_RATE_LIMITED", 429);
         }
 
         const user = await prisma.user.findUnique({
@@ -87,6 +85,6 @@ export async function POST(request: Request) {
             }
         );
     } catch {
-        return NextResponse.json({ error: "Failed to start password reset." }, { status: 500 });
+        return authErrorResponse("FORGOT_FAILED", 500);
     }
 }

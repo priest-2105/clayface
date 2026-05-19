@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/auth";
 import { getRequestIp, recordRateLimitHit } from "@/lib/auth-security";
 import { headers } from "next/headers";
+import { authErrorResponse } from "@/lib/auth-errors";
 
 const disableAccountSchema = z.object({
     currentPassword: z.string().max(128).optional(),
@@ -20,36 +21,32 @@ export async function POST(request: Request) {
         const secFetchSite = requestHeaders.get("sec-fetch-site");
 
         if (origin && host && origin !== `${protocol}://${host}`) {
-            return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+            return authErrorResponse("INVALID_REQUEST_ORIGIN", 403);
         }
 
         if (secFetchSite === "cross-site") {
-            return NextResponse.json({ error: "Cross-site requests are blocked." }, { status: 403 });
+            return authErrorResponse("CROSS_SITE_BLOCKED", 403);
         }
 
         const session = await getActiveSession();
 
         if (!session?.user?.id) {
-            return NextResponse.json({ error: "You must be signed in." }, { status: 401 });
+            return authErrorResponse("AUTH_REQUIRED", 401);
         }
 
         const json = await request.json().catch(() => ({}));
         const parsed = disableAccountSchema.safeParse(json);
 
         if (!parsed.success) {
-            return NextResponse.json(
-                { error: parsed.error.issues[0]?.message ?? "Invalid account disable request." },
-                { status: 400 }
-            );
+            return authErrorResponse("INVALID_INPUT", 400, {
+                detail: parsed.error.issues[0]?.message ?? "Invalid account disable request.",
+            });
         }
 
         const requestIp = getRequestIp(requestHeaders);
 
         if (recordRateLimitHit(`disable-account:${requestIp}:${session.user.id}`, 4, 60 * 60 * 1000)) {
-            return NextResponse.json(
-                { error: "Too many disable attempts. Please try again later." },
-                { status: 429 }
-            );
+            return authErrorResponse("DISABLE_ACCOUNT_RATE_LIMITED", 429);
         }
 
         const user = await prisma.user.findUnique({
@@ -58,18 +55,18 @@ export async function POST(request: Request) {
         });
 
         if (!user || user.disabledAt) {
-            return NextResponse.json({ error: "This account is unavailable." }, { status: 403 });
+            return authErrorResponse("ACCOUNT_UNAVAILABLE", 403);
         }
 
         if (user.passwordHash) {
             if (!parsed.data.currentPassword) {
-                return NextResponse.json({ error: "Current password is required." }, { status: 400 });
+                return authErrorResponse("CURRENT_PASSWORD_REQUIRED", 400);
             }
 
             const isValid = await compare(parsed.data.currentPassword, user.passwordHash);
 
             if (!isValid) {
-                return NextResponse.json({ error: "Current password is incorrect." }, { status: 400 });
+                return authErrorResponse("CURRENT_PASSWORD_INCORRECT", 400);
             }
         }
 
@@ -93,7 +90,10 @@ export async function POST(request: Request) {
             { ok: true, message: "Account disabled successfully." },
             { status: 200, headers: { "Cache-Control": "no-store" } }
         );
-    } catch {
-        return NextResponse.json({ error: "Failed to disable account." }, { status: 500 });
+    } catch (error) {
+        console.error("disable-account route failed", error);
+        return authErrorResponse("DISABLE_ACCOUNT_FAILED", 500, {
+            detail: error instanceof Error ? error.message : undefined,
+        });
     }
 }

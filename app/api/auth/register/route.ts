@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { emailSchema, getRequestIp, nameSchema, normalizeEmail, passwordSchema, recordRateLimitHit } from "@/lib/auth-security";
 import { prisma } from "@/lib/prisma";
+import { authErrorResponse } from "@/lib/auth-errors";
 
 const registerSchema = z
     .object({
@@ -26,21 +27,20 @@ export async function POST(request: Request) {
         const secFetchSite = requestHeaders.get("sec-fetch-site");
 
         if (origin && host && origin !== `${protocol}://${host}`) {
-            return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+            return authErrorResponse("INVALID_REQUEST_ORIGIN", 403);
         }
 
         if (secFetchSite === "cross-site") {
-            return NextResponse.json({ error: "Cross-site signup requests are blocked." }, { status: 403 });
+            return authErrorResponse("CROSS_SITE_BLOCKED", 403);
         }
 
         const json = await request.json();
         const parsed = registerSchema.safeParse(json);
 
         if (!parsed.success) {
-            return NextResponse.json(
-                { error: parsed.error.issues[0]?.message ?? "Invalid signup payload." },
-                { status: 400 }
-            );
+            return authErrorResponse("INVALID_INPUT", 400, {
+                detail: parsed.error.issues[0]?.message ?? "Invalid signup payload.",
+            });
         }
 
         const email = normalizeEmail(parsed.data.email);
@@ -48,22 +48,30 @@ export async function POST(request: Request) {
         const isRateLimited = recordRateLimitHit(`register:${requestIp}:${email}`, 5, 15 * 60 * 1000);
 
         if (isRateLimited) {
-            return NextResponse.json(
-                { error: "Too many signup attempts. Please try again later." },
-                { status: 429 }
-            );
+            return authErrorResponse("SIGNUP_RATE_LIMITED", 429);
         }
 
         const existingUser = await prisma.user.findUnique({
             where: { email },
-            select: { id: true },
+            select: {
+                id: true,
+                passwordHash: true,
+                accounts: { select: { provider: true } },
+            },
         });
 
         if (existingUser) {
-            return NextResponse.json(
-                { error: "Unable to create account with those details." },
-                { status: 409 }
-            );
+            const hasGoogleAccount = existingUser.accounts.some((account: { provider: string }) => account.provider === "google");
+
+            if (hasGoogleAccount && !existingUser.passwordHash) {
+                return authErrorResponse("GOOGLE_ACCOUNT_ALREADY_EXISTS", 409);
+            }
+
+            if (!existingUser.passwordHash) {
+                return authErrorResponse("OAUTH_ACCOUNT_ALREADY_EXISTS", 409);
+            }
+
+            return authErrorResponse("ACCOUNT_ALREADY_EXISTS", 409);
         }
 
         const passwordHash = await hash(parsed.data.password, 12);
@@ -88,7 +96,13 @@ export async function POST(request: Request) {
                 },
             }
         );
-    } catch {
-        return NextResponse.json({ error: "Failed to create account." }, { status: 500 });
+    } catch (error) {
+        console.error("register route failed", error);
+
+        const message = error instanceof Error ? error.message : "Failed to create account.";
+
+        return authErrorResponse("SIGNUP_FAILED", 500, {
+            detail: process.env.NODE_ENV === "production" ? undefined : message,
+        });
     }
 }

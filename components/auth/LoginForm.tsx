@@ -8,23 +8,8 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { getSafeCallbackPath } from "@/lib/auth-security";
-
-function getLoginErrorMessage(error?: string | null) {
-    switch (error) {
-        case "ACCOUNT_DISABLED":
-            return "This account is disabled.";
-        case "PASSWORD_SIGNIN_REQUIRED":
-            return "Use Google sign-in for this account.";
-        case "CredentialsSignin":
-            return "Invalid email or password.";
-        case "AccessDenied":
-            return "This sign-in was blocked.";
-        case "OAuthAccountNotLinked":
-            return "Use the sign-in method that is already linked to this account.";
-        default:
-            return "Invalid email or password.";
-    }
-}
+import { PasswordField } from "@/components/auth/PasswordField";
+import { getAuthErrorMessage } from "@/lib/auth-errors";
 
 export function LoginForm() {
     const router = useRouter();
@@ -35,6 +20,7 @@ export function LoginForm() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState(false);
+    const [googleSubmitting, setGoogleSubmitting] = useState(false);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -49,13 +35,37 @@ export function LoginForm() {
         });
 
         if (!result || result.error) {
-            setError(getLoginErrorMessage(result?.error));
+            setError(getAuthErrorMessage(result?.error));
             setSubmitting(false);
             return;
         }
 
         router.push(result.url || callbackUrl);
         router.refresh();
+    }
+
+    async function handleGoogleSignIn() {
+        setGoogleSubmitting(true);
+        setError(null);
+
+        const result = await signIn("google", {
+            callbackUrl,
+            redirect: false,
+        });
+
+        if (result?.error) {
+            setError(getAuthErrorMessage(result.error));
+            setGoogleSubmitting(false);
+            return;
+        }
+
+        if (!result?.url) {
+            setError("Google sign-in failed. Try again.");
+            setGoogleSubmitting(false);
+            return;
+        }
+
+        window.location.assign(result.url);
     }
 
     return (
@@ -69,7 +79,7 @@ export function LoginForm() {
             <CardContent className="grid gap-4">
                 {queryError && !error && (
                     <p className="rounded-lg border border-red-300/40 bg-red-50/60 px-3 py-2 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-200">
-                        {getLoginErrorMessage(queryError)}
+                        {getAuthErrorMessage(queryError)}
                     </p>
                 )}
                 <div className="space-y-3 rounded-2xl border border-blue-200/40 bg-white/40 p-4 dark:border-blue-800/30 dark:bg-blue-950/20">
@@ -81,14 +91,14 @@ export function LoginForm() {
                             Use your Google account to sign in without a password.
                         </p>
                     </div>
-                    <Button variant="outline" className="w-full" onClick={() => signIn("google", { callbackUrl })}>
+                    <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} loading={googleSubmitting} disabled={submitting}>
                         <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" viewBox="0 0 488 512">
                             <path
                                 fill="currentColor"
                                 d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
                             />
                         </svg>
-                        Continue with Google
+                        {googleSubmitting ? "Connecting with Google..." : "Continue with Google"}
                     </Button>
                 </div>
                 <div className="relative py-1">
@@ -117,19 +127,14 @@ export function LoginForm() {
                             required
                         />
                     </div>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="password">
-                            Password
-                        </label>
-                        <Input
-                            id="password"
-                            type="password"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            required
-                        />
-                    </div>
+                    <PasswordField
+                        id="password"
+                        label="Password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={setPassword}
+                        required
+                    />
                     {error && (
                         <p className="rounded-lg border border-red-300/40 bg-red-50/60 px-3 py-2 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-200">
                             {error}

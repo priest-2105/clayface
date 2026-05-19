@@ -5,6 +5,7 @@ import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 type DisableAccountFormProps = {
     hasPassword: boolean;
@@ -35,7 +36,7 @@ export function DisableAccountForm({ hasPassword }: DisableAccountFormProps) {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            setError(typeof data?.error === "string" ? data.error : "Failed to disable account.");
+            setError(readAuthErrorMessage(data, "Failed to disable account."));
             setSubmitting(false);
             return;
         }

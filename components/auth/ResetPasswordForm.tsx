@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 type ResetPasswordFormProps = {
     token: string;
@@ -40,7 +41,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            setError(typeof data?.error === "string" ? data.error : "Failed to reset password.");
+            setError(readAuthErrorMessage(data, "Failed to reset password."));
             setSubmitting(false);
             return;
         }

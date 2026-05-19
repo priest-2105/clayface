@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 export function ForgotPasswordForm() {
     const [email, setEmail] = useState("");
@@ -31,7 +32,7 @@ export function ForgotPasswordForm() {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            setError(typeof data?.error === "string" ? data.error : "Failed to start password reset.");
+            setError(readAuthErrorMessage(data, "Failed to start password reset."));
             setSubmitting(false);
             return;
         }
