@@ -9,10 +9,28 @@ import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { getSafeCallbackPath } from "@/lib/auth-security";
 
+function getLoginErrorMessage(error?: string | null) {
+    switch (error) {
+        case "ACCOUNT_DISABLED":
+            return "This account is disabled.";
+        case "PASSWORD_SIGNIN_REQUIRED":
+            return "Use Google sign-in for this account.";
+        case "CredentialsSignin":
+            return "Invalid email or password.";
+        case "AccessDenied":
+            return "This sign-in was blocked.";
+        case "OAuthAccountNotLinked":
+            return "Use the sign-in method that is already linked to this account.";
+        default:
+            return "Invalid email or password.";
+    }
+}
+
 export function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = getSafeCallbackPath(searchParams.get("callbackUrl"), "/chat/1");
+    const queryError = searchParams.get("error");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
@@ -31,7 +49,7 @@ export function LoginForm() {
         });
 
         if (!result || result.error) {
-            setError("Invalid email or password.");
+            setError(getLoginErrorMessage(result?.error));
             setSubmitting(false);
             return;
         }
@@ -49,6 +67,11 @@ export function LoginForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
+                {queryError && !error && (
+                    <p className="rounded-lg border border-red-300/40 bg-red-50/60 px-3 py-2 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-200">
+                        {getLoginErrorMessage(queryError)}
+                    </p>
+                )}
                 <div className="space-y-3 rounded-2xl border border-blue-200/40 bg-white/40 p-4 dark:border-blue-800/30 dark:bg-blue-950/20">
                     <div className="space-y-1">
                         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">

@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { authOptions } from "@/lib/auth";
+import { getActiveSession } from "@/lib/auth";
 
 export default async function LoginPage() {
-    const session = await getServerSession(authOptions);
+    const session = await getActiveSession();
 
     if (session) {
         redirect("/chat/1");

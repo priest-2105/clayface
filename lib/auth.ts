@@ -1,11 +1,14 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { emailSchema, loginPasswordSchema, normalizeEmail } from "@/lib/auth-security";
+
+export const googleOAuthEnabled =
+    Boolean(process.env.GOOGLE_CLIENT_ID) && Boolean(process.env.GOOGLE_CLIENT_SECRET);
 
 declare module "next-auth" {
     interface Session {
@@ -19,12 +22,13 @@ export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     secret: process.env.NEXTAUTH_SECRET,
     session: {
-        strategy: "jwt",
+        strategy: "database",
         maxAge: 60 * 60 * 24 * 7,
         updateAge: 60 * 60 * 24,
     },
     pages: {
         signIn: "/login",
+        error: "/login",
     },
     providers: [
         CredentialsProvider({
@@ -48,10 +52,19 @@ export const authOptions: NextAuthOptions = {
                 const email = normalizeEmail(parsed.data.email);
                 const user = await prisma.user.findUnique({
                     where: { email },
+                    select: { id: true, name: true, email: true, image: true, passwordHash: true, disabledAt: true },
                 });
 
-                if (!user?.passwordHash) {
+                if (!user) {
                     return null;
+                }
+
+                if (user.disabledAt) {
+                    throw new Error("ACCOUNT_DISABLED");
+                }
+
+                if (!user.passwordHash) {
+                    throw new Error("PASSWORD_SIGNIN_REQUIRED");
                 }
 
                 const isValid = await compare(parsed.data.password, user.passwordHash);
@@ -71,10 +84,24 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+            allowDangerousEmailAccountLinking: true,
         }),
     ],
     callbacks: {
-        async signIn({ account, profile }) {
+        async signIn({ user, account, profile }) {
+            if (!user?.id) {
+                return false;
+            }
+
+            const currentUser = await prisma.user.findUnique({
+                where: { id: user.id },
+                select: { disabledAt: true },
+            });
+
+            if (currentUser?.disabledAt) {
+                return false;
+            }
+
             if (account?.provider === "google") {
                 const googleProfile = profile as { email?: string; email_verified?: boolean } | undefined;
 
@@ -84,13 +111,6 @@ export const authOptions: NextAuthOptions = {
             }
 
             return true;
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                token.sub = user.id;
-            }
-
-            return token;
         },
         async redirect({ url, baseUrl }) {
             if (url.startsWith("/")) {
@@ -104,12 +124,31 @@ export const authOptions: NextAuthOptions = {
                 return `${baseUrl}/chat/1`;
             }
         },
-        async session({ session, token }) {
-            if (session.user && token.sub) {
-                session.user.id = token.sub;
+        async session({ session, user }) {
+            if (session.user && user) {
+                session.user.id = user.id;
             }
 
             return session;
         },
     },
 };
+
+export async function getActiveSession() {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+        return null;
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { disabledAt: true },
+    });
+
+    if (!user || user.disabledAt) {
+        return null;
+    }
+
+    return session;
+}

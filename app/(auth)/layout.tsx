@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AuthLayout({
     children,
@@ -28,7 +29,7 @@ export default function AuthLayout({
                         height={40}
                         className="mb-8"
                     />
-                    <h1 className="text-4xl font-heading font-bold mb-4 text-white">
+                    <h1 className="text-4xl font-display font-semibold mb-4 text-white">
                         Build software at the<br />speed of thought.
                     </h1>
                     <p className="text-blue-200/60 text-lg max-w-md leading-relaxed">
@@ -36,8 +37,16 @@ export default function AuthLayout({
                     </p>
                 </div>
 
-                <div className="z-10 text-sm text-blue-300/30">
-                    &copy; {new Date().getFullYear()} Shiva AI. All rights reserved.
+                <div className="z-10 flex flex-col gap-2 text-sm text-blue-300/30">
+                    <div className="flex flex-wrap gap-4">
+                        <Link href="/privacy-policy" className="hover:text-blue-200 transition-colors">
+                            Privacy Policy
+                        </Link>
+                        <Link href="/terms" className="hover:text-blue-200 transition-colors">
+                            Terms of Service
+                        </Link>
+                    </div>
+                    <div>&copy; {new Date().getFullYear()} Shiva AI. All rights reserved.</div>
                 </div>
             </div>
 

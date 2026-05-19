@@ -1,15 +1,14 @@
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
 import { ChatSidebar } from "@/components/chat/ChatSidebar";
 import { ChatHeader } from "@/components/chat/ChatHeader";
-import { authOptions } from "@/lib/auth";
+import { getActiveSession } from "@/lib/auth";
 
 export default async function ChatLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await getActiveSession();
 
     if (!session?.user) {
         redirect("/login?callbackUrl=/chat/1");

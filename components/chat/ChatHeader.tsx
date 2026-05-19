@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { signOut } from "next-auth/react";
-import { Settings, LogOut, User, ChevronDown, Sun, Moon, Monitor } from "lucide-react";
+import { LogOut, User, ChevronDown, Sun, Moon, Monitor } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { useTheme } from "@/components/ThemeProvider";
 import Link from "next/link";
@@ -94,13 +94,9 @@ export function ChatHeader({ user }: ChatHeaderProps) {
                             <p className="text-xs text-text-secondary truncate">{user.email || "No email available"}</p>
                         </div>
 
-                        <Link href="/profile" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-blue-100/50 dark:hover:bg-blue-950/50 cursor-pointer transition-colors">
-                            <User className="w-4 h-4" />
-                            Profile
-                        </Link>
                         <Link href="/settings" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-blue-100/50 dark:hover:bg-blue-950/50 cursor-pointer transition-colors">
-                            <Settings className="w-4 h-4" />
-                            Settings
+                            <User className="w-4 h-4" />
+                            Account settings
                         </Link>
 
                         {/* Theme switcher inside menu too */}

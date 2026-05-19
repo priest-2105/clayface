@@ -30,7 +30,7 @@ export function LandingNav() {
 
             <Link href="/" className="flex items-center gap-2.5">
                 <Image src="/logo.svg" alt="Shiva" width={28} height={28} />
-                <span className="font-heading font-bold text-lg tracking-tight text-foreground">Shiva</span>
+                <span className="font-display font-semibold text-lg tracking-tight text-foreground">Shiva</span>
             </Link>
 
             <div className="flex items-center gap-2">

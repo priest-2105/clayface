@@ -47,7 +47,7 @@ export default function Home() {
                     AI Frontend Compiler
                 </div>
 
-                <h1 className="font-heading font-bold tracking-tight text-5xl md:text-6xl lg:text-7xl max-w-4xl leading-[1.1] mb-6">
+                <h1 className="font-display font-semibold tracking-tight text-5xl md:text-6xl lg:text-7xl max-w-4xl leading-[1.05] mb-6">
                     Build UI at the{" "}
                     <span className="bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400 dark:from-blue-400 dark:via-sky-300 dark:to-cyan-300 bg-clip-text text-transparent">
                         speed of thought
@@ -147,7 +147,7 @@ export default function Home() {
             <section className="relative py-24 px-6">
                 <div className="max-w-5xl mx-auto">
                     <div className="text-center mb-14">
-                        <h2 className="font-heading font-bold text-3xl md:text-4xl tracking-tight mb-4">
+                        <h2 className="font-heading font-semibold text-3xl md:text-4xl tracking-tight mb-4">
                             Everything you need, nothing you don&apos;t
                         </h2>
                         <p className="text-text-secondary text-lg max-w-xl mx-auto">
@@ -171,7 +171,7 @@ export default function Home() {
                                     {f.icon}
                                 </div>
                                 <div>
-                                    <h3 className="font-heading font-semibold text-base mb-1.5">{f.title}</h3>
+                                    <h3 className="font-display font-medium text-base mb-1.5">{f.title}</h3>
                                     <p className="text-sm text-text-secondary leading-relaxed">{f.description}</p>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@ export default function Home() {
                         {/* Inner glow */}
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-400/8 via-transparent to-cyan-400/6 dark:from-blue-500/6 dark:to-cyan-400/4 rounded-3xl" />
 
-                        <h2 className="relative font-heading font-bold text-3xl md:text-4xl tracking-tight mb-4">
+                        <h2 className="relative font-display font-semibold text-3xl md:text-4xl tracking-tight mb-4">
                             Start building today
                         </h2>
                         <p className="relative text-text-secondary text-lg mb-8">
@@ -209,9 +209,17 @@ export default function Home() {
 
             {/* ── Footer ── */}
             <footer className="relative border-t border-blue-200/30 dark:border-blue-900/25 py-8 px-6">
-                <div className="max-w-5xl mx-auto flex items-center justify-between text-sm text-text-secondary">
-                    <span className="font-heading font-semibold text-foreground">Shiva</span>
-                    <span>&copy; {new Date().getFullYear()} Shiva AI. All rights reserved.</span>
+                <div className="max-w-5xl mx-auto flex flex-col gap-3 text-sm text-text-secondary md:flex-row md:items-center md:justify-between">
+                    <span className="font-display font-semibold text-foreground">Shiva</span>
+                    <div className="flex flex-wrap items-center gap-4">
+                        <Link href="/privacy-policy" className="hover:text-foreground transition-colors">
+                            Privacy Policy
+                        </Link>
+                        <Link href="/terms" className="hover:text-foreground transition-colors">
+                            Terms of Service
+                        </Link>
+                        <span>&copy; {new Date().getFullYear()} Shiva AI. All rights reserved.</span>
+                    </div>
                 </div>
             </footer>
         </div>
