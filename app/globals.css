@@ -4,6 +4,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --font-sans: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-heading: "Sora", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Unbounded", "Impact", "Arial Narrow", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", "Courier New", ui-monospace, monospace;
+
   /* Ice / Frost Palette */
   --primary: #60A5FA;
   --primary-hover: #93C5FD;
@@ -52,11 +57,6 @@
   --color-border: var(--border);
   --color-input: var(--border);
   --color-ring: var(--primary);
-
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 body {

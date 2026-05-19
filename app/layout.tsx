@@ -1,31 +1,6 @@
 import type { Metadata } from "next";
-import { Unbounded, Sora, Manrope, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
-
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
-});
-
-const sora = Sora({
-  variable: "--font-sora",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
 
 export const metadata: Metadata = {
   title: "Shiva - AI Frontend Compiler",
@@ -61,9 +36,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${unbounded.variable} ${sora.variable} ${manrope.variable} ${ibmPlexMono.variable} antialiased font-sans`}
-      >
+      <body className="antialiased font-sans">
         <ThemeProvider>
           {children}
         </ThemeProvider>
