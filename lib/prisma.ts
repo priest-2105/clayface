@@ -6,12 +6,14 @@ const adapter = new PrismaPg({
 });
 
 declare global {
-    var prisma: PrismaClientPackage.PrismaClient | undefined;
+    // Prisma 7's generated client types are exposed through a package wrapper that
+    // is awkward for this TS setup to name directly, so keep the singleton loose here.
+    var prisma: any;
 }
 
 export const prisma =
     global.prisma ??
-    new PrismaClientPackage.PrismaClient({
+    new (PrismaClientPackage as any).PrismaClient({
         adapter,
         log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
     });
