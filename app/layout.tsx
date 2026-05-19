@@ -29,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="4JFDNktnjYSaY4qzXtPOTpEEvppSOwQqcnggTw9R8Wo" />
         {/* Anti-flash script: apply theme before first paint */}
         <script
           dangerouslySetInnerHTML={{

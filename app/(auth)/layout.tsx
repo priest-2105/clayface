@@ -29,7 +29,7 @@ export default function AuthLayout({
                         height={40}
                         className="mb-8"
                     />
-                    <h1 className="text-4xl font-display font-semibold mb-4 text-white">
+                    <h1 className="text-4xl font-display font-semibold tracking-[0.02em] mb-4 text-white">
                         Build software at the<br />speed of thought.
                     </h1>
                     <p className="text-blue-200/60 text-lg max-w-md leading-relaxed">
