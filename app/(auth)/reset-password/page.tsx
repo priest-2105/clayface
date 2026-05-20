@@ -13,7 +13,7 @@ export default async function ResetPasswordPage({
     const session = await getActiveSession();
 
     if (session) {
-        redirect("/chat/1");
+        redirect("/chat");
     }
 
     const params = await searchParams;

@@ -19,7 +19,7 @@ export function normalizeEmail(email: string) {
     return email.trim().toLowerCase();
 }
 
-export function getSafeCallbackPath(callbackUrl: string | null | undefined, fallback = "/chat/1") {
+export function getSafeCallbackPath(callbackUrl: string | null | undefined, fallback = "/chat") {
     if (!callbackUrl) {
         return fallback;
     }

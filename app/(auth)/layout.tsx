@@ -7,7 +7,7 @@ export default function AuthLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-background">
+        <div className="dark min-h-screen grid grid-cols-1 md:grid-cols-2 bg-background">
             {/* Left Side - Branding */}
             <div className="hidden md:flex flex-col justify-between p-12 relative overflow-hidden
                 bg-gradient-to-br from-[#020B18] via-[#071530] to-[#030E22]">

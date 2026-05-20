@@ -26,7 +26,7 @@ const features = [
 
 export default function Home() {
     return (
-        <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
+        <div className="dark min-h-screen bg-background text-foreground relative overflow-x-hidden">
             {/* ── Ambient orbs ── */}
             <div className="pointer-events-none fixed inset-0 overflow-hidden">
                 <div className="absolute -top-40 left-1/4 w-[700px] h-[700px] rounded-full bg-blue-400/10 dark:bg-blue-500/8 blur-[140px]" />

@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
             storedState = null;
         }
     }
-    const returnTo = storedState?.returnTo || "/chat/1";
+    const returnTo = storedState?.returnTo || "/chat";
 
     if (!isFigmaConfigured()) {
         return NextResponse.redirect(new URL(`${returnTo}?figma=missing-config`, request.url));

@@ -6,7 +6,7 @@ export default async function ForgotPasswordPage() {
     const session = await getActiveSession();
 
     if (session) {
-        redirect("/chat/1");
+        redirect("/chat");
     }
 
     return <ForgotPasswordForm />;

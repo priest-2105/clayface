@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { getActiveSession } from "@/lib/auth";
+import { getActiveSession, googleOAuthEnabled } from "@/lib/auth";
 
 export default async function LoginPage() {
     const session = await getActiveSession();
 
     if (session) {
-        redirect("/chat/1");
+        redirect("/chat");
     }
 
-    return <LoginForm />;
+    return <LoginForm googleOAuthEnabled={googleOAuthEnabled} />;
 }

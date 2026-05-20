@@ -67,12 +67,12 @@ export function PromptInput() {
 
             <div className={cn(
                 "relative flex flex-col w-full p-4 overflow-hidden rounded-2xl min-h-[140px]",
-                "bg-white/60 dark:bg-[rgba(4,16,45,0.55)]",
+                "bg-card-bg/80",
                 "backdrop-blur-2xl",
-                "border border-blue-200/50 dark:border-blue-800/35",
+                "border border-border",
                 "shadow-lg shadow-blue-900/5 dark:shadow-blue-950/30",
                 "transition-all duration-200",
-                "focus-within:border-blue-400/70 dark:focus-within:border-blue-500/50",
+                "focus-within:border-primary/70",
                 "focus-within:shadow-blue-400/10 dark:focus-within:shadow-blue-500/20",
                 "focus-within:ring-1 focus-within:ring-blue-400/30 dark:focus-within:ring-blue-500/20"
             )}>
@@ -82,9 +82,9 @@ export function PromptInput() {
                         {attachments.map((att, i) => (
                             <div key={i} className="relative group shrink-0">
                                 {att.preview ? (
-                                    <img src={att.preview} alt="preview" className="h-16 w-16 object-cover rounded-lg border border-blue-200/40 dark:border-blue-800/40" />
+                                    <img src={att.preview} alt="preview" className="h-16 w-16 object-cover rounded-lg border border-border" />
                                 ) : (
-                                    <div className="h-16 w-16 flex items-center justify-center bg-blue-50/60 dark:bg-blue-950/40 rounded-lg border border-blue-200/40 dark:border-blue-800/40">
+                                    <div className="h-16 w-16 flex items-center justify-center bg-primary/10 rounded-lg border border-border">
                                         <Paperclip className="w-6 h-6 text-text-secondary" />
                                     </div>
                                 )}
@@ -114,8 +114,8 @@ export function PromptInput() {
                             variant="ghost"
                             size="sm"
                             className={cn(
-                                "h-8 w-8 p-0 rounded-full text-text-secondary hover:text-foreground hover:bg-blue-100/60 dark:hover:bg-blue-950/50",
-                                isAttachOpen && "bg-blue-100/80 dark:bg-blue-950/60 text-foreground"
+                                "h-8 w-8 p-0 rounded-full text-text-secondary hover:text-foreground hover:bg-primary/10",
+                                isAttachOpen && "bg-primary/10 text-foreground"
                             )}
                             onClick={() => setIsAttachOpen(!isAttachOpen)}
                         >
@@ -124,20 +124,20 @@ export function PromptInput() {
 
                         {isAttachOpen && (
                             <div className="absolute bottom-full left-0 mb-2 w-48 rounded-xl z-10
-                                bg-white/80 dark:bg-[rgba(4,16,45,0.9)]
+                                bg-card-bg/90
                                 backdrop-blur-2xl
-                                border border-blue-200/40 dark:border-blue-800/40
+                                border border-border
                                 shadow-xl shadow-blue-900/10 dark:shadow-blue-950/50
                                 p-1">
                                 <button
-                                    className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-blue-100/60 dark:hover:bg-blue-950/50 rounded-md transition-colors text-left"
+                                    className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-primary/10 rounded-md transition-colors text-left"
                                     onClick={() => triggerFileInput("image/*")}
                                 >
                                     <Image className="w-4 h-4 text-text-secondary" />
                                     <span>Upload Image</span>
                                 </button>
                                 <button
-                                    className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-blue-100/60 dark:hover:bg-blue-950/50 rounded-md transition-colors text-left"
+                                    className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-primary/10 rounded-md transition-colors text-left"
                                     onClick={() => triggerFileInput("*")}
                                 >
                                     <FileText className="w-4 h-4 text-text-secondary" />
@@ -146,11 +146,11 @@ export function PromptInput() {
                             </div>
                         )}
 
-                        <div className="h-4 w-[1px] bg-blue-200/50 dark:bg-blue-800/50 mx-1" />
+                        <div className="h-4 w-[1px] bg-border mx-1" />
 
                         <div className="relative">
                             <select
-                                className="h-8 appearance-none rounded-lg bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/40 dark:border-blue-800/30 pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:bg-blue-100/60 dark:hover:bg-blue-950/60 transition-colors text-foreground backdrop-blur-sm"
+                                className="h-8 appearance-none rounded-lg bg-card-bg/70 border border-border pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:bg-primary/10 transition-colors text-foreground backdrop-blur-sm"
                                 defaultValue="nextjs"
                             >
                                 <option value="nextjs" disabled>App Type</option>
@@ -165,7 +165,7 @@ export function PromptInput() {
 
                         <div className="relative">
                             <select
-                                className="h-8 appearance-none rounded-lg bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/40 dark:border-blue-800/30 pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:bg-blue-100/60 dark:hover:bg-blue-950/60 transition-colors text-foreground backdrop-blur-sm"
+                                className="h-8 appearance-none rounded-lg bg-card-bg/70 border border-border pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:bg-primary/10 transition-colors text-foreground backdrop-blur-sm"
                                 defaultValue="shadcn"
                             >
                                 <option value="shadcn" disabled>Design System</option>
@@ -179,7 +179,7 @@ export function PromptInput() {
                             </div>
                         </div>
 
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full text-text-secondary hover:text-foreground hover:bg-blue-100/60 dark:hover:bg-blue-950/50">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full text-text-secondary hover:text-foreground hover:bg-primary/10">
                             <Mic className="w-4 h-4" />
                         </Button>
                     </div>

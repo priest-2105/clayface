@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import type { JWT } from "next-auth/jwt";
 import { compare } from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -22,7 +23,7 @@ export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     secret: process.env.NEXTAUTH_SECRET,
     session: {
-        strategy: "database",
+        strategy: "jwt",
         maxAge: 60 * 60 * 24 * 7,
         updateAge: 60 * 60 * 24,
     },
@@ -81,13 +82,23 @@ export const authOptions: NextAuthOptions = {
                 };
             },
         }),
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID || "",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-            allowDangerousEmailAccountLinking: true,
-        }),
+        ...(googleOAuthEnabled
+            ? [
+                  GoogleProvider({
+                      clientId: process.env.GOOGLE_CLIENT_ID || "",
+                      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+                  }),
+              ]
+            : []),
     ],
     callbacks: {
+        async jwt({ token, user }) {
+            if (user?.id) {
+                token.id = user.id;
+            }
+
+            return token;
+        },
         async signIn({ user, account, profile }) {
             if (user?.id) {
                 const currentUser = await prisma.user.findUnique({
@@ -117,20 +128,26 @@ export const authOptions: NextAuthOptions = {
 
             try {
                 const parsed = new URL(url);
-                return parsed.origin === baseUrl ? url : `${baseUrl}/chat/1`;
+                return parsed.origin === baseUrl ? url : `${baseUrl}/chat`;
             } catch {
-                return `${baseUrl}/chat/1`;
+                return `${baseUrl}/chat`;
             }
         },
-        async session({ session, user }) {
-            if (session.user && user) {
-                session.user.id = user.id;
+        async session({ session, token }) {
+            if (session.user && token.id) {
+                session.user.id = token.id;
             }
 
             return session;
         },
     },
 };
+
+declare module "next-auth/jwt" {
+    interface JWT {
+        id?: string;
+    }
+}
 
 export async function getActiveSession() {
     const session = await getServerSession(authOptions);

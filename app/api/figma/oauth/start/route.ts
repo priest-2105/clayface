@@ -4,10 +4,10 @@ import { buildFigmaAuthorizationUrl, createFigmaOAuthState, FIGMA_STATE_COOKIE, 
 
 export async function GET(request: NextRequest) {
     if (!isFigmaConfigured()) {
-        return NextResponse.redirect(new URL("/chat/1?figma=missing-config", request.url));
+        return NextResponse.redirect(new URL("/chat?figma=missing-config", request.url));
     }
 
-    const returnTo = request.nextUrl.searchParams.get("returnTo") || "/chat/1";
+    const returnTo = request.nextUrl.searchParams.get("returnTo") || "/chat";
     const state = createFigmaOAuthState();
     const cookieStore = await cookies();
 

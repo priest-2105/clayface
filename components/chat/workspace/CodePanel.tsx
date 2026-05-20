@@ -454,17 +454,17 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
     };
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-[#080E1E] dark:bg-[#05090F]">
+        <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-[#0b1020] dark:bg-[#070a12]">
             {/* Top bar */}
-            <div className="h-12 flex items-center gap-2 px-4 shrink-0
+            <div className="h-14 flex items-center gap-2 px-4 shrink-0
                 border-b border-white/8
-                bg-[#0A1020] dark:bg-[#070C14]">
+                bg-[#0e1528] dark:bg-[#0a0f18]">
 
                 {/* Re-open thread */}
                 {!threadOpen && (
                     <button
                         onClick={onOpenThread}
-                        className="p-1.5 rounded-md text-slate-500 hover:text-slate-300 hover:bg-white/8 transition-colors mr-1"
+                        className="p-1.5 rounded-md text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors mr-1"
                         title="Open thread"
                     >
                         <PanelLeftOpen className="w-4 h-4" />
@@ -547,7 +547,7 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
                         <div className="sticky top-0 flex items-center justify-between px-4 py-2
                             bg-white/80 dark:bg-[#0A1020]/90 backdrop-blur-sm
                             border-b border-slate-200/60 dark:border-white/8 z-10">
-                            <span className="text-xs text-slate-400 font-mono">PricingTable — Live Preview</span>
+                            <span className="text-xs font-mono text-slate-400">PricingTable - Live Preview</span>
                             <div className="flex gap-1.5">
                                 <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600" />
                                 <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600" />

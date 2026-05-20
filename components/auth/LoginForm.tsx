@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -11,10 +11,13 @@ import { getSafeCallbackPath } from "@/lib/auth-security";
 import { PasswordField } from "@/components/auth/PasswordField";
 import { getAuthErrorMessage } from "@/lib/auth-errors";
 
-export function LoginForm() {
-    const router = useRouter();
+type LoginFormProps = {
+    googleOAuthEnabled: boolean;
+};
+
+export function LoginForm({ googleOAuthEnabled }: LoginFormProps) {
     const searchParams = useSearchParams();
-    const callbackUrl = getSafeCallbackPath(searchParams.get("callbackUrl"), "/chat/1");
+    const callbackUrl = getSafeCallbackPath(searchParams.get("callbackUrl"), "/chat");
     const queryError = searchParams.get("error");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -34,38 +37,40 @@ export function LoginForm() {
             callbackUrl,
         });
 
-        if (!result || result.error) {
-            setError(getAuthErrorMessage(result?.error));
+        if (!result) {
+            setError("Something went wrong while signing in.");
             setSubmitting(false);
             return;
         }
 
-        router.push(result.url || callbackUrl);
-        router.refresh();
+        if (result.error) {
+            setError(getAuthErrorMessage(result.error));
+            setSubmitting(false);
+            return;
+        }
+
+        window.location.assign(result.url || callbackUrl);
     }
 
     async function handleGoogleSignIn() {
         setGoogleSubmitting(true);
         setError(null);
 
-        const result = await signIn("google", {
-            callbackUrl,
-            redirect: false,
-        });
+        const result = await signIn("google", { callbackUrl, redirect: false });
 
-        if (result?.error) {
-            setError(getAuthErrorMessage(result.error));
-            setGoogleSubmitting(false);
-            return;
-        }
-
-        if (!result?.url) {
+        if (!result) {
             setError("Google sign-in failed. Try again.");
             setGoogleSubmitting(false);
             return;
         }
 
-        window.location.assign(result.url);
+        if (result.error) {
+            setError(getAuthErrorMessage(result.error));
+            setGoogleSubmitting(false);
+            return;
+        }
+
+        window.location.assign(result.url || callbackUrl);
     }
 
     return (
@@ -82,25 +87,38 @@ export function LoginForm() {
                         {getAuthErrorMessage(queryError)}
                     </p>
                 )}
-                <div className="space-y-3 rounded-2xl border border-blue-200/40 bg-white/40 p-4 dark:border-blue-800/30 dark:bg-blue-950/20">
-                    <div className="space-y-1">
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">
-                            Continue With Google
-                        </p>
-                        <p className="text-sm text-text-secondary">
-                            Use your Google account to sign in without a password.
-                        </p>
+                {googleOAuthEnabled ? (
+                    <div className="space-y-3 rounded-2xl border border-blue-200/40 bg-white/40 p-4 dark:border-blue-800/30 dark:bg-blue-950/20">
+                        <div className="space-y-1">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">
+                                Continue With Google
+                            </p>
+                            <p className="text-sm text-text-secondary">
+                                Use your Google account to sign in without a password.
+                            </p>
+                        </div>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full"
+                            onClick={handleGoogleSignIn}
+                            loading={googleSubmitting}
+                            disabled={submitting}
+                        >
+                            <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" viewBox="0 0 488 512">
+                                <path
+                                    fill="currentColor"
+                                    d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                                />
+                            </svg>
+                            {googleSubmitting ? "Connecting with Google..." : "Continue with Google"}
+                        </Button>
                     </div>
-                    <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} loading={googleSubmitting} disabled={submitting}>
-                        <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" viewBox="0 0 488 512">
-                            <path
-                                fill="currentColor"
-                                d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-                            />
-                        </svg>
-                        {googleSubmitting ? "Connecting with Google..." : "Continue with Google"}
-                    </Button>
-                </div>
+                ) : (
+                    <div className="rounded-2xl border border-blue-200/40 bg-white/40 p-4 text-sm text-text-secondary dark:border-blue-800/30 dark:bg-blue-950/20">
+                        Google sign-in is not configured in this environment.
+                    </div>
+                )}
                 <div className="relative py-1">
                     <div className="absolute inset-0 flex items-center">
                         <span className="w-full border-t border-border/80" />
@@ -140,7 +158,7 @@ export function LoginForm() {
                             {error}
                         </p>
                     )}
-                    <Button className="w-full" disabled={submitting}>
+                    <Button type="submit" className="w-full" disabled={submitting}>
                         {submitting ? "Signing in..." : "Sign In"}
                     </Button>
                 </form>

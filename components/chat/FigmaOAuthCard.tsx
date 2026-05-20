@@ -68,7 +68,7 @@ export function FigmaOAuthCard() {
     const flashMessage = figmaStatusKey ? statusMessageMap[figmaStatusKey] : null;
 
     const connectHref = useMemo(() => {
-        const params = new URLSearchParams({ returnTo: pathname || "/chat/1" });
+        const params = new URLSearchParams({ returnTo: pathname || "/chat" });
         return `/api/figma/oauth/start?${params.toString()}`;
     }, [pathname]);
 
@@ -156,20 +156,24 @@ export function FigmaOAuthCard() {
     }
 
     return (
-        <div className="border-b border-blue-200/25 dark:border-blue-900/25 bg-white/30 dark:bg-[rgba(2,10,28,0.35)] backdrop-blur-xl">
+        <div className="border-b border-border bg-card-bg/70 backdrop-blur-xl">
             <div className="mx-auto w-full max-w-[1600px] px-6 py-5">
-                <Card className="border-blue-200/40 dark:border-blue-800/30 bg-white/55 dark:bg-[rgba(4,16,45,0.5)]">
-                    <CardHeader className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                        <div className="space-y-1.5">
+                <Card className="border border-border bg-card-bg/85 shadow-sm">
+                    <CardHeader className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div className="space-y-2">
                             <div className="flex items-center gap-2">
-                                <Frame className="h-5 w-5 text-primary" />
-                                <CardTitle className="text-xl">Figma Selection Inspector</CardTitle>
+                                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-primary/10">
+                                    <Frame className="h-4.5 w-4.5 text-primary" />
+                                </span>
+                                <div>
+                                    <CardTitle className="text-xl">Figma reference inspector</CardTitle>
+                                    <CardDescription>
+                                        Connect Figma, inspect a frame, and translate the structure into Shiva-ready design references.
+                                    </CardDescription>
+                                </div>
                             </div>
-                            <CardDescription>
-                                Connect Figma with OAuth, paste a selected frame URL, and fetch node metadata from the Files API.
-                            </CardDescription>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                             <Button variant="secondary" size="sm" onClick={refreshStatus} disabled={loadingStatus}>
                                 <RefreshCcw className="mr-1.5 h-3.5 w-3.5" />
                                 Refresh
@@ -187,9 +191,9 @@ export function FigmaOAuthCard() {
                             )}
                         </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-5">
                         {flashMessage && (
-                            <div className="rounded-xl border border-blue-200/50 bg-blue-50/70 px-4 py-3 text-sm text-foreground dark:border-blue-800/40 dark:bg-blue-950/30">
+                            <div className="rounded-xl border border-border bg-primary/10 px-4 py-3 text-sm text-foreground">
                                 {flashMessage}
                             </div>
                         )}
@@ -258,7 +262,7 @@ export function FigmaOAuthCard() {
                                 )}
                             </div>
 
-                            <div className="rounded-2xl border border-blue-200/40 bg-white/45 p-4 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                            <div className="rounded-2xl border border-border bg-background/50 p-4">
                                 <div className="mb-2 flex items-center gap-2 text-sm font-medium">
                                     <BadgeCheck className="h-4 w-4 text-primary" />
                                     What this expects
@@ -273,7 +277,7 @@ export function FigmaOAuthCard() {
 
                         {result && (
                             <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-                                <div className="rounded-2xl border border-blue-200/40 bg-white/45 p-4 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                                <div className="rounded-2xl border border-border bg-background/50 p-4">
                                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-text-secondary">
                                         Selection Summary
                                     </h3>
@@ -293,7 +297,7 @@ export function FigmaOAuthCard() {
                                     </div>
                                 </div>
 
-                                <div className="rounded-2xl border border-blue-200/40 bg-[#08101f] p-4 dark:border-blue-800/30">
+                                <div className="rounded-2xl border border-border bg-[#0d1424] p-4">
                                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
                                         Raw API Payload
                                     </h3>
@@ -320,7 +324,7 @@ function StatusTile({
     accent?: "neutral" | "ok";
 }) {
     return (
-        <div className="rounded-2xl border border-blue-200/40 bg-white/45 p-4 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+        <div className="rounded-2xl border border-border bg-background/50 p-4">
             <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-text-secondary">{label}</div>
             <div className={accent === "ok" ? "text-sm font-semibold text-primary" : "text-sm font-semibold text-foreground"}>
                 {value}

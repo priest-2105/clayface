@@ -35,7 +35,7 @@ const sections = [
 
 export default function TermsPage() {
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <main className="dark min-h-screen bg-background text-foreground">
             <section className="relative overflow-hidden border-b border-blue-200/30 dark:border-blue-900/25">
                 <div className="pointer-events-none absolute inset-0">
                     <div className="absolute -top-24 right-1/4 h-72 w-72 rounded-full bg-indigo-400/10 blur-[120px]" />
