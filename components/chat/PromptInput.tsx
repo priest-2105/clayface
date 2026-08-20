@@ -200,7 +200,7 @@ export function PromptInput() {
             </div>
 
             <div className="text-center mt-4 text-xs text-text-secondary/70 flex justify-center items-center gap-4">
-                <span>Shiva can make mistakes. Please review generated code.</span>
+                <span>Clayface can make mistakes. Please review generated code.</span>
             </div>
         </div>
     );

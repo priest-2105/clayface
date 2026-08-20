@@ -181,7 +181,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold tracking-tight">Design systems</CardTitle>
                     <CardDescription>
-                        Store the references Shiva should use when it generates interfaces, pages, and design pieces.
+                        Store the references Clayface should use when it generates interfaces, pages, and design pieces.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -294,7 +294,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                                     }
                                     className="h-4 w-4 rounded border-blue-300 text-primary focus:ring-primary"
                                 />
-                                Set as the primary reference for new Shiva generations
+                                Set as the primary reference for new Clayface generations
                             </label>
                         </div>
 
@@ -321,7 +321,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold tracking-tight">Reference library</CardTitle>
                     <CardDescription>
-                        Shiva uses these references when interpreting a design brief or Figma source.
+                        Clayface uses these references when interpreting a design brief or Figma source.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -338,7 +338,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                     <div className="grid gap-3">
                         {references.length === 0 ? (
                             <div className="rounded-2xl border border-dashed border-blue-200/50 p-5 text-sm text-text-secondary dark:border-blue-800/30">
-                                Add a design system reference to give Shiva a visual source of truth.
+                                Add a design system reference to give Clayface a visual source of truth.
                             </div>
                         ) : (
                             references.map((reference) => (

@@ -40,7 +40,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
     const initials = getInitials(user.name, user.email);
 
     useEffect(() => {
-        const stored = localStorage.getItem("shiva-language");
+        const stored = localStorage.getItem("clayface-language");
         if (stored === "en" || stored === "es" || stored === "fr") {
             setLanguage(stored);
         }
@@ -60,7 +60,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
 
     const updateLanguage = (next: LanguageCode) => {
         setLanguage(next);
-        localStorage.setItem("shiva-language", next);
+        localStorage.setItem("clayface-language", next);
         setLanguageOpen(false);
         setOpen(false);
     };
@@ -84,7 +84,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                     <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-foreground">{user.name || "Shiva User"}</p>
+                    <p className="truncate text-sm font-medium text-foreground">{user.name || "Clayface User"}</p>
                     <p className="truncate text-xs text-text-secondary">Profile and preferences</p>
                 </div>
                 <ChevronUp className={cn("h-4 w-4 text-text-secondary transition-transform", open && "rotate-180")} />

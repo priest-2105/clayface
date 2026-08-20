@@ -49,11 +49,11 @@ export default function PrivacyPolicyPage() {
                             Privacy Policy
                         </p>
                         <h1 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">
-                            How Shiva handles your data
+                            How Clayface handles your data
                         </h1>
                         <p className="max-w-3xl text-lg leading-relaxed text-text-secondary">
                             Effective date: May 19, 2026. This page explains what data we collect, how we use it,
-                            and the choices available to you when using Shiva.
+                            and the choices available to you when using Clayface.
                         </p>
                     </div>
                     <div className="flex flex-wrap gap-3 text-sm text-text-secondary">

@@ -168,7 +168,7 @@ export function FigmaOAuthCard() {
                                 <div>
                                     <CardTitle className="text-xl">Figma reference inspector</CardTitle>
                                     <CardDescription>
-                                        Connect Figma, inspect a frame, and translate the structure into Shiva-ready design references.
+                                        Connect Figma, inspect a frame, and translate the structure into Clayface-ready design references.
                                     </CardDescription>
                                 </div>
                             </div>

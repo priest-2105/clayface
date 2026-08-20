@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Shiva - AI Frontend Compiler",
+  title: "Clayface - AI Frontend Compiler",
   description: "Constrained frontend compiler powered by AI",
   icons: {
     icon: [
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   appleWebApp: {
-    title: 'Shiva',
+    title: 'Clayface',
   },
 };
 

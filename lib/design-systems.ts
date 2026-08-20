@@ -25,7 +25,7 @@ export const designSystemReferenceSchema = z
     .refine(
         (data) => Boolean(data.sourceUrl?.trim() || data.figmaFileKey?.trim() || data.notes?.trim()),
         {
-            message: "Add a source URL, Figma file key, or notes so Shiva has a usable reference.",
+            message: "Add a source URL, Figma file key, or notes so Clayface has a usable reference.",
             path: ["sourceUrl"],
         }
     );

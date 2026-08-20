@@ -12,8 +12,8 @@ export function LandingNav() {
             border-b border-blue-200/30 dark:border-blue-900/25">
 
             <Link href="/" className="flex items-center gap-2.5">
-                <Image src="/logo.svg" alt="Shiva" width={28} height={28} />
-                <span className="font-display font-semibold text-lg tracking-[0.08em] text-foreground">Shiva</span>
+                <Image src="/logo.svg" alt="Clayface" width={28} height={28} />
+                <span className="font-display font-semibold text-lg tracking-[0.08em] text-foreground">Clayface</span>
             </Link>
 
             <div className="flex items-center gap-2">

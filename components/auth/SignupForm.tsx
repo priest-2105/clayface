@@ -143,7 +143,7 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
                         <label className="text-sm font-medium leading-none" htmlFor="name">
                             Name
                         </label>
-                        <Input id="name" type="text" placeholder="Shiva User" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} />
+                        <Input id="name" type="text" placeholder="Clayface User" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <label className="text-sm font-medium leading-none" htmlFor="email">

@@ -24,7 +24,7 @@ export default function AuthLayout({
                 <div className="z-10">
                     <Image
                         src="/logo.svg"
-                        alt="Shiva Logo"
+                        alt="Clayface Logo"
                         width={80}
                         height={40}
                         className="mb-8"
@@ -46,7 +46,7 @@ export default function AuthLayout({
                             Terms of Service
                         </Link>
                     </div>
-                    <div>&copy; {new Date().getFullYear()} Shiva AI. All rights reserved.</div>
+                    <div>&copy; {new Date().getFullYear()} Clayface AI. All rights reserved.</div>
                 </div>
             </div>
 
@@ -58,7 +58,7 @@ export default function AuthLayout({
                     <div className="md:hidden flex justify-center mb-8">
                         <Image
                             src="/logo.svg"
-                            alt="Shiva Logo"
+                            alt="Clayface Logo"
                             width={48}
                             height={48}
                         />

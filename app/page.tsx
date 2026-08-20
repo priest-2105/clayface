@@ -14,7 +14,7 @@ const features = [
         icon: <Layers className="w-5 h-5 text-primary" />,
         title: "Stack-aware output",
         description:
-            "Choose Next.js, React, or HTML/JS. Pick your design system — Shadcn UI, Material UI, or none. Shiva respects your decisions.",
+            "Choose Next.js, React, or HTML/JS. Pick your design system — Shadcn UI, Material UI, or none. Clayface respects your decisions.",
     },
     {
         icon: <Code2 className="w-5 h-5 text-primary" />,
@@ -56,7 +56,7 @@ export default function Home() {
 
                 <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-10">
                     Describe any component or page. Choose your stack and design system.
-                    Shiva generates clean, typed, production-ready frontend code — instantly.
+                    Clayface generates clean, typed, production-ready frontend code — instantly.
                 </p>
 
                 <div className="flex items-center gap-3 flex-wrap justify-center">
@@ -89,7 +89,7 @@ export default function Home() {
                             <div className="w-3 h-3 rounded-full bg-red-400/70" />
                             <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
                             <div className="w-3 h-3 rounded-full bg-green-400/70" />
-                            <span className="ml-3 text-xs text-text-secondary font-mono">shiva.ai / chat</span>
+                            <span className="ml-3 text-xs text-text-secondary font-mono">clayface.ai / chat</span>
                         </div>
 
                         {/* Fake chat UI */}
@@ -151,7 +151,7 @@ export default function Home() {
                             Everything you need, nothing you don&apos;t
                         </h2>
                         <p className="text-text-secondary text-lg max-w-xl mx-auto">
-                            Shiva is constrained by design — focused entirely on producing great frontend code.
+                            Clayface is constrained by design — focused entirely on producing great frontend code.
                         </p>
                     </div>
 
@@ -199,7 +199,7 @@ export default function Home() {
                         </p>
                         <Link href="/chat">
                             <Button size="lg" variant="primary" className="gap-2 px-8 shadow-lg shadow-blue-500/20 hover:shadow-blue-400/30">
-                                Open Shiva
+                                Open Clayface
                                 <ArrowRight className="w-4 h-4" />
                             </Button>
                         </Link>
@@ -210,7 +210,7 @@ export default function Home() {
             {/* ── Footer ── */}
             <footer className="relative border-t border-blue-200/30 dark:border-blue-900/25 py-8 px-6">
                 <div className="max-w-5xl mx-auto flex flex-col gap-3 text-sm text-text-secondary md:flex-row md:items-center md:justify-between">
-                    <span className="font-display font-semibold text-foreground">Shiva</span>
+                    <span className="font-display font-semibold text-foreground">Clayface</span>
                     <div className="flex flex-wrap items-center gap-4">
                         <Link href="/privacy-policy" className="hover:text-foreground transition-colors">
                             Privacy Policy
@@ -218,7 +218,7 @@ export default function Home() {
                         <Link href="/terms" className="hover:text-foreground transition-colors">
                             Terms of Service
                         </Link>
-                        <span>&copy; {new Date().getFullYear()} Shiva AI. All rights reserved.</span>
+                        <span>&copy; {new Date().getFullYear()} Clayface AI. All rights reserved.</span>
                     </div>
                 </div>
             </footer>

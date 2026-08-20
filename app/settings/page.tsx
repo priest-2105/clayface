@@ -171,7 +171,7 @@ export default async function SettingsPage({
                                     </Link>
                                     <Link href="/settings?tab=design-systems" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
                                         <p className="font-medium">Design Systems</p>
-                                        <p className="text-sm text-text-secondary">Manage reference systems Shiva should follow.</p>
+                                        <p className="text-sm text-text-secondary">Manage reference systems Clayface should follow.</p>
                                     </Link>
                                     <Link href="/privacy-policy" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
                                         <p className="font-medium">Privacy Policy</p>
