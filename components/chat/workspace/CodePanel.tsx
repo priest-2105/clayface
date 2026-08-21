@@ -272,7 +272,7 @@ function highlight(code: string) {
     const lines = code.split("\n");
     return lines.map((line, i) => (
         <div key={i} className="table-row">
-            <span className="table-cell select-none pr-5 text-right text-slate-600 dark:text-slate-600 w-8 shrink-0">
+            <span className="table-cell select-none pr-5 text-right text-text-secondary w-8 shrink-0">
                 {i + 1}
             </span>
             <span className="table-cell">
@@ -285,7 +285,7 @@ function highlight(code: string) {
 function HighlightedLine({ line }: { line: string }) {
     // Very simple token pass — comment, string, keyword, component
     if (/^\s*\/\//.test(line)) {
-        return <span className="text-slate-500 dark:text-slate-500">{line}</span>;
+        return <span className="text-text-secondary">{line}</span>;
     }
 
     const parts: ReactNode[] = [];
@@ -301,21 +301,21 @@ function HighlightedLine({ line }: { line: string }) {
 
     while ((match = tokenRe.exec(line)) !== null) {
         if (match.index > lastIndex) {
-            push(<span className="text-slate-300 dark:text-slate-300">{line.slice(lastIndex, match.index)}</span>);
+            push(<span className="text-foreground">{line.slice(lastIndex, match.index)}</span>);
         }
         if (match[1]) {
-            push(<span className="text-emerald-400 dark:text-emerald-400">{match[1]}</span>);
+            push(<span className="text-primary">{match[1]}</span>);
         } else if (match[2]) {
-            push(<span className="text-blue-400 dark:text-blue-400">{match[2]}</span>);
+            push(<span className="text-primary">{match[2]}</span>);
         } else if (match[3]) {
-            push(<span className="text-cyan-400 dark:text-cyan-400">{match[3]}</span>);
+            push(<span className="text-foreground">{match[3]}</span>);
         } else if (match[4]) {
-            push(<span className="text-cyan-300 dark:text-cyan-300">{match[4]}</span>);
+            push(<span className="text-foreground">{match[4]}</span>);
         }
         lastIndex = match.index + match[0].length;
     }
     if (lastIndex < line.length) {
-        push(<span className="text-slate-300 dark:text-slate-300">{line.slice(lastIndex)}</span>);
+        push(<span className="text-foreground">{line.slice(lastIndex)}</span>);
     }
 
     return <>{parts}</>;
@@ -356,7 +356,7 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
     return (
         <div className="flex flex-col items-center gap-8 py-10 px-6 w-full">
             {withToggle && (
-                <div className="flex items-center gap-1 p-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                <div className="flex items-center gap-1 p-1 rounded-full bg-card-bg border border-border text-sm">
                     {(["monthly", "annual"] as const).map((b) => (
                         <button
                             key={b}
@@ -364,7 +364,7 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
                             className={cn(
                                 "px-4 py-1.5 rounded-full transition-all text-sm capitalize",
                                 billing === b
-                                    ? "bg-white dark:bg-slate-700 shadow-sm font-medium text-foreground"
+                                    ? "bg-background font-medium text-foreground"
                                     : "text-text-secondary hover:text-foreground"
                             )}
                         >
@@ -384,8 +384,8 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
                         className={cn(
                             "relative flex flex-col rounded-xl p-5 border transition-all",
                             plan.highlighted
-                                ? "border-primary/60 shadow-lg shadow-primary/20 bg-white dark:bg-slate-900"
-                                : "border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/60"
+                                ? "border-primary/60 bg-card-bg"
+                                : "border-border bg-card-bg"
                         )}
                     >
                         {plan.highlighted && (
@@ -420,7 +420,7 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
                             "w-full py-2 rounded-lg text-xs font-medium transition-colors",
                             plan.highlighted
                                 ? "bg-primary text-white hover:bg-primary-hover"
-                                : "border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-foreground"
+                                : "border border-border hover:border-primary/60 text-foreground"
                         )}>
                             {plan.cta}
                         </button>
@@ -454,17 +454,17 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
     };
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-[#0b1020] dark:bg-[#070a12]">
+        <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-background">
             {/* Top bar */}
             <div className="h-14 flex items-center gap-2 px-4 shrink-0
-                border-b border-white/8
-                bg-[#0e1528] dark:bg-[#0a0f18]">
+                border-b border-border
+                bg-card-bg">
 
                 {/* Re-open thread */}
                 {!threadOpen && (
                     <button
                         onClick={onOpenThread}
-                        className="p-1.5 rounded-md text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors mr-1"
+                        className="p-1.5 rounded-md text-text-secondary hover:text-foreground hover:bg-background transition-colors mr-1"
                         title="Open thread"
                     >
                         <PanelLeftOpen className="w-4 h-4" />
@@ -472,14 +472,14 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
                 )}
 
                 {/* Code / Preview tabs */}
-                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-white/6 border border-white/8">
+                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-background border border-border">
                     <button
                         onClick={() => setTab("code")}
                         className={cn(
                             "flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all",
                             tab === "code"
-                                ? "bg-white/12 text-slate-100 shadow-sm"
-                                : "text-slate-500 hover:text-slate-300"
+                                ? "bg-card-bg text-foreground"
+                                : "text-text-secondary hover:text-foreground"
                         )}
                     >
                         <Code2 className="w-3.5 h-3.5" />
@@ -490,8 +490,8 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
                         className={cn(
                             "flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all",
                             tab === "preview"
-                                ? "bg-white/12 text-slate-100 shadow-sm"
-                                : "text-slate-500 hover:text-slate-300"
+                                ? "bg-card-bg text-foreground"
+                                : "text-text-secondary hover:text-foreground"
                         )}
                     >
                         <LayoutTemplate className="w-3.5 h-3.5" />
@@ -509,8 +509,8 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
                                 className={cn(
                                     "px-3 py-1 rounded-md text-xs font-mono transition-colors whitespace-nowrap",
                                     activeFile === f
-                                        ? "bg-white/12 text-slate-200"
-                                        : "text-slate-500 hover:text-slate-300 hover:bg-white/6"
+                                        ? "bg-card-bg text-foreground"
+                                        : "text-text-secondary hover:text-foreground hover:bg-background"
                                 )}
                             >
                                 {f}
@@ -523,12 +523,12 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
                 <div className="ml-auto flex items-center gap-1.5">
                     <button
                         onClick={handleCopy}
-                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-slate-400 hover:text-slate-200 hover:bg-white/8 transition-colors"
+                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-text-secondary hover:text-foreground hover:bg-background transition-colors"
                     >
-                        {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copied ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
                         {copied ? "Copied" : "Copy"}
                     </button>
-                    <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-slate-400 hover:text-slate-200 hover:bg-white/8 transition-colors">
+                    <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-text-secondary hover:text-foreground hover:bg-background transition-colors">
                         <Download className="w-3.5 h-3.5" />
                         Export
                     </button>
@@ -542,16 +542,16 @@ export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelPr
                         {highlight(code)}
                     </pre>
                 ) : (
-                    <div className="h-full overflow-auto bg-slate-50 dark:bg-[#0D1424]">
+                    <div className="h-full overflow-auto bg-background">
                         {/* Preview toolbar */}
                         <div className="sticky top-0 flex items-center justify-between px-4 py-2
-                            bg-white/80 dark:bg-[#0A1020]/90 backdrop-blur-sm
-                            border-b border-slate-200/60 dark:border-white/8 z-10">
-                            <span className="text-xs font-mono text-slate-400">PricingTable - Live Preview</span>
+                            bg-card-bg
+                            border-b border-border z-10">
+                            <span className="text-xs font-mono text-text-secondary">PricingTable - Live Preview</span>
                             <div className="flex gap-1.5">
-                                <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600" />
-                                <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600" />
-                                <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600" />
+                                <div className="w-2 h-2 rounded-full bg-border" />
+                                <div className="w-2 h-2 rounded-full bg-border" />
+                                <div className="w-2 h-2 rounded-full bg-border" />
                             </div>
                         </div>
                         <PricingPreview withToggle={activeGenId === 1} />

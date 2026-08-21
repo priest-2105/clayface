@@ -67,14 +67,11 @@ export function PromptInput() {
 
             <div className={cn(
                 "relative flex flex-col w-full p-4 overflow-hidden rounded-2xl min-h-[140px]",
-                "bg-card-bg/80",
-                "backdrop-blur-2xl",
+                "bg-card-bg",
                 "border border-border",
-                "shadow-lg shadow-blue-900/5 dark:shadow-blue-950/30",
-                "transition-all duration-200",
+                "transition-all duration-[160ms]",
                 "focus-within:border-primary/70",
-                "focus-within:shadow-blue-400/10 dark:focus-within:shadow-blue-500/20",
-                "focus-within:ring-1 focus-within:ring-blue-400/30 dark:focus-within:ring-blue-500/20"
+                "focus-within:ring-1 focus-within:ring-primary/30"
             )}>
                 {/* Image Previews */}
                 {attachments.length > 0 && (
@@ -90,7 +87,7 @@ export function PromptInput() {
                                 )}
                                 <button
                                     onClick={() => removeAttachment(i)}
-                                    className="absolute -top-1 -right-1 bg-red-500/80 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"
+                                    className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </button>
@@ -124,10 +121,8 @@ export function PromptInput() {
 
                         {isAttachOpen && (
                             <div className="absolute bottom-full left-0 mb-2 w-48 rounded-xl z-10
-                                bg-card-bg/90
-                                backdrop-blur-2xl
+                                bg-card-bg
                                 border border-border
-                                shadow-xl shadow-blue-900/10 dark:shadow-blue-950/50
                                 p-1">
                                 <button
                                     className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-primary/10 rounded-md transition-colors text-left"
@@ -150,7 +145,7 @@ export function PromptInput() {
 
                         <div className="relative">
                             <select
-                                className="h-8 appearance-none rounded-lg bg-card-bg/70 border border-border pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:bg-primary/10 transition-colors text-foreground backdrop-blur-sm"
+                                className="h-8 appearance-none rounded-lg bg-card-bg border border-border pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:border-primary/60 transition-colors text-foreground"
                                 defaultValue="nextjs"
                             >
                                 <option value="nextjs" disabled>App Type</option>
@@ -165,7 +160,7 @@ export function PromptInput() {
 
                         <div className="relative">
                             <select
-                                className="h-8 appearance-none rounded-lg bg-card-bg/70 border border-border pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:bg-primary/10 transition-colors text-foreground backdrop-blur-sm"
+                                className="h-8 appearance-none rounded-lg bg-card-bg border border-border pl-3 pr-8 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer hover:border-primary/60 transition-colors text-foreground"
                                 defaultValue="shadcn"
                             >
                                 <option value="shadcn" disabled>Design System</option>
@@ -187,9 +182,9 @@ export function PromptInput() {
                     <Button
                         size="sm"
                         className={cn(
-                            "rounded-full h-8 w-8 p-0 transition-all duration-200 shadow-md shadow-blue-500/20",
+                            "rounded-full h-8 w-8 p-0 transition-all duration-[160ms]",
                             value.trim() || attachments.length > 0
-                                ? "opacity-100 shadow-blue-400/30"
+                                ? "opacity-100"
                                 : "opacity-40 cursor-not-allowed"
                         )}
                         disabled={!value.trim() && attachments.length === 0}

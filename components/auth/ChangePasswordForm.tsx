@@ -51,7 +51,7 @@ export function ChangePasswordForm({ hasPassword }: ChangePasswordFormProps) {
     }
 
     return (
-        <Card className="border border-blue-200/40 bg-white/40 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.28)]">
+        <Card className="border border-border bg-card-bg ">
             <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl font-bold tracking-tight">Change password</CardTitle>
                 <CardDescription>
@@ -97,7 +97,7 @@ export function ChangePasswordForm({ hasPassword }: ChangePasswordFormProps) {
                         </p>
                     )}
                     {success && (
-                        <p className="rounded-lg border border-blue-300/40 bg-blue-50/60 px-3 py-2 text-sm text-blue-800 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-100">
+                        <p className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
                             {success}
                         </p>
                     )}

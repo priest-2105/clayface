@@ -99,7 +99,7 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
             </CardHeader>
             <CardContent className="grid gap-4">
                 {googleOAuthEnabled ? (
-                    <div className="space-y-3 rounded-2xl border border-blue-200/40 bg-white/40 p-4 dark:border-blue-800/30 dark:bg-blue-950/20">
+                    <div className="space-y-3 rounded-2xl border border-border bg-card-bg p-4">
                         <div className="space-y-1">
                             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">
                                 Continue With Google
@@ -126,19 +126,19 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
                         </Button>
                     </div>
                 ) : (
-                    <div className="rounded-2xl border border-blue-200/40 bg-white/40 p-4 text-sm text-text-secondary dark:border-blue-800/30 dark:bg-blue-950/20">
+                    <div className="rounded-2xl border border-border bg-card-bg p-4 text-sm text-text-secondary">
                         Google sign-up is not configured in this environment.
                     </div>
                 )}
                 <div className="relative py-1">
                     <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t border-border/80" />
+                        <span className="w-full border-t border-border" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                         <span className="bg-background px-3 text-text-secondary">Or sign up with email and password</span>
                     </div>
                 </div>
-                <form className="grid gap-6 rounded-2xl border border-blue-200/40 bg-white/35 p-4 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.28)]" onSubmit={handleSubmit}>
+                <form className="grid gap-6 rounded-2xl border border-border bg-card-bg p-4 " onSubmit={handleSubmit}>
                     <div className="grid gap-2">
                         <label className="text-sm font-medium leading-none" htmlFor="name">
                             Name

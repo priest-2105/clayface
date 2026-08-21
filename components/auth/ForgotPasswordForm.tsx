@@ -51,7 +51,7 @@ export function ForgotPasswordForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form className="grid gap-6 rounded-2xl border border-blue-200/40 bg-white/35 p-4 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.28)]" onSubmit={handleSubmit}>
+                <form className="grid gap-6 rounded-2xl border border-border bg-card-bg p-4 " onSubmit={handleSubmit}>
                     <div className="grid gap-2">
                         <label className="text-sm font-medium leading-none" htmlFor="email">
                             Email
@@ -73,7 +73,7 @@ export function ForgotPasswordForm() {
                         </p>
                     )}
                     {success && (
-                        <div className="rounded-lg border border-blue-300/40 bg-blue-50/60 px-3 py-2 text-sm text-blue-800 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-100">
+                        <div className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
                             <p>{success}</p>
                             {devResetUrl && (
                                 <p className="mt-2 break-all font-mono text-xs">

@@ -135,13 +135,13 @@ export default function WorkspacePage() {
             </div>
 
             {loading && (
-                <div className="pointer-events-none fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full border border-border bg-card-bg/90 px-4 py-2 text-xs text-text-secondary shadow-lg shadow-black/20 backdrop-blur-xl">
+                <div className="pointer-events-none fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full border border-border bg-card-bg px-4 py-2 text-xs text-text-secondary">
                     Loading {headerLabel.toLowerCase()}...
                 </div>
             )}
 
             {error && (
-                <div className="pointer-events-none fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full border border-red-500/30 bg-red-950/80 px-4 py-2 text-xs text-red-200 shadow-lg shadow-black/20 backdrop-blur-xl">
+                <div className="pointer-events-none fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full border border-red-500/30 bg-red-950 px-4 py-2 text-xs text-red-200">
                     {error}
                 </div>
             )}

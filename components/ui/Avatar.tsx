@@ -28,7 +28,7 @@ export function AvatarFallback({ className, ...props }: React.HTMLAttributes<HTM
     return (
         <div
             className={cn(
-                "flex h-full w-full items-center justify-center rounded-full bg-muted",
+                "flex h-full w-full items-center justify-center rounded-full bg-secondary",
                 className
             )}
             {...props}

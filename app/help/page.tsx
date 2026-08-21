@@ -3,18 +3,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function HelpPage() {
     return (
-        <div className="dark min-h-screen bg-background px-4 py-8 text-foreground md:px-6">
+        <div className="min-h-screen bg-background px-4 py-8 text-foreground md:px-6">
             <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
                 <div className="space-y-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-text-secondary">Help</p>
-                    <h1 className="font-display text-4xl font-semibold tracking-tight">Get help with Clayface</h1>
+                    <h1 className="font-heading text-4xl font-semibold tracking-tight">Get help with Clayface</h1>
                     <p className="max-w-2xl text-text-secondary">
                         Use this page for product guidance, auth troubleshooting, and reference setup.
                     </p>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                    <Card className="border border-blue-200/40 bg-white/55 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                    <Card className="border border-border bg-card-bg">
                         <CardHeader>
                             <CardTitle>Design systems references</CardTitle>
                             <CardDescription>Manage the source material Clayface should follow.</CardDescription>
@@ -27,7 +27,7 @@ export default function HelpPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border border-blue-200/40 bg-white/55 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                    <Card className="border border-border bg-card-bg">
                         <CardHeader>
                             <CardTitle>Figma integration</CardTitle>
                             <CardDescription>Connect Figma before importing or syncing files.</CardDescription>
@@ -40,7 +40,7 @@ export default function HelpPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border border-blue-200/40 bg-white/55 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                    <Card className="border border-border bg-card-bg">
                         <CardHeader>
                             <CardTitle>Security</CardTitle>
                             <CardDescription>Account protection and session control.</CardDescription>
@@ -53,7 +53,7 @@ export default function HelpPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border border-blue-200/40 bg-white/55 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                    <Card className="border border-border bg-card-bg">
                         <CardHeader>
                             <CardTitle>Contact</CardTitle>
                             <CardDescription>Need direct support?</CardDescription>

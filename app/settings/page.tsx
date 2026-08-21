@@ -7,13 +7,10 @@ import { ChangePasswordForm } from "@/components/auth/ChangePasswordForm";
 import { DisableAccountForm } from "@/components/auth/DisableAccountForm";
 import { cn } from "@/lib/utils";
 import { DesignSystemsManager } from "@/components/settings/DesignSystemsManager";
-import { DashboardThemeSelector } from "@/components/settings/DashboardThemeSelector";
-import { dashboardThemeFromDbValue, getDashboardThemeConfig } from "@/lib/dashboard-theme";
 
 type SettingsTab =
     | "pages"
     | "general"
-    | "appearance"
     | "account"
     | "design-systems"
     | "integrations"
@@ -24,7 +21,6 @@ type SettingsTab =
 const tabs: Array<{ id: SettingsTab; label: string }> = [
     { id: "pages", label: "Pages" },
     { id: "general", label: "General" },
-    { id: "appearance", label: "Appearance" },
     { id: "account", label: "Account" },
     { id: "design-systems", label: "Design Systems" },
     { id: "integrations", label: "Integrations" },
@@ -60,7 +56,6 @@ export default async function SettingsPage({
             image: true,
             passwordHash: true,
             createdAt: true,
-            dashboardTheme: true,
             accounts: {
                 select: { provider: true },
             },
@@ -73,7 +68,6 @@ export default async function SettingsPage({
 
     const providers = Array.from(new Set(user.accounts.map((account: { provider: string }) => account.provider)));
     const hasGoogle = providers.includes("google");
-    const themeConfig = getDashboardThemeConfig(dashboardThemeFromDbValue(user.dashboardTheme));
     type DesignSystemReferenceRecord = {
         id: string;
         name: string;
@@ -113,13 +107,13 @@ export default async function SettingsPage({
     }));
 
     return (
-        <div className={`${themeConfig.className} ${themeConfig.mode === "dark" ? "dark" : ""} min-h-screen bg-background px-4 py-6 text-foreground md:px-6 md:py-10`}>
+        <div className="min-h-screen bg-background px-4 py-6 text-foreground md:px-6 md:py-10">
             <div className="mx-auto flex w-full max-w-none flex-col gap-6">
                 <div className="space-y-2">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-text-secondary">
                         Account center
                     </p>
-                    <h1 className="font-display text-4xl font-semibold tracking-tight">
+                    <h1 className="font-heading text-4xl font-semibold tracking-tight">
                         Manage your account
                     </h1>
                     <p className="max-w-2xl text-text-secondary">
@@ -129,10 +123,10 @@ export default async function SettingsPage({
 
                 <div className="grid gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
                     <aside className="xl:sticky xl:top-6 xl:self-start">
-                        <div className="rounded-2xl border border-border bg-card-bg/80 p-3 shadow-sm shadow-black/10 backdrop-blur-xl">
+                        <div className="rounded-2xl border border-border bg-card-bg p-3">
                             <div className="px-3 py-2">
                                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-text-secondary">Settings</p>
-                                <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">Account center</h2>
+                                <h2 className="mt-1 font-heading text-2xl font-semibold tracking-tight">Account center</h2>
                             </div>
                             <nav className="mt-2 flex flex-col gap-1">
                                 {tabs.map((tab) => (
@@ -140,10 +134,10 @@ export default async function SettingsPage({
                                         key={tab.id}
                                         href={`/settings?tab=${tab.id}`}
                                         className={cn(
-                                            "rounded-xl px-3 py-2 text-sm transition-all duration-200 ease-out",
+                                            "rounded-xl px-3 py-2 text-sm transition-all duration-[160ms] ease-out",
                                             activeTab === tab.id
                                                 ? "border border-primary/20 bg-primary/10 text-primary"
-                                                : "border border-transparent text-foreground hover:border-border hover:bg-background/55"
+                                                : "border border-transparent text-foreground hover:border-border hover:bg-background"
                                         )}
                                     >
                                         {tab.label}
@@ -155,29 +149,29 @@ export default async function SettingsPage({
 
                     <main className="space-y-6">
                         {activeTab === "pages" && (
-                            <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                            <Card className="border border-border bg-card-bg">
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold tracking-tight">Pages</CardTitle>
                                     <CardDescription>Quick links to the key areas of the app.</CardDescription>
                                 </CardHeader>
                                 <CardContent className="grid gap-3 md:grid-cols-2">
-                                    <Link href="/chat" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
+                                    <Link href="/chat" className="rounded-xl border border-border bg-background p-4 transition-all duration-[160ms] ease-out hover:border-primary/60">
                                         <p className="font-medium">Dashboard</p>
                                         <p className="text-sm text-text-secondary">Open the authenticated workspace.</p>
                                     </Link>
-                                    <Link href="/help" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
+                                    <Link href="/help" className="rounded-xl border border-border bg-background p-4 transition-all duration-[160ms] ease-out hover:border-primary/60">
                                         <p className="font-medium">Help</p>
                                         <p className="text-sm text-text-secondary">Get support and guidance.</p>
                                     </Link>
-                                    <Link href="/settings?tab=design-systems" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
+                                    <Link href="/settings?tab=design-systems" className="rounded-xl border border-border bg-background p-4 transition-all duration-[160ms] ease-out hover:border-primary/60">
                                         <p className="font-medium">Design Systems</p>
                                         <p className="text-sm text-text-secondary">Manage reference systems Clayface should follow.</p>
                                     </Link>
-                                    <Link href="/privacy-policy" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
+                                    <Link href="/privacy-policy" className="rounded-xl border border-border bg-background p-4 transition-all duration-[160ms] ease-out hover:border-primary/60">
                                         <p className="font-medium">Privacy Policy</p>
                                         <p className="text-sm text-text-secondary">Review how data is handled.</p>
                                     </Link>
-                                    <Link href="/terms" className="rounded-xl border border-border bg-background/55 p-4 transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75">
+                                    <Link href="/terms" className="rounded-xl border border-border bg-background p-4 transition-all duration-[160ms] ease-out hover:border-primary/60">
                                         <p className="font-medium">Terms</p>
                                         <p className="text-sm text-text-secondary">Read the service terms.</p>
                                     </Link>
@@ -186,7 +180,7 @@ export default async function SettingsPage({
                         )}
 
                         {activeTab === "general" && (
-                            <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                            <Card className="border border-border bg-card-bg">
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold tracking-tight">General</CardTitle>
                                     <CardDescription>Basic profile and account details.</CardDescription>
@@ -208,11 +202,9 @@ export default async function SettingsPage({
                             </Card>
                         )}
 
-                        {activeTab === "appearance" && <DashboardThemeSelector initialTheme={dashboardThemeFromDbValue(user.dashboardTheme)} />}
-
                         {activeTab === "account" && (
                             <div className="grid gap-6 lg:grid-cols-2">
-                                <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                                <Card className="border border-border bg-card-bg">
                                     <CardHeader>
                                         <CardTitle className="text-2xl font-bold tracking-tight">Account status</CardTitle>
                                         <CardDescription>
@@ -238,19 +230,19 @@ export default async function SettingsPage({
                         {activeTab === "design-systems" && <DesignSystemsManager initialReferences={designSystemReferences} />}
 
                         {activeTab === "integrations" && (
-                            <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                            <Card className="border border-border bg-card-bg">
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold tracking-tight">Integrations</CardTitle>
                                     <CardDescription>Connected services and external accounts.</CardDescription>
                                 </CardHeader>
                                 <CardContent className="grid gap-4 md:grid-cols-2">
-                                    <div className="rounded-xl border border-border bg-background/55 p-4">
+                                    <div className="rounded-xl border border-border bg-background p-4">
                                         <p className="text-sm font-medium">Google</p>
                                         <p className="mt-1 text-sm text-text-secondary">
                                             {hasGoogle ? "Connected for sign-in." : "Not connected."}
                                         </p>
                                     </div>
-                                    <div className="rounded-xl border border-border bg-background/55 p-4">
+                                    <div className="rounded-xl border border-border bg-background p-4">
                                         <p className="text-sm font-medium">Figma MCP</p>
                                         <p className="mt-1 text-sm text-text-secondary">
                                             Connect Figma from the dashboard to import design context, then attach design system references here.
@@ -261,21 +253,21 @@ export default async function SettingsPage({
                         )}
 
                         {activeTab === "usage" && (
-                            <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                            <Card className="border border-border bg-card-bg">
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold tracking-tight">Usage</CardTitle>
                                     <CardDescription>Generation and activity metrics.</CardDescription>
                                 </CardHeader>
                                 <CardContent className="grid gap-4 md:grid-cols-3">
-                                    <div className="rounded-xl border border-border bg-background/55 p-4">
+                                    <div className="rounded-xl border border-border bg-background p-4">
                                         <p className="text-xs uppercase tracking-[0.18em] text-text-secondary">Projects</p>
                                         <p className="mt-1 text-2xl font-semibold">-</p>
                                     </div>
-                                    <div className="rounded-xl border border-border bg-background/55 p-4">
+                                    <div className="rounded-xl border border-border bg-background p-4">
                                         <p className="text-xs uppercase tracking-[0.18em] text-text-secondary">Generations</p>
                                         <p className="mt-1 text-2xl font-semibold">-</p>
                                     </div>
-                                    <div className="rounded-xl border border-border bg-background/55 p-4">
+                                    <div className="rounded-xl border border-border bg-background p-4">
                                         <p className="text-xs uppercase tracking-[0.18em] text-text-secondary">Storage</p>
                                         <p className="mt-1 text-2xl font-semibold">-</p>
                                     </div>
@@ -284,7 +276,7 @@ export default async function SettingsPage({
                         )}
 
                         {activeTab === "billing" && (
-                            <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                            <Card className="border border-border bg-card-bg">
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold tracking-tight">Billing</CardTitle>
                                     <CardDescription>Plan and invoice controls.</CardDescription>
@@ -297,7 +289,7 @@ export default async function SettingsPage({
                         )}
 
                         {activeTab === "privacy" && (
-                            <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                            <Card className="border border-border bg-card-bg">
                                 <CardHeader>
                                     <CardTitle className="text-2xl font-bold tracking-tight">Privacy</CardTitle>
                                     <CardDescription>Data handling and account controls.</CardDescription>

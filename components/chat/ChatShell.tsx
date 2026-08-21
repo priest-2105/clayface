@@ -10,7 +10,6 @@ type ChatShellProps = {
         email?: string | null;
         image?: string | null;
     };
-    themeLabel: string;
     projects: Array<{
         id: string;
         name: string;
@@ -28,32 +27,29 @@ type ChatShellProps = {
     children: React.ReactNode;
 };
 
-export function ChatShell({ user, themeLabel, projects, children }: ChatShellProps) {
+export function ChatShell({ user, projects, children }: ChatShellProps) {
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     return (
-        <div className="relative flex h-screen overflow-hidden bg-background">
-            <div className="pointer-events-none absolute -top-32 left-1/3 h-[500px] w-[500px] rounded-full bg-slate-400/10 blur-[120px] dark:bg-slate-500/8" />
-            <div className="pointer-events-none absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-cyan-400/8 blur-[100px] dark:bg-cyan-400/5" />
-            <div className="pointer-events-none absolute left-0 top-1/2 h-64 w-64 rounded-full bg-slate-300/6 blur-[80px] dark:bg-slate-400/4" />
-
+        <div className="relative flex h-screen overflow-hidden bg-[#09090a]">
             <aside
                 className={
                     sidebarOpen
-                        ? "relative z-10 hidden md:flex md:w-64 md:opacity-100 md:translate-x-0 md:transition-[width,opacity,transform] md:duration-300 md:ease-out"
+                        ? "relative z-10 hidden md:flex md:w-[244px] md:opacity-100 md:translate-x-0 md:transition-[width,opacity,transform] md:duration-300 md:ease-out"
                         : "pointer-events-none hidden overflow-hidden md:flex md:w-0 md:opacity-0 md:-translate-x-2 md:transition-[width,opacity,transform] md:duration-300 md:ease-out"
                 }
             >
                 <ChatSidebar user={user} projects={projects} />
             </aside>
 
-            <main className="relative z-10 flex min-w-0 flex-1 flex-col overflow-hidden transition-[margin] duration-300 ease-out">
-                <ChatHeader
-                    themeLabel={themeLabel}
-                    sidebarOpen={sidebarOpen}
-                    onToggleSidebar={() => setSidebarOpen((current) => !current)}
-                />
-                {children}
+            <main className="relative z-10 flex min-w-0 flex-1 p-2 transition-[margin] duration-300 ease-out">
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-standard bg-bg-panel">
+                    <ChatHeader
+                        sidebarOpen={sidebarOpen}
+                        onToggleSidebar={() => setSidebarOpen((current) => !current)}
+                    />
+                    {children}
+                </div>
             </main>
         </div>
     );

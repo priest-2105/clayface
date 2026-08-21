@@ -156,9 +156,9 @@ export function FigmaOAuthCard() {
     }
 
     return (
-        <div className="border-b border-border bg-card-bg/70 backdrop-blur-xl">
+        <div className="border-b border-border bg-card-bg">
             <div className="mx-auto w-full max-w-[1600px] px-6 py-5">
-                <Card className="border border-border bg-card-bg/85 shadow-sm">
+                <Card className="border border-border bg-card-bg">
                     <CardHeader className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="space-y-2">
                             <div className="flex items-center gap-2">
@@ -223,7 +223,7 @@ export function FigmaOAuthCard() {
                         </div>
 
                         {!status?.configured && !loadingStatus && (
-                            <div className="rounded-xl border border-amber-300/50 bg-amber-50/70 px-4 py-3 text-sm text-slate-800 dark:border-amber-700/40 dark:bg-amber-950/20 dark:text-amber-100">
+                            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
                                 Add `FIGMA_CLIENT_ID`, `FIGMA_CLIENT_SECRET`, and `FIGMA_OAUTH_REDIRECT_URI` to enable the OAuth flow.
                             </div>
                         )}
@@ -256,13 +256,13 @@ export function FigmaOAuthCard() {
                                     </a>
                                 </div>
                                 {error && (
-                                    <div className="rounded-xl border border-red-300/50 bg-red-50/70 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-200">
+                                    <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
                                         {error}
                                     </div>
                                 )}
                             </div>
 
-                            <div className="rounded-2xl border border-border bg-background/50 p-4">
+                            <div className="rounded-2xl border border-border bg-background p-4">
                                 <div className="mb-2 flex items-center gap-2 text-sm font-medium">
                                     <BadgeCheck className="h-4 w-4 text-primary" />
                                     What this expects
@@ -277,7 +277,7 @@ export function FigmaOAuthCard() {
 
                         {result && (
                             <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-                                <div className="rounded-2xl border border-border bg-background/50 p-4">
+                                <div className="rounded-2xl border border-border bg-background p-4">
                                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-text-secondary">
                                         Selection Summary
                                     </h3>
@@ -297,11 +297,11 @@ export function FigmaOAuthCard() {
                                     </div>
                                 </div>
 
-                                <div className="rounded-2xl border border-border bg-[#0d1424] p-4">
-                                    <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+                                <div className="rounded-2xl border border-border bg-background p-4">
+                                    <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-text-secondary">
                                         Raw API Payload
                                     </h3>
-                                    <pre className="max-h-96 overflow-auto text-xs leading-6 text-slate-200">
+                                    <pre className="max-h-96 overflow-auto text-xs leading-6 text-foreground font-mono">
                                         {JSON.stringify(result.raw, null, 2)}
                                     </pre>
                                 </div>
@@ -324,7 +324,7 @@ function StatusTile({
     accent?: "neutral" | "ok";
 }) {
     return (
-        <div className="rounded-2xl border border-border bg-background/50 p-4">
+        <div className="rounded-2xl border border-border bg-background p-4">
             <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-text-secondary">{label}</div>
             <div className={accent === "ok" ? "text-sm font-semibold text-primary" : "text-sm font-semibold text-foreground"}>
                 {value}
@@ -343,7 +343,7 @@ function MetadataRow({
     mono?: boolean;
 }) {
     return (
-        <div className="flex items-start justify-between gap-3 border-b border-blue-200/30 py-2 last:border-b-0 dark:border-blue-800/25">
+        <div className="flex items-start justify-between gap-3 border-b border-border py-2 last:border-b-0">
             <span className="text-text-secondary">{label}</span>
             <span className={mono ? "font-mono text-right text-xs text-foreground" : "text-right text-foreground"}>
                 {value}

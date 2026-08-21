@@ -177,7 +177,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
 
     return (
         <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr]">
-            <Card className="border border-blue-200/40 bg-white/55 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+            <Card className="border border-border bg-card-bg ">
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold tracking-tight">Design systems</CardTitle>
                     <CardDescription>
@@ -224,8 +224,8 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                                     }
                                     className={cn(
                                         "h-10 w-full rounded-lg px-3 py-2 text-sm",
-                                        "bg-white/50 dark:bg-blue-950/30",
-                                        "border border-blue-200/50 dark:border-blue-800/40",
+                                        "bg-card-bg",
+                                        "border border-border",
                                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary/60"
                                     )}
                                 >
@@ -285,14 +285,14 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                                 />
                             </div>
 
-                            <label className="flex items-center gap-3 rounded-2xl border border-blue-200/40 px-4 py-3 text-sm dark:border-blue-800/30 md:col-span-2">
+                            <label className="flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-sm  md:col-span-2">
                                 <input
                                     type="checkbox"
                                     checked={form.isPrimary}
                                     onChange={(event) =>
                                         setForm((current) => ({ ...current, isPrimary: event.target.checked }))
                                     }
-                                    className="h-4 w-4 rounded border-blue-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                                 />
                                 Set as the primary reference for new Clayface generations
                             </label>
@@ -305,7 +305,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                         )}
 
                         {success && (
-                            <p className="rounded-lg border border-blue-300/40 bg-blue-50/60 px-3 py-2 text-sm text-blue-800 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-100">
+                            <p className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
                                 {success}
                             </p>
                         )}
@@ -317,7 +317,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                 </CardContent>
             </Card>
 
-            <Card className="border border-blue-200/40 bg-white/55 dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+            <Card className="border border-border bg-card-bg ">
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold tracking-tight">Reference library</CardTitle>
                     <CardDescription>
@@ -326,7 +326,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {primaryReference ? (
-                        <div className="rounded-2xl border border-blue-200/40 bg-blue-50/60 p-4 dark:border-blue-800/30 dark:bg-blue-950/25">
+                        <div className="rounded-2xl border border-border bg-primary/10 p-4">
                             <p className="text-xs uppercase tracking-[0.2em] text-text-secondary">Primary</p>
                             <p className="mt-1 font-semibold">{primaryReference.name}</p>
                             <p className="mt-1 text-sm text-text-secondary">
@@ -337,14 +337,14 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
 
                     <div className="grid gap-3">
                         {references.length === 0 ? (
-                            <div className="rounded-2xl border border-dashed border-blue-200/50 p-5 text-sm text-text-secondary dark:border-blue-800/30">
+                            <div className="rounded-2xl border border-dashed border-border p-5 text-sm text-text-secondary">
                                 Add a design system reference to give Clayface a visual source of truth.
                             </div>
                         ) : (
                             references.map((reference) => (
                                 <div
                                     key={reference.id}
-                                    className="rounded-2xl border border-blue-200/40 p-4 dark:border-blue-800/30"
+                                    className="rounded-2xl border border-border p-4 "
                                 >
                                     <div className="flex flex-wrap items-start justify-between gap-3">
                                         <div>

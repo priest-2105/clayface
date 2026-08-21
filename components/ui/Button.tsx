@@ -13,20 +13,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         const isDisabled = disabled || loading;
 
         const baseStyles =
-            "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer";
+            "font-ui inline-flex items-center justify-center whitespace-nowrap rounded-md text-[14px] ring-offset-background transition-colors duration-[150ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-default";
 
         const variants = {
-            primary: "bg-primary text-white hover:bg-primary-hover shadow-sm shadow-blue-500/20 hover:shadow-blue-400/30",
-            secondary: "bg-card-bg/70 text-foreground border border-border hover:bg-primary/10 backdrop-blur-sm",
-            outline: "border border-border bg-transparent backdrop-blur-sm hover:bg-primary/10 text-foreground transition-colors duration-200",
-            ghost: "hover:bg-primary/10 text-foreground",
-            destructive: "bg-red-500/80 text-white hover:bg-red-500/90 backdrop-blur-sm",
+            primary: "bg-primary text-white border border-[var(--accent-border)] shadow-[var(--shadow-button)] hover:bg-primary-hover hover:border-primary-hover",
+            secondary: "bg-[rgba(255,255,255,0.02)] text-text-secondary border border-border hover:bg-[rgba(255,255,255,0.05)]",
+            outline: "border border-border-standard bg-transparent text-text-secondary hover:bg-[rgba(255,255,255,0.05)] hover:border-border-strong",
+            ghost: "text-text-tertiary hover:bg-[rgba(255,255,255,0.05)] hover:text-text-secondary",
+            destructive: "bg-error text-white hover:bg-red-500",
         };
 
         const sizes = {
-            sm: "h-9 rounded-md px-3",
-            md: "h-10 px-4 py-2",
-            lg: "h-11 rounded-md px-8",
+            sm: "h-8 rounded px-3 text-[13px]",
+            md: "h-9 px-4 py-2",
+            lg: "h-10 px-5",
         };
 
         return (

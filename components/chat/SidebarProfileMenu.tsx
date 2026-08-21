@@ -74,9 +74,9 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                 aria-expanded={open}
                 className={cn(
                     "flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors",
-                    "bg-white/55 dark:bg-[rgba(4,16,45,0.7)]",
-                    "hover:bg-blue-100/70 dark:hover:bg-blue-950/55",
-                    "border border-blue-200/40 dark:border-blue-800/30"
+                    "bg-card-bg",
+                    "hover:border-primary/60",
+                    "border border-border"
                 )}
             >
                 <Avatar className="h-10 w-10">
@@ -91,11 +91,11 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
             </button>
 
             {open && (
-                <div className="absolute bottom-full mb-2 w-full rounded-2xl border border-blue-200/40 bg-white/80 p-2 shadow-xl shadow-blue-900/10 backdrop-blur-2xl dark:border-blue-800/40 dark:bg-[rgba(4,16,45,0.92)]">
+                <div className="absolute bottom-full mb-2 w-full rounded-2xl border border-border bg-card-bg p-2">
                     <Link
                         href="/settings?tab=account"
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition-colors hover:bg-blue-100/70 dark:hover:bg-blue-950/50"
+                        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition-colors hover:bg-background"
                     >
                         <Settings className="h-4 w-4 text-text-secondary" />
                         Settings
@@ -104,7 +104,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                     <button
                         type="button"
                         onClick={() => setLanguageOpen((current) => !current)}
-                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition-colors hover:bg-blue-100/70 dark:hover:bg-blue-950/50"
+                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition-colors hover:bg-background"
                     >
                         <Languages className="h-4 w-4 text-text-secondary" />
                         <span className="flex-1 text-left">Language</span>
@@ -112,13 +112,13 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                     </button>
 
                     {languageOpen && (
-                        <div className="mx-2 mt-1 rounded-xl border border-blue-200/40 bg-blue-50/60 p-1 dark:border-blue-800/30 dark:bg-blue-950/30">
+                        <div className="mx-2 mt-1 rounded-xl border border-border bg-background p-1">
                             {languageOptions.map((option) => (
                                 <button
                                     key={option.code}
                                     type="button"
                                     onClick={() => updateLanguage(option.code)}
-                                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-white/70 dark:hover:bg-blue-950/55"
+                                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-card-bg"
                                 >
                                     <span>{option.label}</span>
                                     {language === option.code ? <Check className="h-4 w-4 text-primary" /> : null}
@@ -130,7 +130,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                     <Link
                         href="/help"
                         onClick={() => setOpen(false)}
-                        className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition-colors hover:bg-blue-100/70 dark:hover:bg-blue-950/50"
+                        className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition-colors hover:bg-background"
                     >
                         <LifeBuoy className="h-4 w-4 text-text-secondary" />
                         Get help
@@ -139,7 +139,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                     <button
                         type="button"
                         onClick={() => signOut({ callbackUrl: "/login" })}
-                        className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-500 transition-colors hover:bg-red-50/80 dark:text-red-300 dark:hover:bg-red-950/40"
+                        className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-500 transition-colors hover:bg-red-500/10"
                     >
                         <LogOut className="h-4 w-4" />
                         Log out

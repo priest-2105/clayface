@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
-import { ArrowRight, FolderOpen, MessageSquare, Shapes, Sparkles } from "lucide-react";
+import { ArrowRight, FolderOpen, MessageSquare, Shapes } from "lucide-react";
 import { getActiveSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
@@ -111,7 +111,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 overflow-y-auto px-6 py-6">
                 <div className="space-y-2">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/55 px-3 py-1 text-xs font-medium text-text-secondary">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-text-secondary">
                         <FolderOpen className="h-3.5 w-3.5" />
                         Project
                     </div>
@@ -124,7 +124,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                         </div>
                         <Link
                             href="/chat"
-                            className="inline-flex items-center gap-1 rounded-md border border-border bg-background/55 px-3 py-2 text-sm text-foreground transition-all duration-200 ease-out hover:border-primary/20 hover:bg-background/75"
+                            className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-all duration-200 ease-out hover:border-primary/60 hover:bg-background"
                         >
                             Back to projects
                             <ArrowRight className="h-3.5 w-3.5" />
@@ -134,7 +134,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
                 <div className="grid gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
                     <div className="space-y-4">
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Project summary
@@ -148,7 +148,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                             </div>
                         </Card>
 
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Create chat
@@ -159,7 +159,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                             </div>
                         </Card>
 
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Create design
@@ -172,7 +172,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     </div>
 
                     <div className="space-y-6">
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Activity timeline
@@ -183,7 +183,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                     project.activities.map((activity: ProjectActivityRecord) => (
                                         <div
                                             key={activity.id}
-                                            className="flex items-start gap-3 rounded-xl border border-border bg-background/55 p-3"
+                                            className="flex items-start gap-3 rounded-xl border border-border bg-background p-3"
                                         >
                                             <div className="mt-0.5 h-2.5 w-2.5 rounded-full bg-primary" />
                                             <div className="min-w-0 flex-1">
@@ -205,7 +205,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                             </div>
                         </Card>
 
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Chats
@@ -217,15 +217,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                         <Link
                                             key={chat.id}
                                             href={`/chat/${chat.id}`}
-                                            className="flex items-center gap-4 px-4 py-4 transition-all duration-200 ease-out hover:bg-background/55"
+                                            className="flex items-center gap-4 px-4 py-4 transition-all duration-200 ease-out hover:bg-background"
                                         >
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background/60">
+                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background">
                                                 <MessageSquare className="h-4 w-4 text-text-secondary" />
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
                                                     <h2 className="truncate text-sm font-semibold">{chat.title}</h2>
-                                                    <span className="rounded-full border border-border bg-background/55 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
+                                                    <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
                                                         {chat.status}
                                                     </span>
                                                 </div>
@@ -242,7 +242,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                             </div>
                         </Card>
 
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Designs
@@ -256,7 +256,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                                 <div>
                                                     <div className="flex items-center gap-2">
                                                         <h2 className="text-sm font-semibold">{design.title}</h2>
-                                                        <span className="rounded-full border border-border bg-background/55 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
+                                                        <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
                                                             {design.status}
                                                         </span>
                                                     </div>
@@ -272,12 +272,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                             {(design.sourceFigmaFileKey || design.sourceFigmaNodeId) && (
                                                 <div className="mt-3 flex flex-wrap gap-2">
                                                     {design.sourceFigmaFileKey && (
-                                                        <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-[11px] text-text-secondary">
+                                                        <span className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-text-secondary">
                                                             File: {design.sourceFigmaFileKey}
                                                         </span>
                                                     )}
                                                     {design.sourceFigmaNodeId && (
-                                                        <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-[11px] text-text-secondary">
+                                                        <span className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-text-secondary">
                                                             Node: {design.sourceFigmaNodeId}
                                                         </span>
                                                     )}
@@ -293,7 +293,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                             </div>
                         </Card>
 
-                        <Card className="border border-border bg-card-bg/80 shadow-sm shadow-black/10">
+                        <Card className="border border-border bg-card-bg">
                             <div className="border-b border-border px-4 py-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
                                     Attached references
@@ -304,7 +304,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                     project.references.map((reference: ProjectReferenceRecord) => (
                                         <span
                                             key={reference.id}
-                                            className="rounded-full border border-border bg-background/55 px-3 py-1 text-xs text-text-secondary"
+                                            className="rounded-full border border-border bg-background px-3 py-1 text-xs text-text-secondary"
                                         >
                                             {reference.designSystemReference.name}
                                         </span>
@@ -325,7 +325,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
 function SummaryTile({ label, value }: { label: string; value: string }) {
     return (
-        <div className="rounded-xl border border-border bg-background/55 p-3">
+        <div className="rounded-xl border border-border bg-background p-3">
             <p className="text-[11px] uppercase tracking-[0.18em] text-text-secondary">{label}</p>
             <p className="mt-1 text-sm font-semibold">{value}</p>
         </div>

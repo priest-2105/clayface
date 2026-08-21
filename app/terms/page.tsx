@@ -36,10 +36,9 @@ const sections = [
 export default function TermsPage() {
     return (
         <main className="dark min-h-screen bg-background text-foreground">
-            <section className="relative overflow-hidden border-b border-blue-200/30 dark:border-blue-900/25">
+            <section className="relative overflow-hidden border-b border-border">
                 <div className="pointer-events-none absolute inset-0">
-                    <div className="absolute -top-24 right-1/4 h-72 w-72 rounded-full bg-indigo-400/10 blur-[120px]" />
-                    <div className="absolute -bottom-16 left-1/4 h-64 w-64 rounded-full bg-cyan-400/10 blur-[120px]" />
+                    
                 </div>
                 <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-20">
                     <div className="space-y-3">
@@ -73,7 +72,7 @@ export default function TermsPage() {
                     {sections.map((section) => (
                         <article
                             key={section.title}
-                            className="rounded-3xl border border-blue-200/40 bg-white/50 p-6 shadow-sm backdrop-blur-xl dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]"
+                            className="rounded-3xl border border-border bg-card-bg p-6"
                         >
                             <h2 className="font-heading text-2xl font-semibold tracking-tight">{section.title}</h2>
                             <ul className="mt-4 grid gap-3 text-sm leading-6 text-text-secondary">
@@ -88,7 +87,7 @@ export default function TermsPage() {
                     ))}
                 </div>
 
-                <article className="mt-6 rounded-3xl border border-blue-200/40 bg-white/50 p-6 shadow-sm backdrop-blur-xl dark:border-blue-800/30 dark:bg-[rgba(4,16,45,0.42)]">
+                <article className="mt-6 rounded-3xl border border-border bg-card-bg p-6">
                     <h2 className="font-heading text-2xl font-semibold tracking-tight">Warranty disclaimer</h2>
                     <p className="mt-4 text-sm leading-6 text-text-secondary">
                         Clayface is provided as-is and as available. To the extent allowed by law, we disclaim implied

@@ -13,7 +13,6 @@ model User {
   emailVerified       DateTime?
   image               String?
   passwordHash        String?
-  dashboardTheme      DashboardTheme @default(BLUE)
   disabledAt          DateTime?
   disabledReason      String?
   createdAt           DateTime  @default(now())
@@ -76,14 +75,6 @@ enum DesignSystemSourceType {
   LINK
   UPLOAD
   OTHER
-}
-
-enum DashboardTheme {
-  BLUE
-  LIGHT
-  GRAY
-  ROSE
-  EMERALD
 }
 
 model DesignSystemReference {

@@ -33,7 +33,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
         <div
             className={cn(
                 "flex shrink-0 flex-col overflow-hidden border-r border-border transition-all duration-300 ease-in-out h-full",
-                "bg-card-bg/78 backdrop-blur-xl",
+                "bg-card-bg",
                 open ? "w-[400px]" : "w-0 border-r-0"
             )}
         >
@@ -43,7 +43,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
                         <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-secondary">
                             Thread
                         </span>
-                        <span className="rounded-full border border-border bg-background/65 px-2 py-0.5 text-[10px] text-text-secondary">
+                        <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] text-text-secondary">
                             {stats.messages} messages
                         </span>
                     </div>
@@ -66,7 +66,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
                 </div>
 
                 {messages.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-border bg-background/45 p-5">
+                    <div className="rounded-2xl border border-dashed border-border bg-background p-5">
                         <p className="text-sm font-medium text-foreground">This chat is empty.</p>
                         <p className="mt-1 text-sm text-text-secondary">
                             Create a prompt or seed the project with an initial reference-led brief.
@@ -93,7 +93,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
                 <div
                     className={cn(
                         "flex items-end gap-2 rounded-2xl border border-border px-3 py-2.5",
-                        "bg-background/65 backdrop-blur-sm transition-colors",
+                        "bg-background transition-colors",
                         "focus-within:border-primary/60"
                     )}
                 >
@@ -116,7 +116,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
                         className={cn(
                             "mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all",
                             input.trim()
-                                ? "bg-primary text-white shadow-sm shadow-blue-500/20"
+                                ? "bg-primary text-white"
                                 : "cursor-not-allowed bg-primary/10 text-text-secondary"
                         )}
                         disabled={!input.trim()}
@@ -131,7 +131,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
 
 function StatusPill({ label, value }: { label: string; value: string }) {
     return (
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/55 px-3 py-1 text-xs text-text-secondary">
+        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs text-text-secondary">
             <span className="uppercase tracking-[0.18em]">{label}</span>
             <span className="h-1 w-1 rounded-full bg-border" />
             <span className="font-medium text-foreground">{value}</span>
@@ -150,16 +150,16 @@ function UserBubble({ message }: { message: Extract<Message, { type: "user" }> }
             <div
                 className={cn(
                     "max-w-[88%] rounded-2xl rounded-tr-sm border px-4 py-3 text-sm leading-relaxed",
-                    "border-primary/20 bg-primary/12 text-foreground shadow-sm shadow-primary/5"
+                    "border-primary/20 bg-primary/12 text-foreground"
                 )}
             >
                 {message.content}
             </div>
             <div className="flex items-center gap-1.5 px-1">
-                <span className="rounded-full border border-border bg-background/65 px-2 py-0.5 font-mono text-[10px] text-text-secondary">
+                <span className="rounded-full border border-border bg-background px-2 py-0.5 font-mono text-[10px] text-text-secondary">
                     {message.framework}
                 </span>
-                <span className="rounded-full border border-border bg-background/65 px-2 py-0.5 font-mono text-[10px] text-text-secondary">
+                <span className="rounded-full border border-border bg-background px-2 py-0.5 font-mono text-[10px] text-text-secondary">
                     {message.design}
                 </span>
             </div>
@@ -182,8 +182,8 @@ function GenerationCard({
             className={cn(
                 "w-full rounded-2xl border p-4 text-left transition-all duration-150",
                 isActive
-                    ? "border-primary/30 bg-primary/10 shadow-sm shadow-primary/10"
-                    : "border-border bg-background/55 hover:border-primary/20 hover:bg-primary/5"
+                    ? "border-primary/30 bg-primary/10"
+                    : "border-border bg-background hover:border-primary/20 hover:bg-primary/5"
             )}
         >
             <div className="flex items-start gap-3">
@@ -207,7 +207,7 @@ function GenerationCard({
                         {message.files.map((f) => (
                             <span
                                 key={f}
-                                className="inline-flex items-center gap-1 rounded-md border border-border bg-background/70 px-2 py-0.5 font-mono text-[10px] text-text-secondary"
+                                className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2 py-0.5 font-mono text-[10px] text-text-secondary"
                             >
                                 <FileCode className="h-2.5 w-2.5" />
                                 {f}
