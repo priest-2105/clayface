@@ -1,106 +1,127 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   LINEAR DESIGN SYSTEM — Clayface
-   Sourced from Linear's live CSS + soulcore-dev/soul-design-md DESIGN.md
+   CLAYFACE — THE LIVING MATERIAL SYSTEM
+   Brand Guidelines v1.0
    Key rules:
-   · All borders are rgba(255,255,255,x) overlays — never solid hex
-   · Elevation = luminance stacking (lighter bg = higher). No drop shadows for UI
-   · Inter Variable + cv01 + ss03 OpenType features are non-negotiable
-   · Weight 510 via font-variation-settings is Linear's signature
-   · #5e6ad2 is the ONLY chromatic accent — everything else is grayscale
+   · Materials, not cards: porcelain → raw clay → compressed → leather clay
+   · One accent only (Fired Bronze). No blue, no purple, no neon.
+   · Radius is a 5-step Morph Scale (R1–R5) — never an arbitrary rounded-xl
+   · Elevation = density, not drop shadow. Shadow opacity almost never exceeds 8%
+   · Instrument Serif is a display-only accent — under 5% of the interface
 ──────────────────────────────────────────────────────────────────────────────── */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   /* ── Fonts ──────────────────────────────────────────────────────────────── */
-  --font-inter:   "Inter", "SF Pro Display", system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-mono:    var(--font-plex-mono), "SF Mono", "Consolas", "Monaco", monospace;
-  --font-sans:    var(--font-inter);
-  --font-heading: var(--font-inter);
+  --font-geist:            var(--font-geist), system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-instrument-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-mono:             var(--font-plex-mono), "SF Mono", "Consolas", "Monaco", monospace;
+  --font-sans:             var(--font-geist);
+  --font-heading:          var(--font-geist);
+  --font-display:          var(--font-instrument-serif);
 
-  /* ── Backgrounds (luminance ladder — lighter = higher elevation) ─────────── */
-  --bg-marketing:   #08090a;   /* Marketing canvas / deepest void */
-  --bg-panel:       #0f1011;   /* App panel, sidebar background */
-  --bg-level3:      #191a1b;   /* Raised surfaces, second-level panels */
-  --bg-secondary:   #1f2023;   /* Cards, input fills, hover surfaces */
-  --bg-hover:       #1c1c1d;   /* Hover elevated surface */
-  --bg-hover-deep:  #252627;   /* Deep hover / pressed state */
+  /* ── Material palette (earth & fired ceramic — no bright colors) ─────────── */
+  --clay-porcelain:  #F6F3EE;  /* Primary canvas */
+  --clay-raw:        #E7DFD2;  /* Surface */
+  --clay-compressed: #D4C7B5;  /* Elevated panels */
+  --clay-leather:    #B8A58D;  /* Interactive surfaces */
+  --clay-kiln:       #2A2623;  /* Primary text */
+  --clay-bronze:     #75604A;  /* Accent & AI moments — the ONLY chromatic color */
 
-  /* ── Text (4 levels) ────────────────────────────────────────────────────── */
-  --text-primary:    #f7f8f8;  /* Headlines, primary UI text */
-  --text-secondary:  #d0d6e0;  /* Body text, descriptions, subtitles */
-  --text-tertiary:   #8a8f98;  /* Captions, metadata, inactive nav */
-  --text-quaternary: #62666d;  /* Disabled, placeholder, decorative ONLY */
+  /* ── Backgrounds (density ladder — denser = higher elevation) ────────────── */
+  --bg-marketing:   var(--clay-porcelain);
+  --bg-panel:       var(--clay-porcelain);
+  --bg-level3:      var(--clay-raw);
+  --bg-secondary:   var(--clay-raw);
+  --bg-hover:       var(--clay-compressed);
+  --bg-hover-deep:  var(--clay-leather);
 
-  /* ── Accent — the ONLY chromatic color ─────────────────────────────────── */
-  --accent:              #5e6ad2;
-  --accent-hover:        #828fff;
-  --accent-light:        #a8b1ff;
-  --accent-focus:        #7180ff;
-  --accent-border:       #656fc7;
-  --accent-tint:         rgba(94, 106, 210, 0.15);
-  --accent-tint-hover:   rgba(94, 106, 210, 0.25);
+  /* ── Text (4 levels, all warm — never pure black) ─────────────────────────── */
+  --text-primary:    var(--clay-kiln);
+  --text-secondary:  #4A433C;
+  --text-tertiary:   #7A7167;
+  --text-quaternary: #A99E90;
 
-  /* ── Borders (rgba white overlays — NEVER solid hex on dark) ────────────── */
-  --border-micro:    rgba(255, 255, 255, 0.02);
-  --border-subtle:   rgba(255, 255, 255, 0.05);
-  --border-standard: rgba(255, 255, 255, 0.08);
-  --border-strong:   rgba(255, 255, 255, 0.12);
+  /* ── Accent — Fired Bronze, the ONLY chromatic color ──────────────────────── */
+  --accent:              var(--clay-bronze);
+  --accent-hover:        #8A7359;
+  --accent-light:        #A89178;
+  --accent-focus:        #75604A;
+  --accent-border:       #63513F;
+  --accent-tint:         rgba(117, 96, 74, 0.12);
+  --accent-tint-hover:   rgba(117, 96, 74, 0.20);
 
-  /* ── Inset / Overlay ────────────────────────────────────────────────────── */
-  --inset-light: rgba(0, 0, 0, 0.03);
-  --inset-deep:  rgba(0, 0, 0, 0.40);
-  --overlay:     rgba(0, 0, 0, 0.50);
+  /* ── Borders (warm kiln overlays — never cool gray) ───────────────────────── */
+  --border-micro:    rgba(42, 38, 35, 0.04);
+  --border-subtle:   rgba(42, 38, 35, 0.08);
+  --border-standard: rgba(42, 38, 35, 0.14);
+  --border-strong:   rgba(42, 38, 35, 0.22);
 
-  /* ── Status colors ──────────────────────────────────────────────────────── */
-  --status-success:  #27a644;
-  --status-complete: #10b981;
-  --status-warning:  #f59e0b;
-  --status-error:    #e53935;
+  /* ── Inset / Overlay / surface tints (replace old white-on-dark overlays) ── */
+  --inset-light:      rgba(42, 38, 35, 0.03);
+  --inset-deep:       rgba(42, 38, 35, 0.40);
+  --overlay:          rgba(42, 38, 35, 0.50);
+  --surface-tint:     rgba(42, 38, 35, 0.03);
+  --surface-tint-hover: rgba(42, 38, 35, 0.06);
 
-  /* ── Border Radius ──────────────────────────────────────────────────────── */
-  --radius-micro:       2px;
-  --radius-tight:       4px;
-  --radius-comfortable: 6px;
-  --radius-card:        8px;
-  --radius-panel:       12px;
+  /* ── Semantic colors (earth-derived, no saturated blue) ───────────────────── */
+  --status-success:  #6E7A3E;  /* Olive */
+  --status-complete: #6E7A3E;
+  --status-warning:  #B4682B;  /* Burnt amber */
+  --status-error:    #B5502E;  /* Terracotta */
+  --status-info:     #5C6570;  /* Slate */
+
+  /* ── Border Radius — the Morph Scale (identity of the brand) ─────────────── */
+  --r-1: 12px; /* Pressed   — inputs */
+  --r-2: 18px; /* Soft      — cards */
+  --r-3: 24px; /* Molded    — chat bubbles */
+  --r-4: 32px; /* Inflated  — AI generation */
+  --r-5: 40px; /* Melted    — hero sections */
+  /* Legacy aliases used by old components */
+  --radius-micro:       var(--r-1);
+  --radius-tight:       var(--r-1);
+  --radius-comfortable: var(--r-2);
+  --radius-card:        var(--r-2);
+  --radius-panel:       var(--r-3);
   --radius-rounded:     9999px;
-  /* Legacy alias used by old components */
-  --radius: var(--radius-comfortable);
+  --radius: var(--r-2);
 
-  /* ── Spacing (4px grid — strict) ────────────────────────────────────────── */
-  --space-1:   4px;
-  --space-2:   8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-8:  32px;
-  --space-10: 40px;
-  --space-12: 48px;
+  /* ── Spacing (8-point grid, strict) ────────────────────────────────────────── */
+  --space-1:  8px;   /* XS */
+  --space-2: 16px;   /* SM */
+  --space-3: 24px;   /* MD */
+  --space-4: 40px;   /* LG */
+  --space-5: 64px;   /* XL */
+  --space-6: 96px;   /* XXL */
 
-  /* ── Shadows (only for floating elements — never for cards/panels) ───────── */
-  --shadow-button: rgba(0,0,0,0.02) 0 3px 6px -2px, rgba(0,0,0,0.043) 0 1px 1px;
-  --shadow-float:  rgba(0,0,0,0.15) 0 4px 12px, rgba(0,0,0,0.20) 0 8px 24px,
-                   inset 0 0 0 1px rgba(255,255,255,0.08);
+  /* ── Shadows (density-based — floating elements only, never cards) ───────── */
+  --shadow-button: rgba(42,38,35,0.04) 0 3px 6px -2px, rgba(42,38,35,0.06) 0 1px 1px;
+  --shadow-float:  rgba(42,38,35,0.08) 0 4px 12px, rgba(42,38,35,0.06) 0 8px 24px,
+                   inset 0 0 0 1px rgba(42,38,35,0.06);
 
-  /* ── Motion ─────────────────────────────────────────────────────────────── */
-  --ease-default: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-enter:   cubic-bezier(0.165, 0.84, 0.44, 1);
+  /* ── Motion — clay physics ─────────────────────────────────────────────────── */
+  --ease-clay:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-default: var(--ease-clay);
+  --ease-enter:   var(--ease-clay);
   --ease-exit:    cubic-bezier(0.55, 0, 1, 0.45);
-  --ease-app:     cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-app:     var(--ease-clay);
 
-  --duration-instant: 80ms;
-  --duration-fast:    150ms;
-  --duration-default: 200ms;
-  --duration-slow:    400ms;
+  --duration-compress: 120ms; /* Buttons */
+  --duration-inflate:  220ms; /* Hover */
+  --duration-mold:     300ms; /* Cards entering */
+  --duration-fuse:     450ms; /* Drag & drop */
+  --duration-stretch:  600ms; /* AI generating */
+  /* Legacy aliases */
+  --duration-instant: var(--duration-compress);
+  --duration-fast:    var(--duration-compress);
+  --duration-default: var(--duration-inflate);
+  --duration-slow:    var(--duration-fuse);
 
-  /* Motion shorthands */
-  --motion-hover:       var(--duration-fast);
-  --motion-panel:       var(--duration-default);
-  --motion-press-scale: 0.97;
+  --motion-hover:       var(--duration-inflate);
+  --motion-panel:       var(--duration-mold);
+  --motion-press-scale: 0.98;
 
   /* ── Z-index scale ──────────────────────────────────────────────────────── */
   --z-base:     0;
@@ -163,9 +184,18 @@
   --color-success:  var(--status-success);
   --color-warning:  var(--status-warning);
   --color-error:    var(--status-error);
+  --color-info:     var(--status-info);
 
-  /* Radius */
-  --radius-clayface:    var(--radius-comfortable);
+  /* Radius — Morph Scale.
+     Retrofits Tailwind's built-in rounded-* scale onto the 5 official morph
+     steps, so every existing rounded-md/lg/xl/2xl/3xl in the app snaps onto
+     the brand scale without a file-by-file rewrite. rounded-full stays a pill. */
+  --radius-clayface:    var(--r-2);
+  --radius-1:           var(--r-1);
+  --radius-2:           var(--r-2);
+  --radius-3:           var(--r-3);
+  --radius-4:           var(--r-4);
+  --radius-5:           var(--r-5);
   --radius-micro:       var(--radius-micro);
   --radius-tight:       var(--radius-tight);
   --radius-comfortable: var(--radius-comfortable);
@@ -173,88 +203,102 @@
   --radius-panel:       var(--radius-panel);
   --radius-rounded:     var(--radius-rounded);
 
+  --radius-sm:  var(--r-1); /* Pressed  — 12px */
+  --radius-md:  var(--r-1); /* Pressed  — 12px */
+  --radius-lg:  var(--r-2); /* Soft     — 18px */
+  --radius-xl:  var(--r-2); /* Soft     — 18px */
+  --radius-2xl: var(--r-3); /* Molded   — 24px */
+  --radius-3xl: var(--r-4); /* Inflated — 32px */
+  --radius-4xl: var(--r-5); /* Melted   — 40px */
+
   /* Fonts */
-  --font-sans:    var(--font-inter);
-  --font-heading: var(--font-inter);
+  --font-sans:    var(--font-geist);
+  --font-heading: var(--font-geist);
+  --font-display: var(--font-instrument-serif);
   --font-mono:    var(--font-mono);
 }
 
 /* ── Base styles ────────────────────────────────────────────────────────────── */
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
   background-color: var(--bg-marketing);
   color: var(--text-primary);
-  font-family: var(--font-inter);
-  font-size: 13px;
+  font-family: var(--font-geist);
+  font-size: 15px;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.5;
   letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* Linear's non-negotiable OpenType features */
-  font-feature-settings: "cv01", "ss03";
 }
 
-/* ── Heading defaults ───────────────────────────────────────────────────────── */
+/* ── Heading defaults — Geist, not the serif (serif is opt-in via .font-display) ── */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-inter);
-  font-feature-settings: "cv01", "ss03";
-  line-height: 1.1;
+  font-family: var(--font-geist);
+  line-height: 1.15;
 }
 
-h1 { font-size: clamp(32px, 4vw, 56px); font-weight: 590; letter-spacing: -0.022em; font-variation-settings: 'wght' 590; }
-h2 { font-size: clamp(24px, 3vw, 40px); font-weight: 510; letter-spacing: -0.02em;  font-variation-settings: 'wght' 510; }
-h3 { font-size: 24px; font-weight: 510; letter-spacing: -0.02em;  font-variation-settings: 'wght' 510; }
-h4 { font-size: 20px; font-weight: 510; letter-spacing: -0.012em; font-variation-settings: 'wght' 510; }
-h5 { font-size: 16px; font-weight: 510; letter-spacing: -0.01em;  font-variation-settings: 'wght' 510; }
-h6 { font-size: 13px; font-weight: 510; letter-spacing: 0;        font-variation-settings: 'wght' 510; }
+h1 { font-size: clamp(28px, 3.5vw, 40px); font-weight: 600; letter-spacing: -0.02em; }
+h2 { font-size: clamp(22px, 2.75vw, 32px); font-weight: 600; letter-spacing: -0.018em; }
+h3 { font-size: 24px; font-weight: 500; letter-spacing: -0.014em; }
+h4 { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
+h5 { font-size: 16px; font-weight: 500; letter-spacing: -0.006em; }
+h6 { font-size: 14px; font-weight: 500; letter-spacing: 0; }
 
-/* ── Mono ───────────────────────────────────────────────────────────────────── */
+/* ── Mono — the compiler voice ─────────────────────────────────────────────── */
 code, pre, .font-mono {
   font-family: var(--font-mono);
-  font-feature-settings: "cv01", "ss03";
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.6;
 }
 
-/* ── Type scale utility classes ─────────────────────────────────────────────── */
-.text-display-xl { font-size: clamp(40px, 5.5vw, 72px); font-weight: 590; line-height: 1.0; letter-spacing: -0.022em; font-variation-settings: 'wght' 590; }
-.text-display-lg { font-size: clamp(36px, 5vw, 64px);   font-weight: 590; line-height: 1.0; letter-spacing: -0.022em; font-variation-settings: 'wght' 590; }
-.text-display-md { font-size: clamp(28px, 3.75vw, 48px); font-weight: 510; line-height: 1.0; letter-spacing: -0.022em; font-variation-settings: 'wght' 510; }
-.text-heading-lg { font-size: 32px; font-weight: 510; line-height: 1.1; letter-spacing: -0.022em; font-variation-settings: 'wght' 510; }
-.text-heading-md { font-size: 24px; font-weight: 510; line-height: 1.2; letter-spacing: -0.02em;  font-variation-settings: 'wght' 510; }
-.text-heading-sm { font-size: 20px; font-weight: 510; line-height: 1.3; letter-spacing: -0.012em; font-variation-settings: 'wght' 510; }
-.text-body-lg    { font-size: 18px; font-weight: 400; line-height: 1.6; letter-spacing: -0.01em; }
-.text-body-md    { font-size: 16px; font-weight: 400; line-height: 1.5; letter-spacing: -0.01em; }
-.text-body-sm    { font-size: 14px; font-weight: 400; line-height: 1.5; letter-spacing: 0; }
-.text-small      { font-size: 13px; font-weight: 400; line-height: 1.4; letter-spacing: 0; }
-.text-caption    { font-size: 12px; font-weight: 510; line-height: 1.4; letter-spacing: 0; font-variation-settings: 'wght' 510; }
-.text-micro      { font-size: 11px; font-weight: 510; line-height: 1.3; letter-spacing: 0; font-variation-settings: 'wght' 510; }
-
-/* Weight 510 helper — Linear's signature */
-.font-ui {
-  font-weight: 510;
-  font-variation-settings: 'wght' 510;
+/* ── Display — Instrument Serif. Hero headlines only, never inside UI. ───────── */
+.font-display,
+.text-display-xl,
+.text-display-lg,
+.text-display-md {
+  font-family: var(--font-instrument-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
-/* Gradient headline text */
+/* ── Type scale utility classes ─────────────────────────────────────────────── */
+.text-display-xl { font-size: clamp(40px, 6vw, 72px); line-height: 1.0; }
+.text-display-lg { font-size: clamp(34px, 5vw, 56px); line-height: 1.05; }
+.text-display-md { font-size: clamp(28px, 3.75vw, 40px); line-height: 1.1; }
+.text-heading-lg { font-size: 32px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
+.text-heading-md { font-size: 24px; font-weight: 500; line-height: 1.2; letter-spacing: -0.014em; }
+.text-heading-sm { font-size: 20px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
+.text-body-lg    { font-size: 18px; font-weight: 400; line-height: 1.6; }
+.text-body-md    { font-size: 16px; font-weight: 400; line-height: 1.5; }
+.text-body-sm    { font-size: 14px; font-weight: 400; line-height: 1.5; }
+.text-small      { font-size: 14px; font-weight: 500; line-height: 1.4; }
+.text-caption    { font-size: 13px; font-weight: 400; line-height: 1.4; font-family: var(--font-mono); }
+.text-micro      { font-size: 11px; font-weight: 500; line-height: 1.3; }
+
+/* Interface-weight helper (kept for compat with existing markup) */
+.font-ui {
+  font-weight: 500;
+}
+
+/* Bronze headline text — sparing use only */
 .text-gradient {
-  background: linear-gradient(90deg, #828fff 0%, #a8b1ff 50%, #828fff 100%);
+  background: linear-gradient(90deg, var(--clay-bronze) 0%, var(--accent-light) 50%, var(--clay-bronze) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Hero ambient glow */
+/* Hero ambient warmth (replaces the old blue glow) */
 .glow-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(94, 106, 210, 0.2) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(117, 96, 74, 0.10) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -264,16 +308,58 @@ code, pre, .font-mono {
   outline-offset: 3px;
 }
 
+/* ── Motion principles ──────────────────────────────────────────────────────
+   Clay physics, not fades. See Brand Guidelines §10.
+   compress → buttons (handled inline via hover:scale/active:scale)
+   imprint  → a surface pressed upward out of the background (cards, modals)
+   fuse     → two surfaces merging (drag & drop, attaching references)
+   stretch  → material tension while the AI is thinking (not a spinner)
+──────────────────────────────────────────────────────────────────────────── */
+@keyframes clay-imprint {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes clay-fuse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.96); }
+  100% { transform: scale(1.01); }
+}
+@keyframes clay-stretch {
+  0%, 100% { transform: scaleX(1); border-radius: var(--r-3); }
+  50%      { transform: scaleX(1.35); border-radius: var(--r-4); }
+}
+
+.animate-imprint {
+  animation: clay-imprint var(--duration-mold) var(--ease-clay) both;
+}
+.animate-fuse {
+  animation: clay-fuse var(--duration-fuse) var(--ease-clay);
+}
+.animate-stretch {
+  animation: clay-stretch var(--duration-stretch) var(--ease-clay) infinite;
+  transform-origin: left center;
+}
+
+/* crack — a brief physical jolt as the surface fractures under a click */
+@keyframes clay-crack-jolt {
+  0%   { transform: scale(1) rotate(0deg); }
+  20%  { transform: scale(0.97) rotate(-0.6deg); }
+  45%  { transform: scale(0.985) rotate(0.5deg); }
+  70%  { transform: scale(0.995) rotate(-0.2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.animate-crack-jolt {
+  animation: clay-crack-jolt 420ms var(--ease-clay);
+}
+
 /* ── Scrollbar ──────────────────────────────────────────────────────────────── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  scrollbar-color: rgba(42, 38, 35, 0.16) transparent;
 }
 
-/* display utility */
+/* display utility (legacy name, now aliases the serif) */
 .font-display {
-  font-family: var(--font-inter);
-  font-feature-settings: "cv01", "ss03";
-  letter-spacing: -0.022em;
+  font-family: var(--font-instrument-serif);
+  letter-spacing: -0.01em;
 }
-

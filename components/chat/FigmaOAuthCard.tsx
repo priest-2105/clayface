@@ -223,7 +223,7 @@ export function FigmaOAuthCard() {
                         </div>
 
                         {!status?.configured && !loadingStatus && (
-                            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+                            <div className="rounded-xl border border-[var(--status-warning)]/30 bg-[var(--status-warning)]/10 px-4 py-3 text-sm text-[var(--status-warning)]">
                                 Add `FIGMA_CLIENT_ID`, `FIGMA_CLIENT_SECRET`, and `FIGMA_OAUTH_REDIRECT_URI` to enable the OAuth flow.
                             </div>
                         )}
@@ -256,7 +256,7 @@ export function FigmaOAuthCard() {
                                     </a>
                                 </div>
                                 {error && (
-                                    <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                    <div className="rounded-xl border border-[var(--status-error)]/30 bg-[var(--status-error)]/10 px-4 py-3 text-sm text-[var(--status-error)]">
                                         {error}
                                     </div>
                                 )}
@@ -276,7 +276,7 @@ export function FigmaOAuthCard() {
                         </div>
 
                         {result && (
-                            <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+                            <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr] animate-fuse">
                                 <div className="rounded-2xl border border-border bg-background p-4">
                                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-text-secondary">
                                         Selection Summary

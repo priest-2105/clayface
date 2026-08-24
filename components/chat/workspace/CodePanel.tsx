@@ -31,7 +31,7 @@ export default function PricingTable() {
         >
           {plan.highlighted && (
             <div className="absolute -top-3 inset-x-0 flex justify-center">
-              <span className="bg-primary text-white text-xs
+              <span className="bg-primary text-[var(--clay-porcelain)] text-xs
                                font-medium px-3 py-1 rounded-full">
                 Most Popular
               </span>
@@ -143,7 +143,7 @@ export default function PricingTable() {
           >
             {plan.highlighted && (
               <div className="absolute -top-3 inset-x-0 flex justify-center">
-                <span className="bg-primary text-white text-xs
+                <span className="bg-primary text-[var(--clay-porcelain)] text-xs
                                  font-medium px-3 py-1 rounded-full">
                   Most Popular
                 </span>
@@ -390,7 +390,7 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
                     >
                         {plan.highlighted && (
                             <div className="absolute -top-3 inset-x-0 flex justify-center">
-                                <span className="bg-primary text-white text-[10px] font-semibold px-3 py-0.5 rounded-full">
+                                <span className="bg-primary text-[var(--clay-porcelain)] text-[10px] font-semibold px-3 py-0.5 rounded-full">
                                     Most Popular
                                 </span>
                             </div>
@@ -419,7 +419,7 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
                         <button className={cn(
                             "w-full py-2 rounded-lg text-xs font-medium transition-colors",
                             plan.highlighted
-                                ? "bg-primary text-white hover:bg-primary-hover"
+                                ? "bg-primary text-[var(--clay-porcelain)] hover:bg-primary-hover"
                                 : "border border-border hover:border-primary/60 text-foreground"
                         )}>
                             {plan.cta}

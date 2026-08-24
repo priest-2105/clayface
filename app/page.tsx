@@ -2,6 +2,7 @@ import { LandingNav } from "@/components/LandingNav";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Zap, Layers, Code2 } from "lucide-react";
 import Link from "next/link";
+import { HeroVideo } from "@/components/HeroVideo";
 
 const features = [
     {
@@ -30,44 +31,74 @@ export default function Home() {
             <LandingNav />
 
             {/* ── Hero ── */}
-            <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-6 pt-16">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full text-xs font-medium
-                    bg-card-bg
-                    border border-border
-                    text-primary">
-                    <Code2 className="w-3.5 h-3.5" strokeWidth={2} />
-                    AI Frontend Compiler
+            <section className="relative isolate h-[80vh] min-h-[560px] flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-16 pb-16 overflow-hidden">
+                {/* The video IS the background — full bleed, fully visible, looping.
+                    Its own composition leaves the left two-thirds as flat, light negative
+                    space, which is exactly where the copy sits, so no heavy scrim is
+                    needed to keep it legible — just a light near-edge fade for safety
+                    at odd crop widths. */}
+                <HeroVideo
+                    src="/video/clayface-morph.webm"
+                    className="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_center]"
+                />
+                <div
+                    className="pointer-events-none absolute inset-0 -z-10"
+                    style={{
+                        background:
+                            "linear-gradient(90deg, rgba(246,243,238,0.55) 0%, rgba(246,243,238,0.2) 22%, transparent 40%)",
+                    }}
+                />
+
+                <div className="relative w-full max-w-7xl mx-auto">
+                    <div className="max-w-xl min-w-0">
+                        <h1 className="font-display text-5xl sm:text-6xl lg:text-6xl xl:text-7xl leading-[1.03] tracking-[-0.015em] mb-6">
+                            Build UI at the <span className="text-primary">speed of thought</span>
+                        </h1>
+
+                        <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-10">
+                            Describe any component or page. Choose your stack and design system.
+                            Clayface compiles clean, typed, production-ready frontend code — instantly.
+                        </p>
+
+                        <div className="flex items-center gap-3 flex-wrap mb-10">
+                            <Link href="/chat">
+                                <Button size="lg" variant="primary" className="gap-2 px-7">
+                                    Start building free
+                                    <ArrowRight className="w-4 h-4" />
+                                </Button>
+                            </Link>
+                            <Link href="/login">
+                                <Button size="lg" variant="outline" className="px-7">
+                                    Sign in
+                                </Button>
+                            </Link>
+                        </div>
+
+                        <div className="flex items-center gap-6 text-xs text-text-secondary">
+                            <span className="flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                                No credit card required
+                            </span>
+                            <span className="flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                                Free to start
+                            </span>
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                <h1 className="font-heading font-semibold tracking-tight text-5xl md:text-6xl lg:text-7xl max-w-4xl leading-[1.05] mb-6">
-                    Build UI at the <span className="text-primary">speed of thought</span>
-                </h1>
-
-                <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-10">
-                    Describe any component or page. Choose your stack and design system.
-                    Clayface compiles clean, typed, production-ready frontend code — instantly.
-                </p>
-
-                <div className="flex items-center gap-3 flex-wrap justify-center">
-                    <Link href="/chat">
-                        <Button size="lg" variant="primary" className="gap-2 px-7">
-                            Start building free
-                            <ArrowRight className="w-4 h-4" />
-                        </Button>
-                    </Link>
-                    <Link href="/login">
-                        <Button size="lg" variant="outline" className="px-7">
-                            Sign in
-                        </Button>
-                    </Link>
-                </div>
-
-                {/* Preview card */}
-                <div className="relative mt-20 w-full max-w-3xl">
+            {/* ── Preview card ── */}
+            <section className="relative isolate px-6 md:px-12 lg:px-20 pt-16 pb-8 overflow-hidden">
+                <div
+                    className="pointer-events-none absolute inset-0 -z-10"
+                    style={{ background: "radial-gradient(560px circle at 50% 20%, rgba(117,96,74,0.08), transparent 70%)" }}
+                />
+                <div className="relative w-full max-w-3xl mx-auto animate-imprint" style={{ animationDelay: "120ms" }}>
                     <div className="relative rounded-2xl overflow-hidden
                         bg-card-bg
-                        border border-border">
+                        border border-border
+                        shadow-[var(--shadow-float)]">
 
                         {/* Window chrome */}
                         <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
@@ -129,9 +160,12 @@ export default function Home() {
             </section>
 
             {/* ── Features ── */}
-            <section className="relative py-24 px-6">
+            <section className="relative py-28 px-6">
                 <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-14">
+                    <div className="text-center mb-16">
+                        <span className="block mb-4 text-xs font-mono uppercase tracking-[0.2em] text-primary">
+                            Why Clayface
+                        </span>
                         <h2 className="font-heading font-semibold text-3xl md:text-4xl tracking-tight mb-4">
                             Everything you need, nothing you don&apos;t
                         </h2>
@@ -141,15 +175,21 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        {features.map((f) => (
-                            <div key={f.title} className="flex flex-col gap-4 p-6 rounded-2xl
+                        {features.map((f, i) => (
+                            <div key={f.title} className="relative flex flex-col gap-4 p-6 rounded-2xl
                                 bg-card-bg
                                 border border-border
-                                transition-colors duration-[160ms]
-                                hover:border-primary/60">
+                                transition-colors duration-160
+                                hover:border-primary/60
+                                animate-imprint"
+                                style={{ animationDelay: `${i * 90}ms` }}>
+                                <span className="absolute top-5 right-5 font-mono text-[11px] text-text-secondary/50">
+                                    0{i + 1}
+                                </span>
                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center
                                     bg-background
-                                    border border-border">
+                                    border border-border
+                                    shadow-[inset_0_1px_2px_var(--inset-light)]">
                                     {f.icon}
                                 </div>
                                 <div>
@@ -163,12 +203,23 @@ export default function Home() {
             </section>
 
             {/* ── CTA banner ── */}
-            <section className="relative py-24 px-6">
+            <section className="relative isolate py-28 px-6 overflow-hidden">
+                <div
+                    className="pointer-events-none absolute inset-0 -z-10"
+                    style={{ background: "radial-gradient(640px circle at 50% 40%, rgba(117,96,74,0.10), transparent 70%)" }}
+                />
                 <div className="max-w-2xl mx-auto text-center">
-                    <div className="relative p-10 md:p-14 rounded-2xl overflow-hidden
+                    <div className="relative isolate p-10 md:p-14 rounded-2xl overflow-hidden
                         bg-card-bg
-                        border border-border">
-                        <h2 className="relative font-heading font-semibold text-3xl md:text-4xl tracking-tight mb-4">
+                        border border-border
+                        shadow-[var(--shadow-float)]">
+                        <img
+                            src="/images/dry.jfif"
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 -z-10 h-full w-full object-cover opacity-[0.07]"
+                        />
+                        <h2 className="relative font-display text-4xl md:text-5xl tracking-tight mb-4">
                             Start building today
                         </h2>
                         <p className="relative text-text-secondary text-lg mb-8">
@@ -187,7 +238,10 @@ export default function Home() {
             {/* ── Footer ── */}
             <footer className="relative border-t border-border py-8 px-6">
                 <div className="max-w-5xl mx-auto flex flex-col gap-3 text-sm text-text-secondary md:flex-row md:items-center md:justify-between">
-                    <span className="font-heading font-semibold text-foreground">Clayface</span>
+                    <span className="flex items-center gap-2 font-heading font-semibold text-foreground">
+                        <img src="/brand/logo-filled.svg" alt="" aria-hidden="true" className="h-4 w-4" />
+                        Clayface
+                    </span>
                     <div className="flex flex-wrap items-center gap-4">
                         <Link href="/privacy-policy" className="hover:text-foreground transition-colors">
                             Privacy Policy

@@ -66,7 +66,13 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
                 </div>
 
                 {messages.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-border bg-background p-5">
+                    <div className="rounded-[var(--r-2)] border border-dashed border-border bg-background p-5 animate-imprint">
+                        <img
+                            src="/brand/clayforms/clayform-coil.svg"
+                            alt=""
+                            aria-hidden="true"
+                            className="mb-3 h-10 w-10 opacity-70"
+                        />
                         <p className="text-sm font-medium text-foreground">This chat is empty.</p>
                         <p className="mt-1 text-sm text-text-secondary">
                             Create a prompt or seed the project with an initial reference-led brief.
@@ -92,7 +98,7 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
             <div className="shrink-0 border-t border-border p-3">
                 <div
                     className={cn(
-                        "flex items-end gap-2 rounded-2xl border border-border px-3 py-2.5",
+                        "flex items-end gap-2 rounded-[var(--r-1)] border border-border px-3 py-2.5",
                         "bg-background transition-colors",
                         "focus-within:border-primary/60"
                     )}
@@ -114,9 +120,9 @@ export function ChatThread({ messages, open, activeGenId, onToggle, onSelectGene
                     />
                     <button
                         className={cn(
-                            "mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all",
+                            "mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-transform duration-[120ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                             input.trim()
-                                ? "bg-primary text-white"
+                                ? "bg-primary text-[var(--clay-porcelain)] hover:scale-[1.06] active:scale-[0.94]"
                                 : "cursor-not-allowed bg-primary/10 text-text-secondary"
                         )}
                         disabled={!input.trim()}
@@ -141,7 +147,7 @@ function StatusPill({ label, value }: { label: string; value: string }) {
 
 function UserBubble({ message }: { message: Extract<Message, { type: "user" }> }) {
     return (
-        <div className="flex flex-col items-end gap-1.5">
+        <div className="flex flex-col items-end gap-1.5 animate-imprint">
             <div className="inline-flex items-center gap-2 px-1 text-[10px] uppercase tracking-[0.18em] text-text-secondary">
                 <span>You</span>
                 <span className="h-1 w-1 rounded-full bg-border" />
@@ -149,7 +155,7 @@ function UserBubble({ message }: { message: Extract<Message, { type: "user" }> }
             </div>
             <div
                 className={cn(
-                    "max-w-[88%] rounded-2xl rounded-tr-sm border px-4 py-3 text-sm leading-relaxed",
+                    "max-w-[88%] rounded-[var(--r-3)] rounded-tr-[var(--r-1)] border px-4 py-3 text-sm leading-relaxed",
                     "border-primary/20 bg-primary/12 text-foreground"
                 )}
             >
@@ -180,7 +186,7 @@ function GenerationCard({
         <button
             onClick={onSelect}
             className={cn(
-                "w-full rounded-2xl border p-4 text-left transition-all duration-150",
+                "w-full rounded-[var(--r-4)] border p-4 text-left transition-all duration-150 animate-imprint",
                 isActive
                     ? "border-primary/30 bg-primary/10"
                     : "border-border bg-background hover:border-primary/20 hover:bg-primary/5"
@@ -218,7 +224,7 @@ function GenerationCard({
             </div>
             {isActive && (
                 <div className="mt-3 flex items-center gap-1.5 border-t border-border/70 pt-2.5">
-                    <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <div className="h-1.5 w-2.5 rounded-full bg-primary animate-stretch" />
                     <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-primary">
                         Viewing in canvas
                     </span>

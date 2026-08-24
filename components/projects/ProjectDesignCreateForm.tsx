@@ -129,7 +129,7 @@ export function ProjectDesignCreateForm({ projectId }: { projectId: string }) {
                 </div>
             </div>
 
-            {error && <p className="text-sm text-red-400">{error}</p>}
+            {error && <p className="text-sm text-[var(--status-error)]">{error}</p>}
 
             <Button type="submit" variant="primary" className="w-full justify-center gap-2" disabled={loading}>
                 <Shapes className="h-4 w-4" />

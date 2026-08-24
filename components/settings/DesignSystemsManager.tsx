@@ -299,7 +299,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                         </div>
 
                         {error && (
-                            <p className="rounded-lg border border-red-300/40 bg-red-50/60 px-3 py-2 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-200">
+                            <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
                                 {error}
                             </p>
                         )}

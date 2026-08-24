@@ -139,7 +139,7 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
                     <button
                         type="button"
                         onClick={() => signOut({ callbackUrl: "/login" })}
-                        className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-500 transition-colors hover:bg-red-500/10"
+                        className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-[var(--status-error)] transition-colors hover:bg-[var(--status-error)]/10"
                     >
                         <LogOut className="h-4 w-4" />
                         Log out

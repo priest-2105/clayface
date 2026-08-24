@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, plexMono } from "@/lib/fonts";
+import { geist, instrumentSerif, plexMono } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function RootLayout({
       <head>
         <meta name="google-site-verification" content="hBWF1R-qCgXTzgQ-s650Bd1lv4zKhMqOLge7nkitGSM" />
       </head>
-      <body className={`${inter.variable} ${plexMono.variable} antialiased`}>{children}</body>
+      <body className={`${geist.variable} ${instrumentSerif.variable} ${plexMono.variable} antialiased`}>{children}</body>
     </html>
   );
 }

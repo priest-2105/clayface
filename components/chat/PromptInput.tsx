@@ -66,10 +66,10 @@ export function PromptInput() {
             />
 
             <div className={cn(
-                "relative flex flex-col w-full p-4 overflow-hidden rounded-2xl min-h-[140px]",
-                "bg-card-bg",
+                "relative flex flex-col w-full p-4 overflow-hidden rounded-[var(--r-1)] min-h-[140px]",
+                "bg-card-bg shadow-[inset_0_1px_2px_var(--inset-light)]",
                 "border border-border",
-                "transition-all duration-[160ms]",
+                "transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                 "focus-within:border-primary/70",
                 "focus-within:ring-1 focus-within:ring-primary/30"
             )}>
@@ -87,7 +87,7 @@ export function PromptInput() {
                                 )}
                                 <button
                                     onClick={() => removeAttachment(i)}
-                                    className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="absolute -top-1 -right-1 bg-[var(--status-error)] text-[var(--clay-porcelain)] rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </button>

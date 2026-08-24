@@ -1,22 +1,29 @@
-import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Geist, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
 
 /**
- * Inter Variable — Linear's exact font.
- * The cv01 + ss03 OpenType features are applied globally in globals.css
- * via font-feature-settings. This transforms Inter from a generic sans-serif
- * into Linear's engineered, precise-looking typeface.
+ * Geist — the interface font. Everything users interact with:
+ * navigation, buttons, cards, settings, projects.
  */
-export const inter = Inter({
+export const geist = Geist({
     subsets: ["latin"],
-    variable: "--font-inter",
+    variable: "--font-geist",
     display: "swap",
-    // Weight 510 (Linear's signature) is set per-element via
-    // font-variation-settings: 'wght' 510 in globals.css
 });
 
 /**
- * IBM Plex Mono — code blocks and monospaced content.
- * Linear uses Berkeley Mono (paid), Plex Mono is the closest free equivalent.
+ * Instrument Serif — the display font. Hero headlines and
+ * marketing/editorial moments only. Never inside forms or dashboard UI.
+ */
+export const instrumentSerif = Instrument_Serif({
+    subsets: ["latin"],
+    weight: ["400"],
+    variable: "--font-instrument-serif",
+    display: "swap",
+});
+
+/**
+ * IBM Plex Mono — the technical/compiler font: code, IDs,
+ * timestamps, generated metadata.
  */
 export const plexMono = IBM_Plex_Mono({
     subsets: ["latin"],

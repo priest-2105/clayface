@@ -46,9 +46,9 @@ export function DisableAccountForm({ hasPassword }: DisableAccountFormProps) {
     }
 
     return (
-        <Card className="border border-red-300/40 bg-red-50/50 dark:border-red-900/30 dark:bg-red-950/10">
+        <Card className="border border-[var(--status-error)]/25 bg-[var(--status-error)]/6">
             <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold tracking-tight text-red-700 dark:text-red-200">
+                <CardTitle className="text-2xl font-semibold tracking-tight text-[var(--status-error)]">
                     Disable account
                 </CardTitle>
                 <CardDescription>
@@ -85,7 +85,7 @@ export function DisableAccountForm({ hasPassword }: DisableAccountFormProps) {
                         />
                     </div>
                     {error && (
-                        <p className="rounded-lg border border-red-300/40 bg-red-50/60 px-3 py-2 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-200">
+                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
                             {error}
                         </p>
                     )}

@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EBE2D2"/>
+      <stop offset="1" stop-color="#D9CDB8"/>
+    </linearGradient>
+    <filter id="pressed" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="-2.5" dy="-2.5" stdDeviation="2" flood-color="#FFFFFF" flood-opacity="0.65"/>
+      <feDropShadow dx="3" dy="4" stdDeviation="3.5" flood-color="#241F1B" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#tile)"/>
+  <rect width="512" height="512" rx="112" fill="#241F1B" fill-opacity="0.04"/>
+
+  <g transform="translate(155 150) scale(3.4)" filter="url(#pressed)">
+    <path d="M48.6129 0L74.6323 0.845675L48.6129 25.7307V0ZM46.7227 1.38934V27.0293H22.5343C30.7828 18.6691 38.6927 9.98008 46.7227 1.38934ZM73.2442 4.86231L76.5816 6.00993L64.5318 13.1673L73.2442 4.86231ZM7.97416 7.70117H13.2608L25.5764 21.1704L19.8468 27.0293H7.97416C7.97502 20.5824 7.97416 14.1447 7.97416 7.70117ZM6.08393 8.879V14.466H0L6.08393 8.879ZM9.30323 28.9622H46.2797L35.9723 57.1391L9.30323 28.9622ZM46.7227 33.3109V72.7526L34.6728 66.169C38.6907 55.215 42.703 44.2676 46.7227 33.3109Z" fill="#75604A" fill-opacity="0.92"/>
+  </g>
+</svg>
