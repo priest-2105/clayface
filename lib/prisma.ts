@@ -1,5 +1,5 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import * as PrismaClientPackage from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 function getDatabaseUrl() {
     const raw = process.env.DATABASE_URL?.trim();
@@ -14,6 +14,13 @@ function getDatabaseUrl() {
         throw new Error("DATABASE_URL must include both a database username and password.");
     }
 
+    const isLocalHost = ["localhost", "127.0.0.1", "::1"].includes(url.hostname);
+    const sslMode = url.searchParams.get("sslmode");
+
+    if (process.env.NODE_ENV === "production" && !isLocalHost && sslMode !== "require") {
+        throw new Error("Production DATABASE_URL must include sslmode=require.");
+    }
+
     return raw;
 }
 
@@ -22,14 +29,12 @@ const adapter = new PrismaPg({
 });
 
 declare global {
-    // Prisma 7's generated client types are exposed through a package wrapper that
-    // is awkward for this TS setup to name directly, so keep the singleton loose here.
-    var prisma: any;
+    var prisma: PrismaClient | undefined;
 }
 
 export const prisma =
     global.prisma ??
-    new (PrismaClientPackage as any).PrismaClient({
+    new PrismaClient({
         adapter,
         log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
     });

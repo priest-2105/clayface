@@ -143,6 +143,45 @@
   --secondary:     var(--bg-hover);
   --tertiary:      var(--bg-level3);
   --text-accent:   var(--accent);
+
+  /* Typography roles - fixed for product UI, fluid only for brand display */
+  --type-hero: clamp(3rem, 7vw, 5.75rem);
+  --type-display: clamp(2.5rem, 5vw, 4.5rem);
+  --type-title-1: 2rem;
+  --type-title-2: 1.5rem;
+  --type-title-3: 1.25rem;
+  --type-title-4: 1.125rem;
+  --type-subheading: 1rem;
+  --type-body-lg: 1.125rem;
+  --type-body: 1rem;
+  --type-body-sm: 0.875rem;
+  --type-label: 0.875rem;
+  --type-caption: 0.8125rem;
+  --type-micro: 0.6875rem;
+  --type-code: 0.8125rem;
+
+  --leading-hero: 0.98;
+  --leading-display: 1.04;
+  --leading-title: 1.16;
+  --leading-subheading: 1.35;
+  --leading-body: 1.55;
+  --leading-caption: 1.4;
+  --leading-code: 1.6;
+
+  --tracking-display: -0.015em;
+  --tracking-title: -0.018em;
+  --tracking-tight: -0.01em;
+  --tracking-label: 0;
+  --tracking-caps: 0.1em;
+  --tracking-mono: 0;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --measure-prose: 70ch;
+  --measure-compact: 52ch;
 }
 
 /* ── Tailwind theme mapping ─────────────────────────────────────────────────── */
@@ -227,58 +266,168 @@ body {
   background-color: var(--bg-marketing);
   color: var(--text-primary);
   font-family: var(--font-geist);
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: var(--type-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
   letter-spacing: 0;
+  font-kerning: normal;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* ── Heading defaults — Geist, not the serif (serif is opt-in via .font-display) ── */
+/* ── Heading defaults — product-safe by default; brand display is opt-in ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-geist);
-  line-height: 1.15;
+  line-height: var(--leading-title);
+  text-wrap: balance;
 }
 
-h1 { font-size: clamp(28px, 3.5vw, 40px); font-weight: 600; letter-spacing: -0.02em; }
-h2 { font-size: clamp(22px, 2.75vw, 32px); font-weight: 600; letter-spacing: -0.018em; }
-h3 { font-size: 24px; font-weight: 500; letter-spacing: -0.014em; }
-h4 { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
-h5 { font-size: 16px; font-weight: 500; letter-spacing: -0.006em; }
-h6 { font-size: 14px; font-weight: 500; letter-spacing: 0; }
+h1 { font-size: var(--type-title-1); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-title); }
+h2 { font-size: var(--type-title-2); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-title); }
+h3 { font-size: var(--type-title-3); font-weight: var(--weight-medium); letter-spacing: var(--tracking-tight); }
+h4 { font-size: var(--type-title-4); font-weight: var(--weight-medium); letter-spacing: var(--tracking-tight); }
+h5 { font-size: var(--type-subheading); font-weight: var(--weight-medium); letter-spacing: 0; }
+h6 { font-size: var(--type-label); font-weight: var(--weight-medium); letter-spacing: 0; }
+
+p {
+  text-wrap: pretty;
+}
 
 /* ── Mono — the compiler voice ─────────────────────────────────────────────── */
 code, pre, .font-mono {
   font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.6;
+  font-size: var(--type-code);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-code);
+  font-variant-ligatures: none;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ── Display — Instrument Serif. Hero headlines only, never inside UI. ───────── */
+/* ── Display — Instrument Serif. Hero/brand moments only, never inside controls. ── */
 .font-display,
+.text-hero,
 .text-display-xl,
 .text-display-lg,
 .text-display-md {
   font-family: var(--font-instrument-serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display);
 }
 
-/* ── Type scale utility classes ─────────────────────────────────────────────── */
-.text-display-xl { font-size: clamp(40px, 6vw, 72px); line-height: 1.0; }
-.text-display-lg { font-size: clamp(34px, 5vw, 56px); line-height: 1.05; }
-.text-display-md { font-size: clamp(28px, 3.75vw, 40px); line-height: 1.1; }
-.text-heading-lg { font-size: 32px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
-.text-heading-md { font-size: 24px; font-weight: 500; line-height: 1.2; letter-spacing: -0.014em; }
-.text-heading-sm { font-size: 20px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
-.text-body-lg    { font-size: 18px; font-weight: 400; line-height: 1.6; }
-.text-body-md    { font-size: 16px; font-weight: 400; line-height: 1.5; }
-.text-body-sm    { font-size: 14px; font-weight: 400; line-height: 1.5; }
-.text-small      { font-size: 14px; font-weight: 500; line-height: 1.4; }
-.text-caption    { font-size: 13px; font-weight: 400; line-height: 1.4; font-family: var(--font-mono); }
-.text-micro      { font-size: 11px; font-weight: 500; line-height: 1.3; }
+/* ── Type role utilities ───────────────────────────────────────────────────── */
+.text-hero { font-size: var(--type-hero); line-height: var(--leading-hero); }
+.text-display-xl { font-size: var(--type-display); line-height: var(--leading-display); }
+.text-display-lg { font-size: clamp(2.125rem, 4vw, 3.5rem); line-height: 1.05; }
+.text-display-md { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.1; }
+
+.text-title-1,
+.text-heading-lg {
+  font-family: var(--font-geist);
+  font-size: var(--type-title-1);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.text-title-2,
+.text-heading-md {
+  font-family: var(--font-geist);
+  font-size: var(--type-title-2);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.text-title-3,
+.text-heading-sm {
+  font-family: var(--font-geist);
+  font-size: var(--type-title-3);
+  font-weight: var(--weight-medium);
+  line-height: 1.22;
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-title-4 {
+  font-family: var(--font-geist);
+  font-size: var(--type-title-4);
+  font-weight: var(--weight-medium);
+  line-height: 1.28;
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-subheading {
+  font-family: var(--font-geist);
+  font-size: var(--type-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-subheading);
+  letter-spacing: 0;
+}
+
+.text-body-lg { font-size: var(--type-body-lg); font-weight: var(--weight-regular); line-height: 1.6; }
+.text-body,
+.text-body-md { font-size: var(--type-body); font-weight: var(--weight-regular); line-height: var(--leading-body); }
+.text-body-sm { font-size: var(--type-body-sm); font-weight: var(--weight-regular); line-height: 1.5; }
+
+.text-label,
+.text-small {
+  font-size: var(--type-label);
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
+  letter-spacing: var(--tracking-label);
+}
+
+.text-label-sm {
+  font-size: var(--type-caption);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-caption);
+  letter-spacing: 0;
+}
+
+.text-caption {
+  font-size: var(--type-caption);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-caption);
+  color: var(--text-secondary);
+}
+
+.text-caps {
+  font-size: var(--type-micro);
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.text-micro {
+  font-size: var(--type-micro);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+}
+
+.text-code,
+.text-code-sm {
+  font-family: var(--font-mono);
+  font-size: var(--type-code);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-code);
+  letter-spacing: var(--tracking-mono);
+  font-variant-ligatures: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-code-sm { font-size: var(--type-caption); }
+
+.text-serif-note {
+  font-family: var(--font-instrument-serif);
+  font-size: 1.25rem;
+  font-weight: var(--weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.measure-prose { max-width: var(--measure-prose); }
+.measure-compact { max-width: var(--measure-compact); }
 
 /* Interface-weight helper (kept for compat with existing markup) */
 .font-ui {
@@ -356,10 +505,4 @@ code, pre, .font-mono {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(42, 38, 35, 0.16) transparent;
-}
-
-/* display utility (legacy name, now aliases the serif) */
-.font-display {
-  font-family: var(--font-instrument-serif);
-  letter-spacing: -0.01em;
 }

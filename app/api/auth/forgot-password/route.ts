@@ -6,9 +6,9 @@ import {
     emailSchema,
     getRequestIp,
     normalizeEmail,
-    recordRateLimitHit,
 } from "@/lib/auth-security";
 import { authErrorResponse } from "@/lib/auth-errors";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 const GENERIC_SUCCESS = {
     ok: true,
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         const email = normalizeEmail(parsed.data);
         const requestIp = getRequestIp(requestHeaders);
 
-        if (recordRateLimitHit(`forgot:${requestIp}:${email}`, 5, 15 * 60 * 1000)) {
+        if (await recordRateLimitHit(`forgot:${requestIp}:${email}`, 5, 15 * 60 * 1000)) {
             return authErrorResponse("FORGOT_RATE_LIMITED", 429);
         }
 

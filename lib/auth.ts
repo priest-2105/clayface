@@ -2,7 +2,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import type { JWT } from "next-auth/jwt";
 import { compare } from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -11,17 +10,28 @@ import { emailSchema, loginPasswordSchema, normalizeEmail } from "@/lib/auth-sec
 export const googleOAuthEnabled =
     Boolean(process.env.GOOGLE_CLIENT_ID) && Boolean(process.env.GOOGLE_CLIENT_SECRET);
 
+function getNextAuthSecret() {
+    const secret = process.env.NEXTAUTH_SECRET?.trim();
+
+    if (process.env.NODE_ENV === "production" && (!secret || secret.length < 32)) {
+        throw new Error("NEXTAUTH_SECRET must be set to a strong secret before running in production.");
+    }
+
+    return secret;
+}
+
 declare module "next-auth" {
     interface Session {
         user: DefaultSession["user"] & {
             id: string;
+            authVersion: number;
         };
     }
 }
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: getNextAuthSecret(),
     session: {
         strategy: "jwt",
         maxAge: 60 * 60 * 24 * 7,
@@ -53,7 +63,7 @@ export const authOptions: NextAuthOptions = {
                 const email = normalizeEmail(parsed.data.email);
                 const user = await prisma.user.findUnique({
                     where: { email },
-                    select: { id: true, name: true, email: true, image: true, passwordHash: true, disabledAt: true },
+                    select: { id: true, name: true, email: true, image: true, passwordHash: true, authVersion: true, disabledAt: true },
                 });
 
                 if (!user) {
@@ -79,6 +89,7 @@ export const authOptions: NextAuthOptions = {
                     email: user.email,
                     name: user.name,
                     image: user.image,
+                    authVersion: user.authVersion,
                 };
             },
         }),
@@ -95,6 +106,28 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user?.id) {
                 token.id = user.id;
+            }
+
+            if (!token.id) {
+                return token;
+            }
+
+            const currentUser = await prisma.user.findUnique({
+                where: { id: token.id },
+                select: { authVersion: true, disabledAt: true },
+            });
+
+            if (!currentUser || currentUser.disabledAt) {
+                delete token.id;
+                delete token.authVersion;
+                return token;
+            }
+
+            if (user?.id) {
+                token.authVersion = currentUser.authVersion;
+            } else if (token.authVersion !== currentUser.authVersion) {
+                delete token.id;
+                delete token.authVersion;
             }
 
             return token;
@@ -136,6 +169,7 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             if (session.user && token.id) {
                 session.user.id = token.id;
+                session.user.authVersion = token.authVersion ?? 0;
             }
 
             return session;
@@ -146,6 +180,7 @@ export const authOptions: NextAuthOptions = {
 declare module "next-auth/jwt" {
     interface JWT {
         id?: string;
+        authVersion?: number;
     }
 }
 
@@ -158,10 +193,10 @@ export async function getActiveSession() {
 
     const user = await prisma.user.findUnique({
         where: { id: session.user.id },
-        select: { disabledAt: true },
+        select: { authVersion: true, disabledAt: true },
     });
 
-    if (!user || user.disabledAt) {
+    if (!user || user.disabledAt || user.authVersion !== session.user.authVersion) {
         return null;
     }
 

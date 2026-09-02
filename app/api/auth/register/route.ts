@@ -2,9 +2,10 @@ import { headers } from "next/headers";
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { emailSchema, getRequestIp, nameSchema, normalizeEmail, passwordSchema, recordRateLimitHit } from "@/lib/auth-security";
+import { emailSchema, getRequestIp, nameSchema, normalizeEmail, passwordSchema } from "@/lib/auth-security";
 import { prisma } from "@/lib/prisma";
 import { authErrorResponse } from "@/lib/auth-errors";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 const registerSchema = z
     .object({
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
 
         const email = normalizeEmail(parsed.data.email);
         const requestIp = getRequestIp(requestHeaders);
-        const isRateLimited = recordRateLimitHit(`register:${requestIp}:${email}`, 5, 15 * 60 * 1000);
+        const isRateLimited = await recordRateLimitHit(`register:${requestIp}:${email}`, 5, 15 * 60 * 1000);
 
         if (isRateLimited) {
             return authErrorResponse("SIGNUP_RATE_LIMITED", 429);

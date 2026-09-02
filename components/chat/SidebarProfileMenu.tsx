@@ -35,16 +35,16 @@ function getInitials(name?: string | null, email?: string | null) {
 export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
     const [open, setOpen] = useState(false);
     const [languageOpen, setLanguageOpen] = useState(false);
-    const [language, setLanguage] = useState<LanguageCode>("en");
+    const [language, setLanguage] = useState<LanguageCode>(() => {
+        if (typeof window === "undefined") {
+            return "en";
+        }
+
+        const stored = window.localStorage.getItem("clayface-language");
+        return stored === "en" || stored === "es" || stored === "fr" ? stored : "en";
+    });
     const menuRef = useRef<HTMLDivElement>(null);
     const initials = getInitials(user.name, user.email);
-
-    useEffect(() => {
-        const stored = localStorage.getItem("clayface-language");
-        if (stored === "en" || stored === "es" || stored === "fr") {
-            setLanguage(stored);
-        }
-    }, []);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -149,4 +149,3 @@ export function SidebarProfileMenu({ user }: SidebarProfileMenuProps) {
         </div>
     );
 }
-

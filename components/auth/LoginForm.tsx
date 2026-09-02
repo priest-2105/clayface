@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Alert";
+import { FormField, FormLabel, FormSection } from "@/components/ui/Form";
 import { getSafeCallbackPath } from "@/lib/auth-security";
 import { PasswordField } from "@/components/auth/PasswordField";
 import { getAuthErrorMessage } from "@/lib/auth-errors";
@@ -83,12 +85,12 @@ export function LoginForm({ googleOAuthEnabled }: LoginFormProps) {
             </CardHeader>
             <CardContent className="grid gap-4">
                 {queryError && !error && (
-                    <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                    <Alert variant="error">
                         {getAuthErrorMessage(queryError)}
-                    </p>
+                    </Alert>
                 )}
                 {googleOAuthEnabled ? (
-                    <div className="space-y-3 rounded-2xl border border-border bg-card-bg p-4">
+                    <FormSection className="space-y-3">
                         <div className="space-y-1">
                             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">
                                 Continue With Google
@@ -113,11 +115,11 @@ export function LoginForm({ googleOAuthEnabled }: LoginFormProps) {
                             </svg>
                             {googleSubmitting ? "Connecting with Google..." : "Continue with Google"}
                         </Button>
-                    </div>
+                    </FormSection>
                 ) : (
-                    <div className="rounded-2xl border border-border bg-card-bg p-4 text-sm text-text-secondary">
+                    <FormSection className="text-sm text-text-secondary">
                         Google sign-in is not configured in this environment.
-                    </div>
+                    </FormSection>
                 )}
                 <div className="relative py-1">
                     <div className="absolute inset-0 flex items-center">
@@ -127,11 +129,11 @@ export function LoginForm({ googleOAuthEnabled }: LoginFormProps) {
                         <span className="bg-background px-3 text-text-secondary">Or use email and password</span>
                     </div>
                 </div>
-                <form className="grid gap-6 rounded-2xl border border-border bg-card-bg p-4 " onSubmit={handleSubmit}>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="email">
+                <form className="grid gap-6 rounded-[var(--r-2)] border border-border bg-card-bg p-4" onSubmit={handleSubmit}>
+                    <FormField>
+                        <FormLabel htmlFor="email">
                             Email
-                        </label>
+                        </FormLabel>
                         <Input
                             id="email"
                             placeholder="name@example.com"
@@ -144,7 +146,7 @@ export function LoginForm({ googleOAuthEnabled }: LoginFormProps) {
                             onChange={(event) => setEmail(event.target.value)}
                             required
                         />
-                    </div>
+                    </FormField>
                     <PasswordField
                         id="password"
                         label="Password"
@@ -154,9 +156,9 @@ export function LoginForm({ googleOAuthEnabled }: LoginFormProps) {
                         required
                     />
                     {error && (
-                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                        <Alert variant="error">
                             {error}
-                        </p>
+                        </Alert>
                     )}
                     <Button type="submit" className="w-full" disabled={submitting}>
                         {submitting ? "Signing in..." : "Sign In"}

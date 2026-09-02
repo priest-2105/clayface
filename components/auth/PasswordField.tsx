@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/Input";
+import { FormDescription, FormField, FormLabel } from "@/components/ui/Form";
 
 type PasswordFieldProps = {
     id: string;
@@ -28,10 +29,10 @@ export function PasswordField({
     const [visible, setVisible] = useState(false);
 
     return (
-        <div className="grid gap-2">
-            <label className="text-sm font-medium leading-none" htmlFor={id}>
+        <FormField>
+            <FormLabel htmlFor={id}>
                 {label}
-            </label>
+            </FormLabel>
             <div className="relative">
                 <Input
                     id={id}
@@ -52,7 +53,7 @@ export function PasswordField({
                     {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
             </div>
-            {helperText ? <p className="text-xs text-text-secondary">{helperText}</p> : null}
-        </div>
+            {helperText ? <FormDescription>{helperText}</FormDescription> : null}
+        </FormField>
     );
 }

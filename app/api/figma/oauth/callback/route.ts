@@ -7,6 +7,8 @@ import {
     isFigmaConfigured,
     writeStoredFigmaToken,
 } from "@/lib/figma";
+import { getSafeCallbackPath } from "@/lib/auth-security";
+import { getActiveSession } from "@/lib/auth";
 
 type StoredState = {
     state: string;
@@ -14,6 +16,7 @@ type StoredState = {
 };
 
 export async function GET(request: NextRequest) {
+    const session = await getActiveSession();
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
@@ -32,7 +35,12 @@ export async function GET(request: NextRequest) {
             storedState = null;
         }
     }
-    const returnTo = storedState?.returnTo || "/chat";
+    const returnTo = getSafeCallbackPath(storedState?.returnTo, "/chat");
+
+    if (!session?.user?.id) {
+        await clearStoredFigmaToken();
+        return NextResponse.redirect(new URL("/login", request.url));
+    }
 
     if (!isFigmaConfigured()) {
         return NextResponse.redirect(new URL(`${returnTo}?figma=missing-config`, request.url));

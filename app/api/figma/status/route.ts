@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import { getValidFigmaAccessToken, isFigmaConfigured } from "@/lib/figma";
+import { getActiveSession } from "@/lib/auth";
 
 export async function GET() {
+    const session = await getActiveSession();
+
+    if (!session?.user?.id) {
+        return NextResponse.json({ error: "Auth required." }, { status: 401 });
+    }
+
     if (!isFigmaConfigured()) {
         return NextResponse.json({
             configured: false,

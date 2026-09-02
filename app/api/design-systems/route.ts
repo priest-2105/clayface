@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/auth";
-import { getRequestIp, recordRateLimitHit } from "@/lib/auth-security";
+import { getRequestIp } from "@/lib/auth-security";
 import { designSystemReferenceSchema } from "@/lib/design-systems";
 import { designSystemErrorResponse } from "@/lib/design-system-errors";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 const sourceTypeMap = {
     figma: "FIGMA",
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
 
         const requestIp = getRequestIp(requestHeaders);
 
-        if (recordRateLimitHit(`design-system:${requestIp}:${session.user.id}`, 10, 15 * 60 * 1000)) {
+        if (await recordRateLimitHit(`design-system:${requestIp}:${session.user.id}`, 10, 15 * 60 * 1000)) {
             return designSystemErrorResponse("DESIGN_SYSTEM_RATE_LIMITED", 429);
         }
 

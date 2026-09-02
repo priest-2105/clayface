@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/auth";
-import { passwordSchema, recordRateLimitHit, getRequestIp } from "@/lib/auth-security";
+import { passwordSchema, getRequestIp } from "@/lib/auth-security";
 import { headers } from "next/headers";
 import { authErrorResponse } from "@/lib/auth-errors";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 const changePasswordSchema = z
     .object({
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
 
         const requestIp = getRequestIp(requestHeaders);
 
-        if (recordRateLimitHit(`change-password:${requestIp}:${session.user.id}`, 8, 15 * 60 * 1000)) {
+        if (await recordRateLimitHit(`change-password:${requestIp}:${session.user.id}`, 8, 15 * 60 * 1000)) {
             return authErrorResponse("PASSWORD_CHANGE_RATE_LIMITED", 429);
         }
 
@@ -81,7 +82,12 @@ export async function POST(request: Request) {
         await prisma.$transaction([
             prisma.user.update({
                 where: { id: user.id },
-                data: { passwordHash },
+                data: {
+                    passwordHash,
+                    authVersion: {
+                        increment: 1,
+                    },
+                },
             }),
             prisma.session.deleteMany({
                 where: { userId: user.id },

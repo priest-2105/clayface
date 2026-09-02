@@ -7,9 +7,9 @@ import {
     getRequestIp,
     hashPasswordResetToken,
     passwordSchema,
-    recordRateLimitHit,
 } from "@/lib/auth-security";
 import { authErrorResponse } from "@/lib/auth-errors";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 const resetSchema = z
     .object({
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
         const requestIp = getRequestIp(requestHeaders);
 
-        if (recordRateLimitHit(`reset:${requestIp}`, 10, 15 * 60 * 1000)) {
+        if (await recordRateLimitHit(`reset:${requestIp}`, 10, 15 * 60 * 1000)) {
             return authErrorResponse("RESET_RATE_LIMITED", 429);
         }
 
@@ -78,7 +78,12 @@ export async function POST(request: Request) {
         await prisma.$transaction([
             prisma.user.update({
                 where: { id: tokenRecord.userId },
-                data: { passwordHash },
+                data: {
+                    passwordHash,
+                    authVersion: {
+                        increment: 1,
+                    },
+                },
             }),
             prisma.session.deleteMany({
                 where: { userId: tokenRecord.userId },

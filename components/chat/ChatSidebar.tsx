@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus, MessageSquare, Search } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { FolderOpen, MessageSquare, Plus, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { SidebarProfileMenu } from "@/components/chat/SidebarProfileMenu";
@@ -42,23 +41,25 @@ export function ChatSidebar({ user, projects }: ChatSidebarProps) {
     );
 
     return (
-        <div className="flex h-screen w-[244px] flex-shrink-0 flex-col border-r border-border bg-[#09090a] transition-colors duration-300 ease-out">
-            <div className="border-b border-border p-4">
-                <Button className="w-full justify-start gap-2" variant="primary">
+        <div className="flex h-screen w-[244px] flex-shrink-0 flex-col border-r border-border bg-card-bg transition-colors duration-300 ease-out">
+            <div className="border-b border-border p-3">
+                <Link
+                    href="/chat"
+                    className="inline-flex h-9 w-full items-center gap-2 rounded-[var(--r-1)] border border-[var(--accent-border)] bg-primary px-4 text-[14px] font-medium text-[var(--clay-porcelain)] shadow-[var(--shadow-button)] transition-transform duration-[120ms] ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
                     <Plus className="h-4 w-4" />
-                    New Project
-                </Button>
-                <div className="mt-3 flex items-center gap-2 rounded-md border border-border bg-[rgba(255,255,255,0.02)] px-3 py-2 text-[13px] text-text-tertiary">
+                    New project
+                </Link>
+                <div className="mt-3 flex items-center gap-2 rounded-[var(--r-1)] border border-border bg-background px-3 py-2 text-label-sm text-text-tertiary">
                     <Search className="h-3.5 w-3.5" />
                     Search sessions
                 </div>
             </div>
 
             <div className="flex-1 overflow-y-auto py-2">
-                <div className="px-4 pb-2">
-                    <h3 className="text-micro uppercase tracking-[0.08em] text-text-tertiary">
-                        Sessions
-                    </h3>
+                <div className="flex items-center gap-2 px-4 pb-2 text-micro text-text-tertiary">
+                    <FolderOpen className="h-3.5 w-3.5" />
+                    <span>Recent sessions</span>
                 </div>
                 <div className="space-y-0.5 px-2">
                     {recentChats.map((chat) => (
@@ -66,9 +67,9 @@ export function ChatSidebar({ user, projects }: ChatSidebarProps) {
                             key={chat.id}
                             href={`/chat/${chat.id}`}
                             className={cn(
-                                "flex items-center gap-3 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ease-out",
-                                "text-text-secondary hover:bg-[rgba(255,255,255,0.04)]",
-                                pathname === `/chat/${chat.id}` && "bg-[rgba(255,255,255,0.07)] text-foreground"
+                                "flex items-center gap-3 rounded-[var(--r-1)] px-2 py-1.5 text-label-sm transition-colors duration-150 ease-out",
+                                "text-text-secondary hover:bg-background",
+                                pathname === `/chat/${chat.id}` && "bg-background text-foreground"
                             )}
                         >
                             <MessageSquare className="w-4 h-4 text-text-tertiary shrink-0" />
@@ -78,6 +79,11 @@ export function ChatSidebar({ user, projects }: ChatSidebarProps) {
                             </div>
                         </Link>
                     ))}
+                    {recentChats.length === 0 && (
+                        <div className="px-2 py-2 text-caption text-text-tertiary">
+                            No sessions yet.
+                        </div>
+                    )}
                 </div>
             </div>
 

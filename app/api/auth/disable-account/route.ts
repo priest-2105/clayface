@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/auth";
-import { getRequestIp, recordRateLimitHit } from "@/lib/auth-security";
+import { getRequestIp } from "@/lib/auth-security";
 import { headers } from "next/headers";
 import { authErrorResponse } from "@/lib/auth-errors";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 const disableAccountSchema = z.object({
     currentPassword: z.string().max(128).optional(),
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
 
         const requestIp = getRequestIp(requestHeaders);
 
-        if (recordRateLimitHit(`disable-account:${requestIp}:${session.user.id}`, 4, 60 * 60 * 1000)) {
+        if (await recordRateLimitHit(`disable-account:${requestIp}:${session.user.id}`, 4, 60 * 60 * 1000)) {
             return authErrorResponse("DISABLE_ACCOUNT_RATE_LIMITED", 429);
         }
 
@@ -74,6 +75,9 @@ export async function POST(request: Request) {
             prisma.user.update({
                 where: { id: user.id },
                 data: {
+                    authVersion: {
+                        increment: 1,
+                    },
                     disabledAt: new Date(),
                     disabledReason: "User requested account disablement.",
                 },

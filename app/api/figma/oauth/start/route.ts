@@ -1,13 +1,21 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { buildFigmaAuthorizationUrl, createFigmaOAuthState, FIGMA_STATE_COOKIE, isFigmaConfigured } from "@/lib/figma";
+import { getSafeCallbackPath } from "@/lib/auth-security";
+import { getActiveSession } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
+    const session = await getActiveSession();
+
+    if (!session?.user?.id) {
+        return NextResponse.redirect(new URL("/login", request.url));
+    }
+
     if (!isFigmaConfigured()) {
         return NextResponse.redirect(new URL("/chat?figma=missing-config", request.url));
     }
 
-    const returnTo = request.nextUrl.searchParams.get("returnTo") || "/chat";
+    const returnTo = getSafeCallbackPath(request.nextUrl.searchParams.get("returnTo"), "/chat");
     const state = createFigmaOAuthState();
     const cookieStore = await cookies();
 

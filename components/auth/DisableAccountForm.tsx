@@ -5,6 +5,8 @@ import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Alert";
+import { FormField, FormLabel } from "@/components/ui/Form";
 import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 type DisableAccountFormProps = {
@@ -58,10 +60,10 @@ export function DisableAccountForm({ hasPassword }: DisableAccountFormProps) {
             <CardContent>
                 <form className="grid gap-6" onSubmit={handleSubmit}>
                     {hasPassword && (
-                        <div className="grid gap-2">
-                            <label className="text-sm font-medium leading-none" htmlFor="disable-current-password">
+                        <FormField>
+                            <FormLabel htmlFor="disable-current-password">
                                 Current Password
-                            </label>
+                            </FormLabel>
                             <Input
                                 id="disable-current-password"
                                 type="password"
@@ -70,12 +72,12 @@ export function DisableAccountForm({ hasPassword }: DisableAccountFormProps) {
                                 onChange={(event) => setCurrentPassword(event.target.value)}
                                 required
                             />
-                        </div>
+                        </FormField>
                     )}
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="confirmText">
+                    <FormField>
+                        <FormLabel htmlFor="confirmText">
                             Type DISABLE to confirm
-                        </label>
+                        </FormLabel>
                         <Input
                             id="confirmText"
                             value={confirmText}
@@ -83,11 +85,11 @@ export function DisableAccountForm({ hasPassword }: DisableAccountFormProps) {
                             placeholder="DISABLE"
                             required
                         />
-                    </div>
+                    </FormField>
                     {error && (
-                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                        <Alert variant="error">
                             {error}
-                        </p>
+                        </Alert>
                     )}
                     <Button className="w-full" variant="secondary" disabled={submitting}>
                         {submitting ? "Disabling account..." : "Disable account"}

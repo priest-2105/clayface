@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
@@ -45,37 +45,41 @@ export function ProjectCreateForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-3 rounded-2xl border border-border bg-background/55 p-4">
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground" htmlFor="project-name">
-                    Project name
+        <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="space-y-1.5">
+                <label className="text-label-sm text-foreground" htmlFor="project-name">
+                    Name
                 </label>
                 <Input
                     id="project-name"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    placeholder="Marketing site redesign"
+                    placeholder="Marketing site"
                     required
                 />
             </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground" htmlFor="project-description">
-                    Description
+            <div className="space-y-1.5">
+                <label className="text-label-sm text-foreground" htmlFor="project-description">
+                    Brief
                 </label>
                 <Textarea
                     id="project-description"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
-                    placeholder="Briefly describe what the project should track."
+                    placeholder="What should Clayface generate here?"
+                    rows={3}
                 />
             </div>
 
-            {error && <p className="text-sm text-[var(--status-error)]">{error}</p>}
+            {error && <p className="text-caption text-[var(--status-error)]">{error}</p>}
 
-            <Button type="submit" variant="primary" className="w-full justify-center gap-2" disabled={loading}>
-                <Plus className="h-4 w-4" />
-                {loading ? "Creating..." : "Create project"}
+            <Button type="submit" variant="primary" className="w-full justify-between gap-2" disabled={loading}>
+                <span className="inline-flex items-center gap-2">
+                    <Plus className="h-4 w-4" />
+                    {loading ? "Creating..." : "Create"}
+                </span>
+                <ArrowRight className="h-4 w-4" />
             </Button>
         </form>
     );

@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
-import { cn } from "@/lib/utils";
+import { Alert } from "@/components/ui/Alert";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { FormField, FormSection, FormLabel } from "@/components/ui/Form";
+import { Select } from "@/components/ui/Select";
+import { ConfirmDialog, DesignSystemReferenceCard } from "@/components/clayface";
 import { designSystemSourceTypes, type DesignSystemSourceType } from "@/lib/design-systems";
 import { readDesignSystemErrorMessage } from "@/lib/design-system-errors";
 
@@ -26,13 +30,6 @@ type DesignSystemReference = {
 type DesignSystemsManagerProps = {
     initialReferences: DesignSystemReference[];
 };
-
-const sourceTypeLabelMap = {
-    FIGMA: "Figma file",
-    LINK: "Reference link",
-    UPLOAD: "Uploaded asset",
-    OTHER: "Other reference",
-} as const;
 
 export function DesignSystemsManager({ initialReferences }: DesignSystemsManagerProps) {
     const [references, setReferences] = useState(initialReferences);
@@ -65,10 +62,6 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
             notes: "",
             isPrimary: references.length === 0,
         });
-    };
-
-    const patchReference = (id: string, updater: (reference: DesignSystemReference) => DesignSystemReference) => {
-        setReferences((current) => current.map((reference) => (reference.id === id ? updater(reference) : reference)));
     };
 
     async function createReference(event: React.FormEvent<HTMLFormElement>) {
@@ -148,12 +141,6 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
     }
 
     async function deleteReference(reference: DesignSystemReference) {
-        const confirmed = window.confirm(`Delete "${reference.name}"?`);
-
-        if (!confirmed) {
-            return;
-        }
-
         setBusyId(reference.id);
         setError(null);
         setSuccess(null);
@@ -187,10 +174,10 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                 <CardContent className="space-y-4">
                     <form className="grid gap-4" onSubmit={createReference}>
                         <div className="grid gap-4 md:grid-cols-2">
-                            <div className="space-y-2 md:col-span-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemName">
+                            <FormField className="md:col-span-2">
+                                <FormLabel htmlFor="designSystemName">
                                     Reference name
-                                </label>
+                                </FormLabel>
                                 <Input
                                     id="designSystemName"
                                     value={form.name}
@@ -198,116 +185,109 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                                     placeholder="Acme design system"
                                     required
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2 md:col-span-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemDescription">
+                            <FormField className="md:col-span-2">
+                                <FormLabel htmlFor="designSystemDescription">
                                     Description
-                                </label>
+                                </FormLabel>
                                 <Textarea
                                     id="designSystemDescription"
                                     value={form.description}
                                     onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))}
                                     placeholder="Brand style, component rules, spacing rhythm, and visual tone."
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemSourceType">
+                            <FormField>
+                                <FormLabel htmlFor="designSystemSourceType">
                                     Source type
-                                </label>
-                                <select
+                                </FormLabel>
+                                <Select
                                     id="designSystemSourceType"
                                     value={form.sourceType}
                                     onChange={(event) =>
                                         setForm((current) => ({ ...current, sourceType: event.target.value as DesignSystemSourceType }))
                                     }
-                                    className={cn(
-                                        "h-10 w-full rounded-lg px-3 py-2 text-sm",
-                                        "bg-card-bg",
-                                        "border border-border",
-                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary/60"
-                                    )}
                                 >
                                     {designSystemSourceTypes.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
                                         </option>
                                     ))}
-                                </select>
-                            </div>
+                                </Select>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemSourceUrl">
+                            <FormField>
+                                <FormLabel htmlFor="designSystemSourceUrl">
                                     Reference URL
-                                </label>
+                                </FormLabel>
                                 <Input
                                     id="designSystemSourceUrl"
                                     value={form.sourceUrl}
                                     onChange={(event) => setForm((current) => ({ ...current, sourceUrl: event.target.value }))}
                                     placeholder="https://www.figma.com/design/..."
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemFigmaKey">
+                            <FormField>
+                                <FormLabel htmlFor="designSystemFigmaKey">
                                     Figma file key
-                                </label>
+                                </FormLabel>
                                 <Input
                                     id="designSystemFigmaKey"
                                     value={form.figmaFileKey}
                                     onChange={(event) => setForm((current) => ({ ...current, figmaFileKey: event.target.value }))}
                                     placeholder="AbCdEf123"
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemFigmaNode">
+                            <FormField>
+                                <FormLabel htmlFor="designSystemFigmaNode">
                                     Figma node ID
-                                </label>
+                                </FormLabel>
                                 <Input
                                     id="designSystemFigmaNode"
                                     value={form.figmaNodeId}
                                     onChange={(event) => setForm((current) => ({ ...current, figmaNodeId: event.target.value }))}
                                     placeholder="12-34"
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2 md:col-span-2">
-                                <label className="text-sm font-medium" htmlFor="designSystemNotes">
+                            <FormField className="md:col-span-2">
+                                <FormLabel htmlFor="designSystemNotes">
                                     Notes
-                                </label>
+                                </FormLabel>
                                 <Textarea
                                     id="designSystemNotes"
                                     value={form.notes}
                                     onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))}
                                     placeholder="Spacing scale, typography rules, layout constraints, and visual references."
                                 />
-                            </div>
+                            </FormField>
 
-                            <label className="flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-sm  md:col-span-2">
-                                <input
+                            <FormSection className="flex items-center gap-3 rounded-[var(--r-1)] px-4 py-3 text-sm md:col-span-2">
+                                <Checkbox
                                     type="checkbox"
                                     checked={form.isPrimary}
                                     onChange={(event) =>
                                         setForm((current) => ({ ...current, isPrimary: event.target.checked }))
                                     }
-                                    className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                                 />
-                                Set as the primary reference for new Clayface generations
-                            </label>
+                                <span>Set as the primary reference for new Clayface generations</span>
+                            </FormSection>
                         </div>
 
                         {error && (
-                            <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                            <Alert variant="error">
                                 {error}
-                            </p>
+                            </Alert>
                         )}
 
                         {success && (
-                            <p className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
+                            <Alert variant="success">
                                 {success}
-                            </p>
+                            </Alert>
                         )}
 
                         <Button type="submit" className="w-full md:w-auto" loading={submitting}>
@@ -326,7 +306,7 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {primaryReference ? (
-                        <div className="rounded-2xl border border-border bg-primary/10 p-4">
+                        <div className="rounded-[var(--r-2)] border border-border bg-primary/10 p-4">
                             <p className="text-xs uppercase tracking-[0.2em] text-text-secondary">Primary</p>
                             <p className="mt-1 font-semibold">{primaryReference.name}</p>
                             <p className="mt-1 text-sm text-text-secondary">
@@ -337,37 +317,20 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
 
                     <div className="grid gap-3">
                         {references.length === 0 ? (
-                            <div className="rounded-2xl border border-dashed border-border p-5 text-sm text-text-secondary">
+                            <div className="rounded-[var(--r-2)] border border-dashed border-border p-5 text-sm text-text-secondary">
                                 Add a design system reference to give Clayface a visual source of truth.
                             </div>
                         ) : (
                             references.map((reference) => (
-                                <div
+                                <DesignSystemReferenceCard
                                     key={reference.id}
-                                    className="rounded-2xl border border-border p-4 "
-                                >
-                                    <div className="flex flex-wrap items-start justify-between gap-3">
-                                        <div>
-                                            <div className="flex items-center gap-2">
-                                                <p className="font-semibold">{reference.name}</p>
-                                                {reference.isPrimary ? (
-                                                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.18em] text-primary">
-                                                        Primary
-                                                    </span>
-                                                ) : null}
-                                            </div>
-                                            <p className="mt-1 text-sm text-text-secondary">
-                                                {reference.description || "No description yet."}
-                                            </p>
-                                            <p className="mt-2 text-xs uppercase tracking-[0.16em] text-text-secondary">
-                                                {sourceTypeLabelMap[reference.sourceType]}
-                                            </p>
-                                            {reference.sourceUrl ? (
-                                                <p className="mt-1 break-all text-xs text-text-secondary">{reference.sourceUrl}</p>
-                                            ) : null}
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-2">
+                                    name={reference.name}
+                                    description={reference.description}
+                                    sourceType={reference.sourceType}
+                                    sourceUrl={reference.sourceUrl}
+                                    isPrimary={reference.isPrimary}
+                                    actions={
+                                        <>
                                             {!reference.isPrimary ? (
                                                 <Button
                                                     type="button"
@@ -379,18 +342,26 @@ export function DesignSystemsManager({ initialReferences }: DesignSystemsManager
                                                     Make primary
                                                 </Button>
                                             ) : null}
-                                            <Button
-                                                type="button"
-                                                variant="destructive"
-                                                size="sm"
-                                                loading={busyId === reference.id}
-                                                onClick={() => deleteReference(reference)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
+                                            <ConfirmDialog
+                                                trigger={
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        loading={busyId === reference.id}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                }
+                                                title={`Delete ${reference.name}?`}
+                                                description="This removes the reference from Clayface. Projects using it will no longer have this source available."
+                                                confirmLabel="Delete reference"
+                                                destructive
+                                                onConfirm={() => deleteReference(reference)}
+                                            />
+                                        </>
+                                    }
+                                />
                             ))
                         )}
                     </div>

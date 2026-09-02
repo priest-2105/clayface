@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/auth";
 import { designSystemErrorResponse } from "@/lib/design-system-errors";
+import { rejectCrossSiteRequest } from "@/lib/request-security";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -68,6 +69,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const blocked = await rejectCrossSiteRequest();
+
+        if (blocked) {
+            return blocked;
+        }
+
         const session = await getActiveSession();
 
         if (!session?.user?.id) {

@@ -1,38 +1,31 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import { Copy, Download, PanelLeftOpen, Check, LayoutTemplate, Code2 } from "lucide-react";
+import { useState } from "react";
+import { Check, PanelLeftOpen } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { CodePreview } from "@/components/clayface";
 import { cn } from "@/lib/utils";
-
-// ── Mock code for each generation ──────────────────────────────────────────
 
 const GENERATION_CODE: Record<number, { files: Record<string, string>; activeFile: string }> = {
     0: {
         activeFile: "PricingTable.tsx",
         files: {
             "PricingTable.tsx": `import { Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import {
   Card, CardContent, CardDescription,
   CardFooter, CardHeader, CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/Card"
 import { plans } from "./pricing.config"
 
 export default function PricingTable() {
   return (
     <div className="grid grid-cols-3 gap-6 w-full max-w-5xl mx-auto py-12">
       {plans.map((plan) => (
-        <Card
-          key={plan.name}
-          className={plan.highlighted
-            ? "ring-2 ring-primary shadow-lg shadow-primary/20 relative"
-            : "relative"
-          }
-        >
+        <Card key={plan.name} className={plan.highlighted ? "ring-2 ring-primary relative" : "relative"}>
           {plan.highlighted && (
             <div className="absolute -top-3 inset-x-0 flex justify-center">
-              <span className="bg-primary text-[var(--clay-porcelain)] text-xs
-                               font-medium px-3 py-1 rounded-full">
+              <span className="bg-primary text-[var(--clay-porcelain)] text-xs font-medium px-3 py-1 rounded-full">
                 Most Popular
               </span>
             </div>
@@ -40,26 +33,23 @@ export default function PricingTable() {
           <CardHeader>
             <CardTitle>{plan.name}</CardTitle>
             <CardDescription>{plan.description}</CardDescription>
-            <div className="text-3xl font-bold mt-2">
+            <div className="text-title-1 mt-2">
               {plan.price}
-              <span className="text-sm font-normal text-muted-foreground">/mo</span>
+              <span className="text-body-sm text-text-secondary">/mo</span>
             </div>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              {plan.features.map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm">
+              {plan.features.map((feature) => (
+                <li key={feature} className="flex items-center gap-2 text-body-sm">
                   <Check className="w-4 h-4 text-primary" />
-                  {f}
+                  {feature}
                 </li>
               ))}
             </ul>
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              variant={plan.highlighted ? "default" : "outline"}
-            >
+            <Button className="w-full" variant={plan.highlighted ? "primary" : "outline"}>
               {plan.cta}
             </Button>
           </CardFooter>
@@ -73,11 +63,7 @@ export default function PricingTable() {
     name: "Free",
     price: "$0",
     description: "Perfect for side projects",
-    features: [
-      "5 projects",
-      "10k generations / mo",
-      "Community support",
-    ],
+    features: ["5 projects", "10k generations / mo", "Community support"],
     cta: "Get started",
     highlighted: false,
   },
@@ -85,12 +71,7 @@ export default function PricingTable() {
     name: "Pro",
     price: "$29",
     description: "For professional developers",
-    features: [
-      "Unlimited projects",
-      "100k generations / mo",
-      "Priority support",
-      "Custom design systems",
-    ],
+    features: ["Unlimited projects", "100k generations / mo", "Priority support", "Custom design systems"],
     cta: "Start free trial",
     highlighted: true,
   },
@@ -98,12 +79,7 @@ export default function PricingTable() {
     name: "Enterprise",
     price: "$99",
     description: "For teams and organizations",
-    features: [
-      "Everything in Pro",
-      "SSO & audit logs",
-      "Dedicated support",
-      "SLA guarantee",
-    ],
+    features: ["Everything in Pro", "SSO & audit logs", "Dedicated support", "SLA guarantee"],
     cta: "Contact sales",
     highlighted: false,
   },
@@ -117,12 +93,11 @@ export default function PricingTable() {
 
 import { useState } from "react"
 import { Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import {
   Card, CardContent, CardDescription,
   CardFooter, CardHeader, CardTitle,
-} from "@/components/ui/card"
-import { BillingToggle } from "./BillingToggle"
+} from "@/components/ui/Card"
 import { plans } from "./pricing.config"
 
 export default function PricingTable() {
@@ -131,57 +106,17 @@ export default function PricingTable() {
   return (
     <div className="flex flex-col items-center gap-10 py-12">
       <BillingToggle value={billing} onChange={setBilling} />
-
       <div className="grid grid-cols-3 gap-6 w-full max-w-5xl">
         {plans.map((plan) => (
-          <Card
-            key={plan.name}
-            className={plan.highlighted
-              ? "ring-2 ring-primary shadow-xl shadow-primary/30 relative"
-              : "relative"
-            }
-          >
-            {plan.highlighted && (
-              <div className="absolute -top-3 inset-x-0 flex justify-center">
-                <span className="bg-primary text-[var(--clay-porcelain)] text-xs
-                                 font-medium px-3 py-1 rounded-full">
-                  Most Popular
-                </span>
-              </div>
-            )}
+          <Card key={plan.name} className={plan.highlighted ? "ring-2 ring-primary relative" : "relative"}>
             <CardHeader>
               <CardTitle>{plan.name}</CardTitle>
               <CardDescription>{plan.description}</CardDescription>
-              <div className="text-3xl font-bold mt-2">
-                \${billing === "monthly"
-                  ? plan.price.monthly
-                  : plan.price.annual}
-                <span className="text-sm font-normal text-muted-foreground">/mo</span>
+              <div className="text-title-1 mt-2">
+                \${billing === "monthly" ? plan.price.monthly : plan.price.annual}
+                <span className="text-body-sm text-text-secondary">/mo</span>
               </div>
-              {billing === "annual" && (
-                <span className="text-xs text-primary font-medium">
-                  Save {plan.annualSavings}% with annual billing
-                </span>
-              )}
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm">
-                    <Check className="w-4 h-4 text-primary" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button
-                className="w-full"
-                variant={plan.highlighted ? "default" : "outline"}
-              >
-                {plan.cta}
-              </Button>
-            </CardFooter>
           </Card>
         ))}
       </div>
@@ -190,32 +125,17 @@ export default function PricingTable() {
 }`,
             "BillingToggle.tsx": `interface BillingToggleProps {
   value: "monthly" | "annual"
-  onChange: (v: "monthly" | "annual") => void
+  onChange: (value: "monthly" | "annual") => void
 }
 
 export function BillingToggle({ value, onChange }: BillingToggleProps) {
   return (
-    <div className="flex items-center gap-1 p-1 rounded-full
-                    bg-muted border border-border text-sm">
-      <button
-        onClick={() => onChange("monthly")}
-        className={value === "monthly"
-          ? "px-4 py-1.5 rounded-full bg-background shadow-sm font-medium"
-          : "px-4 py-1.5 rounded-full text-muted-foreground hover:text-foreground"
-        }
-      >
-        Monthly
-      </button>
-      <button
-        onClick={() => onChange("annual")}
-        className={value === "annual"
-          ? "px-4 py-1.5 rounded-full bg-background shadow-sm font-medium"
-          : "px-4 py-1.5 rounded-full text-muted-foreground hover:text-foreground"
-        }
-      >
-        Annual
-        <span className="ml-1.5 text-xs text-primary font-medium">−20%</span>
-      </button>
+    <div className="flex items-center gap-1 rounded-full border border-border bg-muted p-1 text-body-sm">
+      {(["monthly", "annual"] as const).map((item) => (
+        <button key={item} onClick={() => onChange(item)}>
+          {item}
+        </button>
+      ))}
     </div>
   )
 }`,
@@ -225,103 +145,14 @@ export function BillingToggle({ value, onChange }: BillingToggleProps) {
     price: { monthly: 0, annual: 0 },
     annualSavings: 0,
     description: "Perfect for side projects",
-    features: [
-      "5 projects",
-      "10k generations / mo",
-      "Community support",
-    ],
+    features: ["5 projects", "10k generations / mo", "Community support"],
     cta: "Get started",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    price: { monthly: 29, annual: 23 },
-    annualSavings: 20,
-    description: "For professional developers",
-    features: [
-      "Unlimited projects",
-      "100k generations / mo",
-      "Priority support",
-      "Custom design systems",
-    ],
-    cta: "Start free trial",
-    highlighted: true,
-  },
-  {
-    name: "Enterprise",
-    price: { monthly: 99, annual: 79 },
-    annualSavings: 20,
-    description: "For teams and organizations",
-    features: [
-      "Everything in Pro",
-      "SSO & audit logs",
-      "Dedicated support",
-      "SLA guarantee",
-    ],
-    cta: "Contact sales",
     highlighted: false,
   },
 ]`,
         },
     },
 };
-
-// ── Minimal syntax highlighter ──────────────────────────────────────────────
-
-function highlight(code: string) {
-    const lines = code.split("\n");
-    return lines.map((line, i) => (
-        <div key={i} className="table-row">
-            <span className="table-cell select-none pr-5 text-right text-text-secondary w-8 shrink-0">
-                {i + 1}
-            </span>
-            <span className="table-cell">
-                <HighlightedLine line={line} />
-            </span>
-        </div>
-    ));
-}
-
-function HighlightedLine({ line }: { line: string }) {
-    // Very simple token pass — comment, string, keyword, component
-    if (/^\s*\/\//.test(line)) {
-        return <span className="text-text-secondary">{line}</span>;
-    }
-
-    const parts: ReactNode[] = [];
-    let key = 0;
-
-    const push = (node: ReactNode) => parts.push(<span key={key++}>{node}</span>);
-
-    // Process tokens one-by-one (strings first, then keywords, then rest)
-    const tokenRe = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|(\b(?:import|export|default|from|const|let|var|return|function|interface|type|class|extends|implements|as|if|else|for|while|of|in|new)\b)|(<\/?[A-Z][a-zA-Z]*)|(\b[A-Z][a-zA-Z]+\b)/g;
-
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-
-    while ((match = tokenRe.exec(line)) !== null) {
-        if (match.index > lastIndex) {
-            push(<span className="text-foreground">{line.slice(lastIndex, match.index)}</span>);
-        }
-        if (match[1]) {
-            push(<span className="text-primary">{match[1]}</span>);
-        } else if (match[2]) {
-            push(<span className="text-primary">{match[2]}</span>);
-        } else if (match[3]) {
-            push(<span className="text-foreground">{match[3]}</span>);
-        } else if (match[4]) {
-            push(<span className="text-foreground">{match[4]}</span>);
-        }
-        lastIndex = match.index + match[0].length;
-    }
-    if (lastIndex < line.length) {
-        push(<span className="text-foreground">{line.slice(lastIndex)}</span>);
-    }
-
-    return <>{parts}</>;
-}
-
-// ── Preview component ────────────────────────────────────────────────────────
 
 function PricingPreview({ withToggle }: { withToggle: boolean }) {
     const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
@@ -354,74 +185,72 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
     ];
 
     return (
-        <div className="flex flex-col items-center gap-8 py-10 px-6 w-full">
+        <div className="flex w-full flex-col items-center gap-8 px-6 py-10">
             {withToggle && (
-                <div className="flex items-center gap-1 p-1 rounded-full bg-card-bg border border-border text-sm">
-                    {(["monthly", "annual"] as const).map((b) => (
+                <div className="flex items-center gap-1 rounded-full border border-border bg-card-bg p-1 text-body-sm">
+                    {(["monthly", "annual"] as const).map((item) => (
                         <button
-                            key={b}
-                            onClick={() => setBilling(b)}
+                            key={item}
+                            type="button"
+                            onClick={() => setBilling(item)}
                             className={cn(
-                                "px-4 py-1.5 rounded-full transition-all text-sm capitalize",
-                                billing === b
-                                    ? "bg-background font-medium text-foreground"
-                                    : "text-text-secondary hover:text-foreground"
+                                "rounded-full px-4 py-1.5 text-body-sm capitalize transition-colors",
+                                billing === item ? "bg-background font-medium text-foreground" : "text-text-secondary hover:text-foreground"
                             )}
                         >
-                            {b}
-                            {b === "annual" && (
-                                <span className="ml-1.5 text-xs text-primary font-medium">−20%</span>
-                            )}
+                            {item}
+                            {item === "annual" && <span className="ml-1.5 text-label-sm text-primary">-20%</span>}
                         </button>
                     ))}
                 </div>
             )}
 
-            <div className="grid grid-cols-3 gap-4 w-full max-w-3xl">
+            <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3">
                 {plans.map((plan) => (
                     <div
                         key={plan.name}
                         className={cn(
-                            "relative flex flex-col rounded-xl p-5 border transition-all",
-                            plan.highlighted
-                                ? "border-primary/60 bg-card-bg"
-                                : "border-border bg-card-bg"
+                            "relative flex flex-col rounded-[var(--r-2)] border bg-card-bg p-5 transition-colors",
+                            plan.highlighted ? "border-primary/60" : "border-border"
                         )}
                     >
                         {plan.highlighted && (
                             <div className="absolute -top-3 inset-x-0 flex justify-center">
-                                <span className="bg-primary text-[var(--clay-porcelain)] text-[10px] font-semibold px-3 py-0.5 rounded-full">
+                                <span className="rounded-full bg-primary px-3 py-0.5 text-label-sm text-[var(--clay-porcelain)]">
                                     Most Popular
                                 </span>
                             </div>
                         )}
                         <div className="mb-4">
-                            <p className="font-semibold text-sm text-foreground">{plan.name}</p>
-                            <p className="text-xs text-text-secondary mt-0.5">{plan.desc}</p>
-                            <div className="mt-3 text-2xl font-bold text-foreground">
+                            <p className="text-subheading text-foreground">{plan.name}</p>
+                            <p className="mt-0.5 text-caption">{plan.desc}</p>
+                            <div className="mt-3 text-title-2 text-foreground">
                                 {plan.price[billing]}
-                                <span className="text-xs font-normal text-text-secondary">/mo</span>
+                                <span className="text-body-sm font-normal text-text-secondary">/mo</span>
                             </div>
                             {withToggle && billing === "annual" && plan.highlighted && (
-                                <p className="text-[10px] text-primary mt-0.5 font-medium">Save 20% annually</p>
+                                <p className="mt-0.5 text-label-sm text-primary">Save 20% annually</p>
                             )}
                         </div>
-                        <ul className="space-y-1.5 flex-1 mb-4">
-                            {plan.features.map((f) => (
-                                <li key={f} className="flex items-center gap-1.5 text-xs text-text-secondary">
-                                    <div className="w-3.5 h-3.5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                                        <Check className="w-2 h-2 text-primary" />
-                                    </div>
-                                    {f}
+                        <ul className="mb-4 flex-1 space-y-1.5">
+                            {plan.features.map((feature) => (
+                                <li key={feature} className="flex items-center gap-1.5 text-caption">
+                                    <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-primary/15">
+                                        <Check className="h-2 w-2 text-primary" />
+                                    </span>
+                                    {feature}
                                 </li>
                             ))}
                         </ul>
-                        <button className={cn(
-                            "w-full py-2 rounded-lg text-xs font-medium transition-colors",
-                            plan.highlighted
-                                ? "bg-primary text-[var(--clay-porcelain)] hover:bg-primary-hover"
-                                : "border border-border hover:border-primary/60 text-foreground"
-                        )}>
+                        <button
+                            type="button"
+                            className={cn(
+                                "w-full rounded-[var(--r-1)] py-2 text-label transition-colors",
+                                plan.highlighted
+                                    ? "bg-primary text-[var(--clay-porcelain)] hover:bg-primary-hover"
+                                    : "border border-border text-foreground hover:border-primary/60"
+                            )}
+                        >
                             {plan.cta}
                         </button>
                     </div>
@@ -431,8 +260,6 @@ function PricingPreview({ withToggle }: { withToggle: boolean }) {
     );
 }
 
-// ── Main CodePanel ───────────────────────────────────────────────────────────
-
 interface CodePanelProps {
     activeGenId: number;
     threadOpen: boolean;
@@ -440,124 +267,53 @@ interface CodePanelProps {
 }
 
 export function CodePanel({ activeGenId, threadOpen, onOpenThread }: CodePanelProps) {
-    const [tab, setTab] = useState<"code" | "preview">("code");
-    const [copied, setCopied] = useState(false);
-    const gen = GENERATION_CODE[activeGenId];
-    const [activeFile, setActiveFile] = useState(gen.activeFile);
-    const files = Object.keys(gen.files);
-    const code = gen.files[activeFile] ?? "";
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+    const gen = GENERATION_CODE[activeGenId] ?? GENERATION_CODE[0];
+    const files = Object.entries(gen.files).map(([name, code]) => ({ name, code }));
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-background">
-            {/* Top bar */}
-            <div className="h-14 flex items-center gap-2 px-4 shrink-0
-                border-b border-border
-                bg-card-bg">
-
-                {/* Re-open thread */}
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-background">
+            <div className="flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card-bg px-4">
                 {!threadOpen && (
-                    <button
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
                         onClick={onOpenThread}
-                        className="p-1.5 rounded-md text-text-secondary hover:text-foreground hover:bg-background transition-colors mr-1"
+                        className="mr-1 h-8 w-8 p-0 text-text-secondary"
                         title="Open thread"
                     >
-                        <PanelLeftOpen className="w-4 h-4" />
-                    </button>
+                        <PanelLeftOpen className="h-4 w-4" />
+                    </Button>
                 )}
-
-                {/* Code / Preview tabs */}
-                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-background border border-border">
-                    <button
-                        onClick={() => setTab("code")}
-                        className={cn(
-                            "flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all",
-                            tab === "code"
-                                ? "bg-card-bg text-foreground"
-                                : "text-text-secondary hover:text-foreground"
-                        )}
-                    >
-                        <Code2 className="w-3.5 h-3.5" />
-                        Code
-                    </button>
-                    <button
-                        onClick={() => setTab("preview")}
-                        className={cn(
-                            "flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all",
-                            tab === "preview"
-                                ? "bg-card-bg text-foreground"
-                                : "text-text-secondary hover:text-foreground"
-                        )}
-                    >
-                        <LayoutTemplate className="w-3.5 h-3.5" />
-                        Preview
-                    </button>
-                </div>
-
-                {/* File tabs (only in code mode) */}
-                {tab === "code" && (
-                    <div className="flex items-center gap-0.5 ml-2 overflow-x-auto">
-                        {files.map((f) => (
-                            <button
-                                key={f}
-                                onClick={() => setActiveFile(f)}
-                                className={cn(
-                                    "px-3 py-1 rounded-md text-xs font-mono transition-colors whitespace-nowrap",
-                                    activeFile === f
-                                        ? "bg-card-bg text-foreground"
-                                        : "text-text-secondary hover:text-foreground hover:bg-background"
-                                )}
-                            >
-                                {f}
-                            </button>
-                        ))}
+                <div className="flex min-w-0 items-center gap-2">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-border bg-background text-primary">
+                        <Check className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0">
+                        <p className="truncate text-label text-foreground">Generated canvas</p>
+                        <p className="truncate text-code-sm text-text-secondary">{gen.activeFile}</p>
                     </div>
-                )}
-
-                {/* Actions */}
-                <div className="ml-auto flex items-center gap-1.5">
-                    <button
-                        onClick={handleCopy}
-                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-text-secondary hover:text-foreground hover:bg-background transition-colors"
-                    >
-                        {copied ? <Check className="w-3.5 h-3.5 text-primary" /> : <Copy className="w-3.5 h-3.5" />}
-                        {copied ? "Copied" : "Copy"}
-                    </button>
-                    <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-text-secondary hover:text-foreground hover:bg-background transition-colors">
-                        <Download className="w-3.5 h-3.5" />
-                        Export
-                    </button>
                 </div>
             </div>
 
-            {/* Content */}
-            <div className="flex-1 overflow-auto">
-                {tab === "code" ? (
-                    <pre className="table w-full min-w-full p-5 text-[13px] leading-6 font-mono">
-                        {highlight(code)}
-                    </pre>
-                ) : (
+            <CodePreview
+                className="min-h-0 flex-1 rounded-none border-0"
+                title="PricingTable"
+                files={files}
+                preview={
                     <div className="h-full overflow-auto bg-background">
-                        {/* Preview toolbar */}
-                        <div className="sticky top-0 flex items-center justify-between px-4 py-2
-                            bg-card-bg
-                            border-b border-border z-10">
-                            <span className="text-xs font-mono text-text-secondary">PricingTable - Live Preview</span>
+                        <div className="sticky top-0 z-sticky flex items-center justify-between border-b border-border bg-card-bg px-4 py-2">
+                            <span className="text-code-sm text-text-secondary">PricingTable - Live Preview</span>
                             <div className="flex gap-1.5">
-                                <div className="w-2 h-2 rounded-full bg-border" />
-                                <div className="w-2 h-2 rounded-full bg-border" />
-                                <div className="w-2 h-2 rounded-full bg-border" />
+                                <div className="h-2 w-2 rounded-full bg-border" />
+                                <div className="h-2 w-2 rounded-full bg-border" />
+                                <div className="h-2 w-2 rounded-full bg-border" />
                             </div>
                         </div>
                         <PricingPreview withToggle={activeGenId === 1} />
                     </div>
-                )}
-            </div>
+                }
+            />
         </div>
     );
 }

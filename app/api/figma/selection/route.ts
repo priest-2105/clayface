@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { figmaApiFetch, getValidFigmaAccessToken, parseFigmaSelectionInput } from "@/lib/figma";
+import { getActiveSession } from "@/lib/auth";
+import { rejectCrossSiteRequest } from "@/lib/request-security";
 
 type FigmaNode = {
     id?: string;
@@ -23,6 +25,18 @@ type FigmaNode = {
 };
 
 export async function POST(request: NextRequest) {
+    const blocked = await rejectCrossSiteRequest();
+
+    if (blocked) {
+        return blocked;
+    }
+
+    const session = await getActiveSession();
+
+    if (!session?.user?.id) {
+        return NextResponse.json({ error: "Auth required." }, { status: 401 });
+    }
+
     const token = await getValidFigmaAccessToken();
 
     if (!token) {

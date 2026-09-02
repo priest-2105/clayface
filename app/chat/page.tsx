@@ -1,9 +1,10 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, FolderOpen, LayoutGrid, MessageSquare } from "lucide-react";
+import { FolderOpen, MessageSquare, Plus } from "lucide-react";
 import { FigmaOAuthCard } from "@/components/chat/FigmaOAuthCard";
 import { ProjectCreateForm } from "@/components/chat/projects/ProjectCreateForm";
-import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { ProjectCard } from "@/components/clayface";
+import { Badge } from "@/components/ui/Badge";
 import { getActiveSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -77,174 +78,77 @@ export default async function ChatHomePage() {
     })) as ProjectRecord[];
 
     return (
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            <FigmaOAuthCard />
-
-            <div className="flex-1 overflow-y-auto">
-                <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 px-6 py-6">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <div className="space-y-2">
-                            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-text-secondary">
-                                <FolderOpen className="h-3.5 w-3.5" />
-                                Projects
-                            </div>
+        <div className="flex min-h-0 flex-1 overflow-hidden">
+            <div className="flex min-w-0 flex-1 overflow-y-auto">
+                <div className="grid min-h-full w-full grid-cols-1 xl:grid-cols-[320px_minmax(0,1fr)]">
+                    <aside className="border-b border-border bg-card-bg p-5 xl:border-b-0 xl:border-r">
+                        <div className="flex items-center justify-between gap-3 xl:block">
                             <div>
-                                <h1 className="font-display text-2xl font-semibold tracking-tight">Project hub</h1>
-                                <p className="max-w-2xl text-sm leading-6 text-text-secondary">
-                                    Create a project, attach chats and designs to it, and keep the work grounded in the right reference set.
+                                <h1 className="text-title-3 text-foreground">Workspace</h1>
+                                <p className="mt-1 text-body-sm text-text-secondary">
+                                    Projects, references, and generation threads.
                                 </p>
                             </div>
+                            <Badge variant="secondary" className="hidden sm:inline-flex xl:mt-4">
+                                {projects.length} projects
+                            </Badge>
                         </div>
 
-                        <div className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs text-text-secondary">
-                            <LayoutGrid className="h-3.5 w-3.5" />
-                            Codex-style workspace hierarchy
-                        </div>
-                    </div>
-
-                    <div className="grid gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
-                        <div className="space-y-4">
-                            <Card className="border border-border bg-card-bg">
-                                <div className="border-b border-border px-4 py-3">
-                                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
-                                        New project
-                                    </p>
-                                </div>
-                                <div className="p-4">
-                                    <ProjectCreateForm />
-                                </div>
-                            </Card>
-
-                            <Card className="border border-border bg-card-bg">
-                                <div className="border-b border-border px-4 py-3">
-                                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
-                                        Library stats
-                                    </p>
-                                </div>
-                                <div className="grid gap-3 p-4 sm:grid-cols-3 xl:grid-cols-1">
-                                    <StatTile label="Projects" value={String(projects.length)} />
-                                    <StatTile label="Chats" value={String(projects.reduce((total, project) => total + project._count.chats, 0))} />
-                                    <StatTile
-                                        label="Designs"
-                                        value={String(projects.reduce((total, project) => total + project._count.designs, 0))}
-                                    />
-                                </div>
-                            </Card>
+                        <div className="mt-5 border-t border-border pt-5">
+                            <div className="mb-3 flex items-center gap-2 text-label-sm text-text-secondary">
+                                <Plus className="h-4 w-4" />
+                                New project
+                            </div>
+                            <ProjectCreateForm />
                         </div>
 
-                        <div className="space-y-4">
-                            {projects.length > 0 ? (
-                                <div className="space-y-4">
+                        <div className="mt-6">
+                            <FigmaOAuthCard />
+                        </div>
+                    </aside>
+
+                    <section className="min-w-0 bg-background">
+                        <div className="flex h-14 items-center justify-between border-b border-border px-5">
+                            <div className="flex min-w-0 items-center gap-2">
+                                <FolderOpen className="h-4 w-4 shrink-0 text-text-tertiary" />
+                                <h2 className="truncate text-subheading text-foreground">Projects</h2>
+                            </div>
+                            <div className="hidden items-center gap-4 text-caption text-text-tertiary md:flex">
+                                <span>{projects.reduce((total, project) => total + project._count.chats, 0)} chats</span>
+                                <span>{projects.reduce((total, project) => total + project._count.designs, 0)} designs</span>
+                            </div>
+                        </div>
+
+                        {projects.length > 0 ? (
+                            <div className="divide-y divide-border">
                                     {projects.map((project) => (
-                                        <Card
+                                        <ProjectCard
                                             key={project.id}
-                                            className="border border-border bg-card-bg transition-colors hover:border-primary/60"
-                                        >
-                                            <div className="border-b border-border px-4 py-3">
-                                                <div className="flex items-start justify-between gap-3">
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <h2 className="text-lg font-semibold tracking-tight">{project.name}</h2>
-                                                            <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
-                                                                {project.status}
-                                                            </span>
-                                                        </div>
-                                                        <p className="mt-1 text-sm text-text-secondary">
-                                                            {project.description || "No project description yet."}
-                                                        </p>
-                                                    </div>
-                                                    <span className="rounded-full border border-border bg-background px-3 py-1 text-[11px] text-text-secondary">
-                                                        {project._count.references} references
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid gap-4 p-4 lg:grid-cols-[1.1fr_0.9fr]">
-                                                <div className="space-y-3">
-                                                    <div className="grid gap-2 sm:grid-cols-3">
-                                                        <StatTile label="Chats" value={String(project._count.chats)} compact />
-                                                        <StatTile label="Designs" value={String(project._count.designs)} compact />
-                                                        <StatTile label="References" value={String(project._count.references)} compact />
-                                                    </div>
-
-                                                    <div className="flex flex-wrap gap-2">
-                                                        <Link
-                                                            href={`/projects/${project.id}`}
-                                                            className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-all duration-200 ease-out hover:border-primary/60 hover:bg-background"
-                                                        >
-                                                            Open project
-                                                            <ArrowRight className="h-3.5 w-3.5" />
-                                                        </Link>
-                                                        <Link
-                                                            href="/settings?tab=design-systems"
-                                                            className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-all duration-200 ease-out hover:border-primary/60 hover:bg-background"
-                                                        >
-                                                            Attach references
-                                                        </Link>
-                                                    </div>
-                                                </div>
-
-                                                <div className="rounded-2xl border border-border bg-background p-4">
-                                                    <div className="mb-3 flex items-center justify-between gap-2">
-                                                        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-secondary">
-                                                            Recent chats
-                                                        </p>
-                                                        <Link href={`/projects/${project.id}`} className="text-xs text-primary hover:underline">
-                                                            View project
-                                                        </Link>
-                                                    </div>
-
-                                                    <div className="space-y-2">
-                                                        {project.chats.length > 0 ? (
-                                                            project.chats.map((chat) => (
-                                                                <Link
-                                                                    key={chat.id}
-                                                                    href={`/chat/${chat.id}`}
-                                                                    className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card-bg px-3 py-2 transition-all duration-200 ease-out hover:border-primary/60 hover:bg-background"
-                                                                >
-                                                                    <div className="min-w-0">
-                                                                        <p className="truncate text-sm font-medium">{chat.title}</p>
-                                                                        <p className="truncate text-[11px] text-text-secondary">
-                                                                            {chat.summary || "No summary yet"}
-                                                                        </p>
-                                                                    </div>
-                                                                    <MessageSquare className="h-4 w-4 shrink-0 text-text-secondary" />
-                                                                </Link>
-                                                            ))
-                                                        ) : (
-                                                            <div className="rounded-xl border border-dashed border-border px-3 py-6 text-sm text-text-secondary">
-                                                                No chats yet. Create the first one from the project page.
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Card>
+                                            id={project.id}
+                                            name={project.name}
+                                            description={project.description}
+                                            status={project.status}
+                                            counts={{
+                                                chats: project._count.chats,
+                                                designs: project._count.designs,
+                                                references: project._count.references,
+                                            }}
+                                            chats={project.chats}
+                                        />
                                     ))}
-                                </div>
-                            ) : (
-                                <Card className="border border-border bg-card-bg">
-                                    <div className="p-6 text-center">
-                                        <h2 className="text-lg font-semibold tracking-tight">No projects yet</h2>
-                                        <p className="mt-2 text-sm text-text-secondary">
-                                            Create your first project to start grouping chats, designs, and references.
-                                        </p>
-                                    </div>
-                                </Card>
-                            )}
-                        </div>
-                    </div>
+                            </div>
+                        ) : (
+                            <div className="p-5">
+                                <EmptyState
+                                    icon={<MessageSquare className="h-5 w-5" />}
+                                    title="Create a project to start"
+                                    description="Give Clayface a project name and brief. Chats, generated designs, and references will stay grouped there."
+                                />
+                            </div>
+                        )}
+                    </section>
                 </div>
             </div>
-        </div>
-    );
-}
-
-function StatTile({ label, value, compact = false }: { label: string; value: string; compact?: boolean }) {
-    return (
-        <div className="rounded-xl border border-border bg-background p-3">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-text-secondary">{label}</p>
-            <p className={compact ? "mt-1 text-lg font-semibold" : "mt-1 text-2xl font-semibold"}>{value}</p>
         </div>
     );
 }

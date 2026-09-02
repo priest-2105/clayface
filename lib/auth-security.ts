@@ -1,7 +1,5 @@
-import { z } from "zod";
 import { createHash, randomBytes } from "crypto";
-
-const attempts = new Map<string, number[]>();
+import { z } from "zod";
 
 export const passwordSchema = z
     .string()
@@ -29,17 +27,6 @@ export function getSafeCallbackPath(callbackUrl: string | null | undefined, fall
     }
 
     return callbackUrl;
-}
-
-export function recordRateLimitHit(key: string, limit: number, windowMs: number) {
-    const now = Date.now();
-    const windowStart = now - windowMs;
-    const recent = (attempts.get(key) || []).filter((timestamp) => timestamp > windowStart);
-
-    recent.push(now);
-    attempts.set(key, recent);
-
-    return recent.length > limit;
 }
 
 export function getRequestIp(headers: Headers) {

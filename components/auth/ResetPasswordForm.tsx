@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Alert";
+import { FormDescription, FormField, FormLabel } from "@/components/ui/Form";
 import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 type ResetPasswordFormProps = {
@@ -62,11 +64,11 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form className="grid gap-6 rounded-2xl border border-border bg-card-bg p-4 " onSubmit={handleSubmit}>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="password">
+                <form className="grid gap-6 rounded-[var(--r-2)] border border-border bg-card-bg p-4" onSubmit={handleSubmit}>
+                    <FormField>
+                        <FormLabel htmlFor="password">
                             New Password
-                        </label>
+                        </FormLabel>
                         <Input
                             id="password"
                             type="password"
@@ -75,11 +77,11 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                             onChange={(event) => setPassword(event.target.value)}
                             required
                         />
-                    </div>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="confirmPassword">
+                    </FormField>
+                    <FormField>
+                        <FormLabel htmlFor="confirmPassword">
                             Confirm Password
-                        </label>
+                        </FormLabel>
                         <Input
                             id="confirmPassword"
                             type="password"
@@ -88,19 +90,19 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                             onChange={(event) => setConfirmPassword(event.target.value)}
                             required
                         />
-                    </div>
-                    <p className="text-xs text-text-secondary">
+                    </FormField>
+                    <FormDescription>
                         Passwords must be at least 10 characters and include uppercase, lowercase, and a number.
-                    </p>
+                    </FormDescription>
                     {error && (
-                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                        <Alert variant="error">
                             {error}
-                        </p>
+                        </Alert>
                     )}
                     {success && (
-                        <p className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
+                        <Alert variant="success">
                             {success}
-                        </p>
+                        </Alert>
                     )}
                     <Button className="w-full" disabled={submitting}>
                         {submitting ? "Updating password..." : "Reset password"}

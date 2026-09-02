@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Alert";
+import { FormField, FormLabel } from "@/components/ui/Form";
 import { readAuthErrorMessage } from "@/lib/auth-errors";
 
 export function ForgotPasswordForm() {
@@ -51,11 +53,11 @@ export function ForgotPasswordForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form className="grid gap-6 rounded-2xl border border-border bg-card-bg p-4 " onSubmit={handleSubmit}>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="email">
+                <form className="grid gap-6 rounded-[var(--r-2)] border border-border bg-card-bg p-4" onSubmit={handleSubmit}>
+                    <FormField>
+                        <FormLabel htmlFor="email">
                             Email
-                        </label>
+                        </FormLabel>
                         <Input
                             id="email"
                             type="email"
@@ -66,14 +68,14 @@ export function ForgotPasswordForm() {
                             placeholder="name@example.com"
                             required
                         />
-                    </div>
+                    </FormField>
                     {error && (
-                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                        <Alert variant="error">
                             {error}
-                        </p>
+                        </Alert>
                     )}
                     {success && (
-                        <div className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
+                        <Alert variant="success">
                             <p>{success}</p>
                             {devResetUrl && (
                                 <p className="mt-2 break-all font-mono text-xs">
@@ -83,7 +85,7 @@ export function ForgotPasswordForm() {
                                     </Link>
                                 </p>
                             )}
-                        </div>
+                        </Alert>
                     )}
                     <Button className="w-full" disabled={submitting}>
                         {submitting ? "Preparing reset..." : "Send reset link"}

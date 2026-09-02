@@ -3,8 +3,9 @@ import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/auth";
-import { getRequestIp, recordRateLimitHit } from "@/lib/auth-security";
+import { getRequestIp } from "@/lib/auth-security";
 import { projectCreateSchema, slugifyProjectName } from "@/lib/projects";
+import { recordRateLimitHit } from "@/lib/rate-limit";
 
 function serializeProject(project: {
     id: string;
@@ -169,7 +170,7 @@ export async function POST(request: Request) {
 
         const requestIp = getRequestIp(requestHeaders);
 
-        if (recordRateLimitHit(`project:create:${requestIp}:${session.user.id}`, 15, 15 * 60 * 1000)) {
+        if (await recordRateLimitHit(`project:create:${requestIp}:${session.user.id}`, 15, 15 * 60 * 1000)) {
             return NextResponse.json({ error: "Too many project requests. Try again later." }, { status: 429 });
         }
 

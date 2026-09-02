@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
-import { ArrowRight, FolderOpen, MessageSquare, Shapes } from "lucide-react";
+import { ArrowRight, MessageSquare, Shapes } from "lucide-react";
 import { getActiveSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { ProjectChatCreateForm } from "@/components/projects/ProjectChatCreateForm";
 import { ProjectDesignCreateForm } from "@/components/projects/ProjectDesignCreateForm";
+import { ActivityTimeline, MetricTile, ProjectHeader, StatusPill } from "@/components/clayface";
 
 type ProjectPageProps = {
     params: Promise<{ id: string }>;
@@ -105,32 +107,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     type ProjectChatRecord = (typeof project.chats)[number];
     type ProjectDesignRecord = (typeof project.designs)[number];
     type ProjectReferenceRecord = (typeof project.references)[number];
-    type ProjectActivityRecord = (typeof project.activities)[number];
-
     return (
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 overflow-y-auto px-6 py-6">
-                <div className="space-y-2">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-text-secondary">
-                        <FolderOpen className="h-3.5 w-3.5" />
-                        Project
-                    </div>
-                    <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <h1 className="font-display text-3xl font-semibold tracking-tight">{project.name}</h1>
-                            <p className="mt-2 max-w-3xl text-sm leading-6 text-text-secondary">
-                                {project.description || "No project description yet."}
-                            </p>
-                        </div>
-                        <Link
-                            href="/chat"
-                            className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-all duration-200 ease-out hover:border-primary/60 hover:bg-background"
-                        >
-                            Back to projects
-                            <ArrowRight className="h-3.5 w-3.5" />
-                        </Link>
-                    </div>
-                </div>
+                <ProjectHeader name={project.name} description={project.description} status={project.status} />
 
                 <div className="grid gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
                     <div className="space-y-4">
@@ -141,10 +121,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                 </p>
                             </div>
                             <div className="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-1">
-                                <SummaryTile label="Status" value={project.status} />
-                                <SummaryTile label="Chats" value={String(project._count.chats)} />
-                                <SummaryTile label="Designs" value={String(project._count.designs)} />
-                                <SummaryTile label="References" value={String(project._count.references)} />
+                                <MetricTile label="Status" value={project.status} compact />
+                                <MetricTile label="Chats" value={project._count.chats} compact />
+                                <MetricTile label="Designs" value={project._count.designs} compact />
+                                <MetricTile label="References" value={project._count.references} compact />
                             </div>
                         </Card>
 
@@ -178,30 +158,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                     Activity timeline
                                 </p>
                             </div>
-                            <div className="space-y-3 p-4">
-                                {project.activities.length > 0 ? (
-                                    project.activities.map((activity: ProjectActivityRecord) => (
-                                        <div
-                                            key={activity.id}
-                                            className="flex items-start gap-3 rounded-xl border border-border bg-background p-3"
-                                        >
-                                            <div className="mt-0.5 h-2.5 w-2.5 rounded-full bg-primary" />
-                                            <div className="min-w-0 flex-1">
-                                                <div className="flex items-center justify-between gap-3">
-                                                    <p className="text-sm font-medium">{activity.title}</p>
-                                                    <span className="text-[11px] text-text-secondary">
-                                                        {new Date(activity.createdAt).toLocaleString()}
-                                                    </span>
-                                                </div>
-                                                {activity.detail && (
-                                                    <p className="mt-1 text-sm text-text-secondary">{activity.detail}</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-sm text-text-secondary">No activity yet.</p>
-                                )}
+                            <div className="p-4">
+                                <ActivityTimeline items={project.activities} />
                             </div>
                         </Card>
 
@@ -223,11 +181,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                                 <MessageSquare className="h-4 w-4 text-text-secondary" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <div className="flex items-center gap-2">
-                                                    <h2 className="truncate text-sm font-semibold">{chat.title}</h2>
-                                                    <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
-                                                        {chat.status}
-                                                    </span>
+                                                    <div className="flex items-center gap-2">
+                                                        <h2 className="truncate text-sm font-semibold">{chat.title}</h2>
+                                                    <StatusPill value={chat.status} className="h-5 text-[10px] uppercase tracking-[0.14em]" />
                                                 </div>
                                                 <p className="truncate text-sm text-text-secondary">{chat.summary || "No summary yet."}</p>
                                             </div>
@@ -235,9 +191,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                         </Link>
                                     ))
                                 ) : (
-                                    <div className="px-4 py-10 text-sm text-text-secondary">
-                                        No chats yet. Create the first thread from the sidebar form.
-                                    </div>
+                                    <EmptyState
+                                        className="m-4 min-h-40"
+                                        title="No chats yet"
+                                        description="Create the first thread from the sidebar form."
+                                    />
                                 )}
                             </div>
                         </Card>
@@ -256,9 +214,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                                 <div>
                                                     <div className="flex items-center gap-2">
                                                         <h2 className="text-sm font-semibold">{design.title}</h2>
-                                                        <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-text-secondary">
-                                                            {design.status}
-                                                        </span>
+                                                        <StatusPill value={design.status} className="h-5 text-[10px] uppercase tracking-[0.14em]" />
                                                     </div>
                                                     <p className="mt-1 text-sm text-text-secondary">
                                                         {design.description || "No description yet."}
@@ -286,9 +242,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="px-4 py-10 text-sm text-text-secondary">
-                                        No designs yet. Use the form to store a page, component, or flow generated for this project.
-                                    </div>
+                                    <EmptyState
+                                        className="m-4 min-h-40"
+                                        title="No designs yet"
+                                        description="Use the form to store a page, component, or flow generated for this project."
+                                    />
                                 )}
                             </div>
                         </Card>
@@ -319,15 +277,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
-
-function SummaryTile({ label, value }: { label: string; value: string }) {
-    return (
-        <div className="rounded-xl border border-border bg-background p-3">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-text-secondary">{label}</p>
-            <p className="mt-1 text-sm font-semibold">{value}</p>
         </div>
     );
 }

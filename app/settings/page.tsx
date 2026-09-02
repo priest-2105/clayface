@@ -72,7 +72,7 @@ export default async function SettingsPage({
         id: string;
         name: string;
         description: string | null;
-        sourceType: string;
+        sourceType: "FIGMA" | "LINK" | "UPLOAD" | "OTHER";
         sourceUrl: string | null;
         figmaFileKey: string | null;
         figmaNodeId: string | null;

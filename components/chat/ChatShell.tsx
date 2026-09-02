@@ -31,7 +31,7 @@ export function ChatShell({ user, projects, children }: ChatShellProps) {
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     return (
-        <div className="relative flex h-screen overflow-hidden bg-[#09090a]">
+        <div className="relative flex h-screen overflow-hidden bg-[var(--bg-page)]">
             <aside
                 className={
                     sidebarOpen
@@ -42,8 +42,8 @@ export function ChatShell({ user, projects, children }: ChatShellProps) {
                 <ChatSidebar user={user} projects={projects} />
             </aside>
 
-            <main className="relative z-10 flex min-w-0 flex-1 p-2 transition-[margin] duration-300 ease-out">
-                <div className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-standard bg-bg-panel">
+            <main className="relative z-10 flex min-w-0 flex-1 transition-[margin] duration-300 ease-out">
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-bg-panel">
                     <ChatHeader
                         sidebarOpen={sidebarOpen}
                         onToggleSidebar={() => setSidebarOpen((current) => !current)}

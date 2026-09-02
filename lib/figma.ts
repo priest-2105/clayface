@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { createCipheriv, createDecipheriv, createHash, randomBytes } from "crypto";
 
 export const FIGMA_STATE_COOKIE = "figma_oauth_state";
 export const FIGMA_TOKEN_COOKIE = "figma_oauth_token";
@@ -18,6 +19,7 @@ export type ParsedFigmaSelection = {
 };
 
 const DEFAULT_SCOPE = "file_content:read";
+const ENCRYPTED_COOKIE_PREFIX = "v1";
 
 function getRequiredEnv(name: "FIGMA_CLIENT_ID" | "FIGMA_CLIENT_SECRET" | "FIGMA_OAUTH_REDIRECT_URI") {
     const value = process.env[name];
@@ -50,6 +52,60 @@ export function isFigmaConfigured() {
 
 export function createFigmaOAuthState() {
     return crypto.randomUUID();
+}
+
+function getCookieEncryptionKey() {
+    const secret = process.env.NEXTAUTH_SECRET?.trim() || process.env.FIGMA_CLIENT_SECRET?.trim();
+
+    if (process.env.NODE_ENV === "production" && (!secret || secret.length < 32)) {
+        throw new Error("NEXTAUTH_SECRET must be set before storing Figma OAuth tokens in production.");
+    }
+
+    if (!secret) {
+        throw new Error("NEXTAUTH_SECRET or FIGMA_CLIENT_SECRET is required to store Figma OAuth tokens.");
+    }
+
+    return createHash("sha256").update(secret).digest();
+}
+
+function encryptCookiePayload(payload: FigmaTokenPayload) {
+    const iv = randomBytes(12);
+    const cipher = createCipheriv("aes-256-gcm", getCookieEncryptionKey(), iv);
+    const encrypted = Buffer.concat([
+        cipher.update(JSON.stringify(payload), "utf8"),
+        cipher.final(),
+    ]);
+    const authTag = cipher.getAuthTag();
+
+    return [
+        ENCRYPTED_COOKIE_PREFIX,
+        iv.toString("base64url"),
+        authTag.toString("base64url"),
+        encrypted.toString("base64url"),
+    ].join(".");
+}
+
+function decryptCookiePayload(raw: string) {
+    const [version, iv, authTag, encrypted] = raw.split(".");
+
+    if (version !== ENCRYPTED_COOKIE_PREFIX || !iv || !authTag || !encrypted) {
+        return null;
+    }
+
+    const decipher = createDecipheriv(
+        "aes-256-gcm",
+        getCookieEncryptionKey(),
+        Buffer.from(iv, "base64url")
+    );
+
+    decipher.setAuthTag(Buffer.from(authTag, "base64url"));
+
+    const decrypted = Buffer.concat([
+        decipher.update(Buffer.from(encrypted, "base64url")),
+        decipher.final(),
+    ]);
+
+    return JSON.parse(decrypted.toString("utf8")) as FigmaTokenPayload;
 }
 
 export function buildFigmaAuthorizationUrl(state: string) {
@@ -147,7 +203,7 @@ export async function readStoredFigmaToken() {
     }
 
     try {
-        return JSON.parse(raw) as FigmaTokenPayload;
+        return decryptCookiePayload(raw);
     } catch {
         return null;
     }
@@ -156,7 +212,7 @@ export async function readStoredFigmaToken() {
 export async function writeStoredFigmaToken(payload: FigmaTokenPayload) {
     const cookieStore = await cookies();
 
-    cookieStore.set(FIGMA_TOKEN_COOKIE, JSON.stringify(payload), {
+    cookieStore.set(FIGMA_TOKEN_COOKIE, encryptCookiePayload(payload), {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",

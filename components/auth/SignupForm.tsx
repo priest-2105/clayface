@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Alert";
+import { FormField, FormLabel, FormSection } from "@/components/ui/Form";
 import { PasswordField } from "@/components/auth/PasswordField";
 import { getAuthErrorMessage, readAuthErrorMessage } from "@/lib/auth-errors";
 
@@ -99,7 +101,7 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
             </CardHeader>
             <CardContent className="grid gap-4">
                 {googleOAuthEnabled ? (
-                    <div className="space-y-3 rounded-2xl border border-border bg-card-bg p-4">
+                    <FormSection className="space-y-3">
                         <div className="space-y-1">
                             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">
                                 Continue With Google
@@ -124,11 +126,11 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
                             </svg>
                             {googleSubmitting ? "Connecting with Google..." : "Continue with Google"}
                         </Button>
-                    </div>
+                    </FormSection>
                 ) : (
-                    <div className="rounded-2xl border border-border bg-card-bg p-4 text-sm text-text-secondary">
+                    <FormSection className="text-sm text-text-secondary">
                         Google sign-up is not configured in this environment.
-                    </div>
+                    </FormSection>
                 )}
                 <div className="relative py-1">
                     <div className="absolute inset-0 flex items-center">
@@ -138,17 +140,17 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
                         <span className="bg-background px-3 text-text-secondary">Or sign up with email and password</span>
                     </div>
                 </div>
-                <form className="grid gap-6 rounded-2xl border border-border bg-card-bg p-4 " onSubmit={handleSubmit}>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="name">
+                <form className="grid gap-6 rounded-[var(--r-2)] border border-border bg-card-bg p-4" onSubmit={handleSubmit}>
+                    <FormField>
+                        <FormLabel htmlFor="name">
                             Name
-                        </label>
+                        </FormLabel>
                         <Input id="name" type="text" placeholder="Clayface User" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} />
-                    </div>
-                    <div className="grid gap-2">
-                        <label className="text-sm font-medium leading-none" htmlFor="email">
+                    </FormField>
+                    <FormField>
+                        <FormLabel htmlFor="email">
                             Email
-                        </label>
+                        </FormLabel>
                         <Input
                             id="email"
                             placeholder="name@example.com"
@@ -161,7 +163,7 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
                             onChange={(event) => setEmail(event.target.value)}
                             required
                         />
-                    </div>
+                    </FormField>
                     <PasswordField
                         id="password"
                         label="Password"
@@ -179,9 +181,9 @@ export function SignupForm({ googleOAuthEnabled }: SignupFormProps) {
                         required
                     />
                     {error && (
-                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                        <Alert variant="error">
                             {error}
-                        </p>
+                        </Alert>
                     )}
                     <Button className="w-full" disabled={submitting}>
                         {submitting ? "Creating account..." : "Create account"}

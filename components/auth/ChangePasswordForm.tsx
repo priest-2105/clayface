@@ -4,6 +4,8 @@ import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Alert";
+import { FormDescription } from "@/components/ui/Form";
 import { PasswordField } from "@/components/auth/PasswordField";
 import { readAuthErrorMessage } from "@/lib/auth-errors";
 
@@ -88,18 +90,18 @@ export function ChangePasswordForm({ hasPassword }: ChangePasswordFormProps) {
                         onChange={setConfirmPassword}
                         required
                     />
-                    <p className="text-xs text-text-secondary">
+                    <FormDescription>
                         Passwords must be at least 10 characters and include uppercase, lowercase, and a number.
-                    </p>
+                    </FormDescription>
                     {error && (
-                        <p className="rounded-[var(--r-1)] border border-[var(--status-error)]/25 bg-[var(--status-error)]/8 px-3 py-2 text-sm text-[var(--status-error)]">
+                        <Alert variant="error">
                             {error}
-                        </p>
+                        </Alert>
                     )}
                     {success && (
-                        <p className="rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
+                        <Alert variant="success">
                             {success}
-                        </p>
+                        </Alert>
                     )}
                     <Button className="w-full" disabled={submitting}>
                         {submitting ? "Updating password..." : hasPassword ? "Update password" : "Set password"}
