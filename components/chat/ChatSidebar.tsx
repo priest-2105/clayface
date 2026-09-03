@@ -41,8 +41,8 @@ export function ChatSidebar({ user, projects }: ChatSidebarProps) {
     );
 
     return (
-        <div className="flex h-screen w-[244px] flex-shrink-0 flex-col border-r border-border bg-card-bg transition-colors duration-300 ease-out">
-            <div className="border-b border-border p-3">
+        <div className="flex h-screen w-[244px] flex-shrink-0 flex-col border-r border-border-standard bg-bg-secondary transition-colors duration-300 ease-out">
+            <div className="border-b border-border-standard p-3">
                 <Link
                     href="/chat"
                     className="inline-flex h-9 w-full items-center gap-2 rounded-[var(--r-1)] border border-[var(--accent-border)] bg-primary px-4 text-[14px] font-medium text-[var(--clay-porcelain)] shadow-[var(--shadow-button)] transition-transform duration-[120ms] ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -50,7 +50,7 @@ export function ChatSidebar({ user, projects }: ChatSidebarProps) {
                     <Plus className="h-4 w-4" />
                     New project
                 </Link>
-                <div className="mt-3 flex items-center gap-2 rounded-[var(--r-1)] border border-border bg-background px-3 py-2 text-label-sm text-text-tertiary">
+                <div className="mt-3 flex items-center gap-2 rounded-[var(--r-1)] border border-border bg-transparent px-3 py-2 text-label-sm text-text-secondary">
                     <Search className="h-3.5 w-3.5" />
                     Search sessions
                 </div>
@@ -68,8 +68,8 @@ export function ChatSidebar({ user, projects }: ChatSidebarProps) {
                             href={`/chat/${chat.id}`}
                             className={cn(
                                 "flex items-center gap-3 rounded-[var(--r-1)] px-2 py-1.5 text-label-sm transition-colors duration-150 ease-out",
-                                "text-text-secondary hover:bg-background",
-                                pathname === `/chat/${chat.id}` && "bg-background text-foreground"
+                                "text-text-secondary hover:bg-[var(--surface-tint)]",
+                                pathname === `/chat/${chat.id}` && "bg-bg-panel text-foreground"
                             )}
                         >
                             <MessageSquare className="w-4 h-4 text-text-tertiary shrink-0" />

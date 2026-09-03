@@ -43,7 +43,7 @@ export function ChatShell({ user, projects, children }: ChatShellProps) {
             </aside>
 
             <main className="relative z-10 flex min-w-0 flex-1 transition-[margin] duration-300 ease-out">
-                <div className="flex min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-bg-panel">
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-bg-panel">
                     <ChatHeader
                         sidebarOpen={sidebarOpen}
                         onToggleSidebar={() => setSidebarOpen((current) => !current)}

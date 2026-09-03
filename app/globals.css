@@ -31,6 +31,7 @@
   --clay-bronze:     #75604A;  /* Accent & AI moments — the ONLY chromatic color */
 
   /* ── Backgrounds (density ladder — denser = higher elevation) ────────────── */
+  --bg-page:        #EFE9DF;
   --bg-marketing:   var(--clay-porcelain);
   --bg-panel:       var(--clay-porcelain);
   --bg-level3:      var(--clay-raw);
@@ -55,16 +56,16 @@
 
   /* ── Borders (warm kiln overlays — never cool gray) ───────────────────────── */
   --border-micro:    rgba(42, 38, 35, 0.04);
-  --border-subtle:   rgba(42, 38, 35, 0.08);
-  --border-standard: rgba(42, 38, 35, 0.14);
-  --border-strong:   rgba(42, 38, 35, 0.22);
+  --border-subtle:   rgba(42, 38, 35, 0.11);
+  --border-standard: rgba(42, 38, 35, 0.18);
+  --border-strong:   rgba(42, 38, 35, 0.28);
 
   /* ── Inset / Overlay / surface tints (replace old white-on-dark overlays) ── */
   --inset-light:      rgba(42, 38, 35, 0.03);
   --inset-deep:       rgba(42, 38, 35, 0.40);
   --overlay:          rgba(42, 38, 35, 0.50);
-  --surface-tint:     rgba(42, 38, 35, 0.03);
-  --surface-tint-hover: rgba(42, 38, 35, 0.06);
+  --surface-tint:     rgba(42, 38, 35, 0.045);
+  --surface-tint-hover: rgba(42, 38, 35, 0.075);
 
   /* ── Semantic colors (earth-derived, no saturated blue) ───────────────────── */
   --status-success:  #6E7A3E;  /* Olive */

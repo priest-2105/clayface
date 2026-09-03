@@ -157,13 +157,13 @@ export function FigmaOAuthCard() {
     }
 
     return (
-        <section className="rounded-[var(--r-2)] border border-border bg-background">
+        <section className="rounded-[var(--r-2)] border border-border-standard bg-transparent">
             <div className="flex items-center justify-between gap-3 border-b border-border px-3 py-2.5">
                 <div className="flex min-w-0 items-center gap-2">
                     <Frame className="h-4 w-4 shrink-0 text-primary" />
                     <div className="min-w-0">
                         <p className="text-label-sm text-foreground">Figma</p>
-                        <p className="truncate text-caption text-text-tertiary">
+                        <p className="truncate text-caption text-text-secondary">
                             {loadingStatus
                                 ? "Checking..."
                                 : !status?.configured
@@ -177,7 +177,7 @@ export function FigmaOAuthCard() {
                 <button
                     type="button"
                     onClick={() => setExpanded((current) => !current)}
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--r-1)] text-text-tertiary transition-colors hover:bg-[var(--surface-tint)] hover:text-foreground"
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--r-1)] text-text-secondary transition-colors hover:bg-[var(--surface-tint)] hover:text-foreground"
                     aria-label={expanded ? "Collapse Figma panel" : "Expand Figma panel"}
                 >
                     <ChevronDown className={cn("h-4 w-4 transition-transform", expanded && "rotate-180")} />
@@ -240,7 +240,7 @@ export function FigmaOAuthCard() {
                     )}
 
                     {result && (
-                        <div className="rounded-[var(--r-1)] border border-border bg-card-bg p-3">
+                        <div className="rounded-[var(--r-1)] border border-border bg-[var(--surface-tint)] p-3">
                             <div className="space-y-1.5">
                                 <MetadataRow label="File" value={result.file.name || result.file.key} />
                                 <MetadataRow label="Node" value={result.selection.name || result.selection.nodeId} />
