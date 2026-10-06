@@ -1,0 +1,4 @@
+{
+  "name": "@clayface/design-tokens", "private": true, "version": "0.1.0",
+  "exports": { "./product.css": "./src/product.css" }
+}

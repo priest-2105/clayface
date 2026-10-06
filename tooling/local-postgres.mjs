@@ -1,0 +1,15 @@
+import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const data = path.join(root, '.local-postgres');
+const binary = process.env.PG_BIN ?? 'C:/Program Files/PostgreSQL/17/bin';
+const action = process.argv[2] ?? 'status';
+if (!['start','stop','status'].includes(action)) throw new Error('Use start, stop, or status.');
+if (!existsSync(path.join(data, 'PG_VERSION'))) throw new Error('No managed development cluster found. Use your configured PostgreSQL service instead.');
+const args = ['-D', data, ...(action === 'start' ? ['-l', path.join(data, 'server.log'), '-o', '-p 55432 -h 127.0.0.1'] : []), ...(action === 'stop' ? ['-m', 'fast'] : []), action];
+const child = spawn(path.join(binary, 'pg_ctl.exe'), args, { windowsHide: true, stdio: ['ignore','pipe','pipe'] });
+child.stdout.pipe(process.stdout); child.stderr.pipe(process.stderr);
+child.on('error', error => { console.error(error.message); process.exitCode = 1; });
+child.on('exit', code => { process.exitCode = code ?? 1; });

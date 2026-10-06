@@ -1,41 +1,47 @@
-# Product
+# Clayface
 
-## Register
+<!-- impeccable:product-schema 1 -->
 
-product
+## Platform
+
+web
+
+## Stack
+
+Confirmed in planning: pnpm/Turborepo, Next.js/React, Fastify, PostgreSQL/Drizzle, background workers, shared TypeScript contracts. The first milestone uses fixture data and browser-local persistence. Production services follow the shell review.
 
 ## Users
 
-Clayface serves a broad range of frontend builders: solo developers, design engineers, product teams, and agencies. The app should not assume one fixed persona globally; onboarding should ask users who they are, what they are building, what stack they prefer, and what design-system constraints matter for their work.
-
-Users arrive with a concrete UI task in mind: generate a component, page, flow, section, or design-system artifact from natural language, then review and adapt the output for production use. Their context is practical and time-sensitive. They want leverage without surrendering control over stack, quality, accessibility, and visual consistency.
+Frontend engineers, design engineers, product designers, and small teams creating coherent responsive marketing/product websites.
 
 ## Product Purpose
 
-Clayface is an AI-powered frontend compiler. It turns plain-English UI briefs into clean, typed, production-ready frontend code that respects the user's target stack and design system.
+Create, compare, edit, preview, and hand off interfaces assembled from a versioned component registry and project design system. Clayface IR is canonical; rendered markup and exports are derived.
 
-Success means users can start from a prompt, provide design-system context through Figma or reference material, and receive code that is structured, accessible, reviewable, and close enough to production that it feels like a real acceleration rather than a prototype.
+## Capabilities and Constraints
 
-## Brand Personality
+One active project per user, at most three active directions. Initial page families: Home, Features, Pricing, About, Contact. Deterministic generation first; AI is optional. The editor is desktop first; smaller screens retain navigation and preview access.
 
-Clayface should feel material, precise, and quietly powerful. The brand combines the craft metaphor of clay with the discipline of a compiler: malleable input, constrained transformation, reliable output.
+First milestone confirmed by the user: polished fixture-driven shell. Sample data must be labeled. It must not imply live auth, Figma connection, server generation, or Next.js export.
 
-The app may borrow the confidence and interface clarity of tools like Figma where it helps user trust: dense controls, direct manipulation, clear hierarchy, and familiar creation workflows are welcome. It should still keep its own material identity through clay surfaces, fired-bronze accents, tactile motion, and compiler-grade restraint.
+## Brand Commitments
 
-## Anti-references
+Follow Clayface.md Visual System v1: calm, compact, structured, predominantly neutral. Notion/Airtable are interaction references, not branding to copy. User approved building directly from this specification and requested continued implementation without further planning stops.
 
-Clayface should not feel like a generic AI SaaS dashboard, a shadcn clone, a playful toy app, a dark developer terminal by default, or a vague chat wrapper with decorative polish but weak workflow depth.
+## Data Preservation
 
-It should also avoid gratuitous animation, over-designed controls that hide standard affordances, bright blue or purple AI-product palettes, neon gradients, soft glassmorphism, and marketing-page patterns leaking into authenticated product screens.
+Preserve existing accounts and projects. Archive extra projects read-only, and hide legacy design records after verified backup. Never invent IR for old metadata-only design rows. Existing database access and migration execution are outside this fixture milestone.
 
-## Design Principles
+## Evidence on Hand
 
-1. Compile, do not merely suggest: every core interaction should move the user toward usable frontend code, not vague inspiration.
-2. Ask for context at the right moment: onboarding and project setup should capture role, stack, design-system preference, and source references instead of assuming a single user type.
-3. Preserve user control: generated output should be inspectable, typed, accessible, and easy to revise.
-4. Make the material metaphor functional: clay physics, density, and surface changes should communicate state, not decorate the interface.
-5. Earn familiarity: product screens should feel as dependable as mature creation tools, with consistent controls, predictable layout, and restrained visual choices.
+Clayface.md is the product and architecture authority. Git commit 9efa234 holds the previous application for selective reuse. Forma is explicitly fictional demonstration content, not a customer or commercial claim.
 
-## Accessibility & Inclusion
+## Product Principles
 
-No stricter product-specific accessibility target has been requested yet. Until one is defined, default to practical inclusive design: keyboard-accessible controls, visible focus states, readable contrast, semantic markup, reduced-motion alternatives, and generated UI that aims for WCAG 2.2 AA where feasible.
+Structured generation; explicit editing scope; versioned reproducibility; accessible interactions; compact canonical state.
+
+## Priority after the current milestone
+
+### Public status page
+
+Build a public status page for Clayface as a first-class product surface. It should show service health, incidents, maintenance windows, and incident history in a clear, trustworthy format. The page should be independently reachable when the main app is degraded, use the same Clayface visual system, and connect to the API and database health checks without exposing private infrastructure details.

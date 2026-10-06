@@ -1,0 +1,9 @@
+{
+  "name": "@clayface/persistence",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./schema": "./src/schema.ts" },
+  "scripts": { "typecheck": "tsc --noEmit", "test": "vitest run" },
+  "dependencies": { "@clayface/schema": "workspace:*", "@clayface/registry": "workspace:*" }
+}

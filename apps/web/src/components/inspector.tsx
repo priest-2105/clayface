@@ -1,0 +1,28 @@
+'use client';
+
+import { ArrowDown, ArrowUp, ChevronDown, FileText, LockKeyhole, SlidersHorizontal, X } from 'lucide-react';
+import { useState } from 'react';
+import { findNode } from '@clayface/schema';
+import { getComponent } from '@clayface/registry';
+import { useWorkspace } from '@clayface/editor';
+import { Button, IconButton } from './ui';
+
+export function Inspector({ onSystem, onClose }: { onSystem: () => void; onClose: () => void }) {
+  const state = useWorkspace();
+  const direction = state.project.directions.find(item => item.id === state.directionId);
+  const node = direction && state.selectedId ? findNode(direction.document, state.selectedId) : undefined;
+  const component = node ? getComponent(node.componentId) : null;
+  const page = direction?.document.pages.find(item => item.route === state.pageRoute);
+  const [tab, setTab] = useState<'section' | 'page'>('section');
+  const index = page?.root.children.findIndex(item => item.id === node?.id) ?? -1;
+  return <aside className="inspector" aria-label="Section inspector"><div className="panel-heading"><div className="inspector-tabs" role="tablist"><button role="tab" aria-selected={tab === 'section'} className={tab === 'section' ? 'is-active' : ''} onClick={() => setTab('section')}>Section</button><button role="tab" aria-selected={tab === 'page'} className={tab === 'page' ? 'is-active' : ''} onClick={() => setTab('page')}><FileText size={12}/>Page</button></div><IconButton label="Close inspector" className="inspector-close" onClick={onClose}><X size={16}/></IconButton></div>
+    {tab === 'page' ? <div className="inspector-page-tab"><span className="section-eyebrow">Current page</span><h2>{page?.name ?? 'Untitled page'}</h2><p className="field-help">{page?.route ?? '/'}</p><div className="page-tab-list">{page?.root.children.map(item => <button key={item.id} className={state.selectedId === item.id ? 'is-active' : ''} onClick={() => { state.selectNode(item.id); setTab('section'); }}><FileText size={13}/>{getComponent(item.componentId).name}<span>→</span></button>)}</div></div> : node && component ? <div className="inspector-content"><div className="component-identity"><span className="component-symbol"><SlidersHorizontal size={17}/></span><div><strong>{component.name}</strong><span>{component.category} component</span></div></div>
+      <section className="inspector-group"><h2>Variant<span>Local</span></h2><div className="variant-options">{component.variants.map(variant => <button key={variant.id} className={node.variant === variant.id ? 'is-active' : ''} aria-pressed={node.variant === variant.id} onClick={() => state.edit({ type: 'setVariant', nodeId: node.id, value: variant.id })}><span className={`variant-schematic schematic-${variant.id}`}><i/><i/><i/></span>{variant.label}</button>)}</div></section>
+      <section className="inspector-group"><h2>Content<ChevronDown size={13}/></h2>{component.fields.map(field => <label className="field" key={`${node.id}-${field.key}`}><span>{field.label}</span>{field.multiline || field.key === 'title' ? <textarea rows={field.key === 'title' ? 3 : 4} maxLength={field.key === 'title' ? 240 : 2000} value={node.props[field.key] ?? ''} onChange={event => state.edit({ type: 'setContent', nodeId: node.id, key: field.key, value: event.target.value })}/> : <input maxLength={80} value={node.props[field.key] ?? ''} onChange={event => state.edit({ type: 'setContent', nodeId: node.id, key: field.key, value: event.target.value })}/>}</label>)}{node.props.items && <p className="field-help">Repeated items use the sample content for this milestone.</p>}</section>
+      <section className="inspector-group"><h2>Layout<ChevronDown size={13}/></h2><div className="property-row"><span>Content width</span><span className="property-value">Contained<LockKeyhole size={11}/></span></div><div className="property-row"><span>Section spacing</span><span className="property-value">{state.project.designSystem.density}<LockKeyhole size={11}/></span></div><div className="property-row"><span>Page order</span><div className="inline-actions"><IconButton label="Move section up" disabled={index <= 1} onClick={() => page && state.edit({ type: 'moveNode', nodeId: node.id, pageId: page.id, offset: -1 })}><ArrowUp size={14}/></IconButton><IconButton label="Move section down" disabled={index < 1 || index >= (page?.root.children.length ?? 0) - 2} onClick={() => page && state.edit({ type: 'moveNode', nodeId: node.id, pageId: page.id, offset: 1 })}><ArrowDown size={14}/></IconButton></div></div></section>
+      <section className="inspector-group"><h2>Appearance<span>Inherited</span></h2><div className="property-row"><span>Accent</span><span className="property-value"><i className="color-dot" style={{ background: state.project.designSystem.accent }}/>{state.project.designSystem.accent}</span></div><div className="property-row"><span>Corner radius</span><span className="property-value">{state.project.designSystem.radius}</span></div><Button variant="ghost" className="system-shortcut" onClick={onSystem}>Open design system<ArrowUp size={13} className="rotate-arrow"/></Button></section>
+      <div className="inspector-note"><span className="tiny-dot"/>Changes apply to this section in {direction?.name}.</div>
+    </div> : <div className="inspector-empty"><SlidersHorizontal size={24} strokeWidth={1.4}/><h2>A place for the details.</h2><p>Select a section on the canvas or in the page tree to make it yours.</p><Button onClick={() => page && state.selectNode(page.root.children.find(item => item.componentId === 'hero')?.id ?? null)}>Select the hero</Button></div>}
+    <div className="inspector-footer"><span>Clayface component</span><span>v{component?.version ?? '1.0.0'}</span></div>
+  </aside>;
+}

@@ -1,253 +1,294 @@
 ---
-version: alpha
-name: Clayface Material System
-description: Design system guidelines for the Clayface AI frontend compiler.
+name: Clayface Public + Workbench
+description: An expressive product studio for turning clear ideas into connected websites.
 colors:
-  clay-porcelain: "#F6F3EE"
-  clay-raw: "#E7DFD2"
-  clay-compressed: "#D4C7B5"
-  clay-leather: "#B8A58D"
-  clay-kiln: "#2A2623"
-  clay-bronze: "#75604A"
-  accent-hover: "#8A7359"
-  accent-light: "#A89178"
-  text-secondary: "#4A433C"
-  text-tertiary: "#7A7167"
-  text-quaternary: "#A99E90"
-  border-standard: "rgba(42, 38, 35, 0.14)"
-  success: "#6E7A3E"
-  warning: "#B4682B"
-  error: "#B5502E"
-  info: "#5C6570"
+  app-bg: "#f8f7fb"
+  panel: "#ffffff"
+  elevated: "#ffffff"
+  canvas: "#eeedea"
+  hover: "#f0efeb"
+  muted-surface: "#f5f4f1"
+  primary-text: "#19152f"
+  secondary-text: "#68657a"
+  muted-text: "#858198"
+  border-default: "#e4e1ed"
+  border-strong: "#cbc7d8"
+  product-accent: "#635bff"
+  accent-hover: "#4c44dd"
+  accent-subtle: "#e4e0ff"
+  accent-text: "#5149df"
+  state-success: "#28664d"
+  state-warning: "#b36b24"
+  state-danger: "#c74351"
+  danger-bg: "#fff1f4"
+  hero-ink: "#19152f"
+  hero-lime: "#d8ff75"
+  hero-coral: "#ff766c"
+  hero-cyan: "#7fe7e4"
 typography:
-  hero:
-    fontFamily: Instrument Serif
-    fontSize: "clamp(3rem, 7vw, 5.75rem)"
-    fontWeight: 400
-    lineHeight: 0.98
-    letterSpacing: "-0.015em"
-  display-xl:
-    fontFamily: Instrument Serif
-    fontSize: "clamp(2.5rem, 5vw, 4.5rem)"
-    fontWeight: 400
-    lineHeight: 1.04
-    letterSpacing: "-0.015em"
-  title-1:
-    fontFamily: Geist
-    fontSize: 2rem
-    fontWeight: 600
-    lineHeight: 1.16
-    letterSpacing: "-0.018em"
-  title-2:
-    fontFamily: Geist
-    fontSize: 1.5rem
-    fontWeight: 600
-    lineHeight: 1.16
-    letterSpacing: "-0.018em"
-  title-3:
-    fontFamily: Geist
-    fontSize: 1.25rem
+  title:
+    fontFamily: "Georgia, 'Times New Roman', serif"
+    fontSize: "26px"
+    fontWeight: 520
+    lineHeight: 1.25
+    letterSpacing: "-0.04em"
+  section:
+    fontFamily: "'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    fontSize: "18px"
     fontWeight: 500
-    lineHeight: 1.22
-    letterSpacing: "-0.01em"
-  title-4:
-    fontFamily: Geist
-    fontSize: 1.125rem
-    fontWeight: 500
-    lineHeight: 1.28
-    letterSpacing: "-0.01em"
-  subheading:
-    fontFamily: Geist
-    fontSize: 1rem
-    fontWeight: 600
     lineHeight: 1.35
-    letterSpacing: "0"
-  body-lg:
-    fontFamily: Geist
-    fontSize: 1.125rem
-    fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "0"
+  panel:
+    fontFamily: "'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    fontSize: "13px"
+    fontWeight: 550
+    lineHeight: 1.4
   body:
-    fontFamily: Geist
-    fontSize: 1rem
-    fontWeight: 400
-    lineHeight: 1.55
-    letterSpacing: "0"
-  body-sm:
-    fontFamily: Geist
-    fontSize: 0.875rem
+    fontFamily: "'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.5
-    letterSpacing: "0"
   label:
-    fontFamily: Geist
-    fontSize: 0.875rem
-    fontWeight: 500
-    lineHeight: 1.35
-    letterSpacing: "0"
-  label-sm:
-    fontFamily: Geist
-    fontSize: 0.8125rem
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: "0"
-  caption:
-    fontFamily: Geist
-    fontSize: 0.8125rem
+    fontFamily: "'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    fontSize: "12px"
     fontWeight: 400
     lineHeight: 1.4
-    letterSpacing: "0"
-  micro:
-    fontFamily: Geist
-    fontSize: 0.6875rem
-    fontWeight: 500
-    lineHeight: 1.3
-    letterSpacing: "0"
-  caps:
-    fontFamily: Geist
-    fontSize: 0.6875rem
-    fontWeight: 600
-    lineHeight: 1.3
-    letterSpacing: "0.1em"
-  code:
-    fontFamily: IBM Plex Mono
-    fontSize: 0.8125rem
-    fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "0"
-  serif-note:
-    fontFamily: Instrument Serif
-    fontSize: 1.25rem
-    fontWeight: 400
-    lineHeight: 1.35
-    letterSpacing: "0"
 rounded:
-  pressed: 12px
-  soft: 18px
-  molded: 24px
-  inflated: 32px
-  melted: 40px
-  full: 9999px
+  sm: "4px"
+  control: "6px"
+  md: "8px"
+  overlay: "12px"
 spacing:
-  xs: 8px
-  sm: 16px
-  md: 24px
-  lg: 40px
-  xl: 64px
-  xxl: 96px
+  base: "4px"
+  xs: "4px"
+  sm: "8px"
+  row: "12px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+  section: "40px"
+  topbar: "48px"
 components:
   button-primary:
-    backgroundColor: "{colors.clay-bronze}"
-    textColor: "{colors.clay-porcelain}"
-    rounded: "{rounded.pressed}"
-    height: 40px
-  card:
-    backgroundColor: "{colors.clay-raw}"
-    textColor: "{colors.clay-kiln}"
-    rounded: "{rounded.soft}"
+    backgroundColor: "{colors.product-accent}"
+    textColor: "#fffaf7"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "7px 12px"
+    height: "32px"
+  button-secondary:
+    backgroundColor: "{colors.elevated}"
+    textColor: "{colors.primary-text}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "7px 12px"
+    height: "32px"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.secondary-text}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "7px 12px"
+    height: "32px"
+  button-danger:
+    backgroundColor: "{colors.state-danger}"
+    textColor: "#ffffff"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "7px 12px"
+    height: "32px"
+  icon-button:
+    backgroundColor: "transparent"
+    textColor: "{colors.secondary-text}"
+    typography: "{typography.label}"
+    rounded: "{rounded.sm}"
+    size: "28px"
   input:
-    backgroundColor: "rgba(42, 38, 35, 0.03)"
-    textColor: "{colors.clay-kiln}"
-    rounded: "{rounded.pressed}"
-    height: 40px
+    backgroundColor: "{colors.elevated}"
+    textColor: "{colors.primary-text}"
+    typography: "{typography.body}"
+    rounded: "{rounded.control}"
+    padding: "8px 9px"
+    height: "33px"
+  panel-heading:
+    backgroundColor: "{colors.elevated}"
+    textColor: "{colors.primary-text}"
+    typography: "{typography.panel}"
+    padding: "0 17px"
+    height: "41px"
+  canvas-paper:
+    backgroundColor: "{colors.elevated}"
+    textColor: "{colors.primary-text}"
+    rounded: "{rounded.sm}"
+  empty-state:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.muted-text}"
+    typography: "{typography.body}"
+    padding: "24px"
 ---
-# Clayface Design System
+
+# Design System: Clayface Workbench
 
 ## Overview
 
-Clayface is a product-first design system for an AI frontend compiler. The default experience is a dense, trustworthy creation tool: familiar enough for users of Figma, Linear, Notion, and code editors to understand immediately, but with a distinct clay material identity.
+**Creative North Star: "The Restrained Workbench"**
 
-The system is built on tactile surfaces rather than generic SaaS cards. Porcelain, raw clay, compressed clay, leather clay, kiln ink, and fired bronze create a restrained product palette. The app should feel like malleable material being shaped by precise compiler controls.
+Clayface is a serious design and productivity workspace for long, focused sessions. Its product chrome is warm, neutral, compact, and structured so the generated website remains the visual focus. Geist provides a neutral, high-legibility voice; borders, modest radii, and small tonal shifts make the hierarchy clear without ornamental noise.
 
-Use the landing page as the primary brand surface and authenticated screens as the primary product surface. Product UI wins by consistency, speed, and task clarity. Brand moments can use richer imagery, video, and Instrument Serif; app screens should mostly use Geist, restrained color, predictable controls, and direct workflow structure.
+This is the current Operate direction for the fixture-driven workbench. It documents the implemented shell and its shared interaction language: a stable frame, explicit editing scope, browser-local save state, and a canvas rendered from the same source used by preview. Sample content and sample project state stay visibly labeled. Generated content may carry its own palette inside the canvas and preview.
+
+**Key Characteristics:**
+
+- Warm neutral chrome with a restrained clay accent (`#965B40`).
+- Compact labels and controls built on a 4px spacing scale.
+- Crisp 1px borders and tonal layering in place of heavy card shadows.
+- Stable 48px top bar, 224px navigation rail, and 288px inspector on desktop.
+- Responsive navigation drawer and inspector behavior with keyboard-safe focus and reduced motion.
 
 ## Colors
 
-The palette is intentionally narrow. Fired Bronze is the only primary chromatic accent and should carry primary actions, selected states, focus, and important AI moments. Avoid blue, purple, neon, and multi-color AI gradients unless a user-supplied design system explicitly requires them for generated output.
+The workbench uses warm neutrals for structure and reserves the clay accent for identity, selection, and primary actions. The generated site is allowed to express its own design system within the shared renderer.
 
-- **Porcelain `#F6F3EE`:** primary canvas for marketing and light product panels.
-- **Raw Clay `#E7DFD2`:** standard surface for cards, side panels, and grouped content.
-- **Compressed Clay `#D4C7B5`:** hover and elevated surface density.
-- **Leather Clay `#B8A58D`:** deeper interaction and pressed surface tone.
-- **Kiln `#2A2623`:** primary text and dark structure, never pure black.
-- **Fired Bronze `#75604A`:** accent, primary actions, focus, current selection, and compiler moments.
+### Primary
 
-Text levels must stay readable on tinted surfaces. Use Kiln for primary text, `#4A433C` for secondary text, `#7A7167` for tertiary text, and reserve `#A99E90` for disabled or very low-priority metadata. Placeholder text should not be lighter than the quaternary token unless the contrast has been checked.
+- **Restrained Clay** (`#965B40`): Product mark, active selection, primary actions, and focused editor affordances. It should remain a supporting signal rather than fill the chrome.
+- **Clay Hover** (`#7F4932`): Hover state for primary actions.
+- **Clay Text** (`#854E35`): Accent text on light selected and active surfaces.
 
-Semantic colors are earth-derived: olive for success, burnt amber for warning, terracotta for error, and slate for information. Do not introduce saturated status colors that break the material palette.
+### Neutral
+
+- **App Paper** (`#FAF9F7`): App-level background for full-width workspace views.
+- **Panel Paper** (`#FDFCFB`): Top bar, navigation, and panel surfaces.
+- **Elevated White** (`#FFFFFF`): Inputs, inspector controls, and raised utility surfaces.
+- **Canvas Stone** (`#EEEDEA`): Editor canvas surround.
+- **Hover Stone** (`#F0EFEB`): Neutral hover surface.
+- **Muted Stone** (`#F5F4F1`): Quiet control and metadata surface.
+- **Primary Ink** (`#302E2B`): Main text and high-contrast utility actions.
+- **Secondary Ink** (`#67635E`): Supporting labels and normal navigation text.
+- **Muted Ink** (`#77716A`): Metadata, hints, and low-emphasis copy.
+- **Default Line** (`#E8E5DF`): Standard dividers and borders.
+- **Strong Line** (`#D7D2C9`): Inputs, stronger dividers, and secondary button edges.
+
+### Named Rules
+
+**The Quiet Chrome Rule.** Keep product chrome predominantly neutral; use the product accent where an action, selection, or identity needs to be found.
+
+**The Two Palettes Rule.** The workbench owns the editor chrome. Rendered/generated content keeps its own palette and must not be recolored to match the shell.
 
 ## Typography
 
-Geist is the interface font and should carry navigation, forms, chat UI, settings, projects, labels, tables, cards, and generated-code controls. IBM Plex Mono is the compiler voice for code previews, IDs, timestamps, technical metadata, and compact system labels. Instrument Serif is a display accent for hero headlines and editorial brand moments only.
+**Display Font:** Geist Variable (with Geist, system sans fallbacks)
 
-Product screens should use the fixed role scale: `text-title-1`, `text-title-2`, `text-title-3`, `text-title-4`, `text-subheading`, `text-body-lg`, `text-body`, `text-body-sm`, `text-label`, `text-label-sm`, `text-caption`, `text-micro`, `text-caps`, `text-code`, and `text-code-sm`. The matching React helpers are `Heading`, `Text`, `Kicker`, and `CodeText` from `components/ui/Typography.tsx`.
+**Body Font:** Geist Variable (with Geist, system sans fallbacks)
 
-Fluid type is allowed only for brand display roles: `text-hero`, `text-display-xl`, `text-display-lg`, and `text-display-md`. Avoid fluid hero-scale type inside authenticated app views, sidebars, settings, project pages, or chat controls. Use display type sparingly and never for UI labels, buttons, form controls, table headers, menus, or error text.
+**Label/Mono Font:** Geist Variable for labels; monospace is reserved for route and numeric indicators.
 
-Instrument Serif is for hero, display, and occasional `text-serif-note` accents. Geist is the product interface voice. IBM Plex Mono is for code, IDs, timestamps, files, technical metadata, and compiler labels. Do not add a fourth type family without replacing one of these roles.
+**Character:** Neutral, restrained, and highly legible. Weight is controlled so hierarchy comes from role, size, and placement rather than making every label bold.
 
-Headings use tight but safe letter spacing, never below `-0.04em`. Body copy uses normal letter spacing. Long prose should stay under 75 characters per line; dense data and code panels may run wider when the task requires it. Use `measure-prose` and `measure-compact` to cap readable text blocks.
+### Hierarchy
+
+- **Title** (520, `26px`, `1.25` line-height, `-0.04em`): Workspace and page titles.
+- **Section** (500, `18px`, `1.35` line-height): Settings and major content sections.
+- **Panel** (550, `13px`, `1.4` line-height): Top-level panel headings and inspector groups.
+- **Body** (400, `13px`, `1.5` line-height): Default product UI copy and controls.
+- **Label** (400–500, `12px`, `1.4` line-height): Compact navigation, fields, buttons, and metadata labels.
+
+### Named Rules
+
+**The Scanability Rule.** Keep product UI in the compact 11–14px range and use line-height that supports fast scanning. Do not turn the application shell into a marketing headline canvas.
 
 ## Layout
 
-Use an 8-point spacing system with larger product rhythm steps: 8, 16, 24, 40, 64, and 96px. Product UI should feel dense but not cramped. Prefer clear structural layouts: fixed sidebars, top bars, split panes, project lists, settings grids, chat workspaces, and code panels.
+The desktop shell is a two-axis frame: a full-width 48px top bar, a 224px left navigation rail, a flexible center workspace, and a 288px right inspector. The editor center contains a compact toolbar, the canvas surround, and a status bar; the canvas paper is centered inside the remaining width and scrolls independently. Full-screen project tools can replace the canvas while preserving the shell frame.
 
-Authenticated screens should prioritize task continuity. Keep primary navigation stable, preserve workspace context, and avoid landing-page section patterns in app views. For onboarding, capture user type, stack, preferred design-system mode, Figma/reference availability, and output expectations as a focused setup flow rather than a marketing questionnaire.
+The spacing rhythm starts at 4px, with observed steps of 4, 8, 12, 16, 20, 24, 32, 40, and 48px. Use 4–6px for icon gaps, 6–8px inside controls, 8–12px for panel rows, 20–24px inside settings sections, and 32px or more for large workspace separation.
 
-Responsive behavior should be structural: sidebars collapse, split panes stack, tables become lists or scroll containers, and toolbars wrap predictably. Do not rely on viewport-scaled typography to solve product layout.
+At widths below 1100px the inspector is hidden until requested and opens as an overlay drawer from the right. Below 760px the navigation rail becomes an accessible drawer, the top bar simplifies, and preview controls adapt to the narrower viewport. The canvas remains usable in the available width; panels must not create trapped scrolling.
 
 ## Elevation & Depth
 
-Elevation is material density, not decorative drop shadow. Use tonal shifts, borders, inset highlights, and surface compression before shadows. Shadows are reserved for floating elements, menus, popovers, dialogs, and brand preview objects.
+Depth is primarily tonal and structural. Warm neutral surfaces, 1px borders, selected backgrounds, and the canvas surround establish hierarchy. Shadows are reserved for overlays, toasts, the canvas paper, and mobile drawers; they should not turn every settings group into a floating card.
 
-Standard cards should usually use a clay surface plus border, not a large soft shadow. Avoid pairing a 1px border with a wide decorative shadow on the same repeated product card. If an element floats, the shadow should be purposeful and restrained.
+### Shadow Vocabulary
 
-Chat and generation states can use material changes: a prompt surface can compress on focus, an attached reference can fuse into a project, and AI thinking can stretch or pulse gently. The state must be understandable without motion.
+- **Overlay:** `0 18px 65px #30251b26` for dialogs and substantial overlays.
+- **Toast:** `0 5px 22px #33251a14` for transient status messages.
+- **Canvas paper:** `0 2px 12px #3e342210` to separate the rendered paper from the canvas surround.
+- **Mobile drawer:** `10px 0 40px #302b251f` for the open navigation drawer and a restrained directional shadow for the inspector drawer.
+
+### Named Rules
+
+**The Tonal Layering Rule.** Use surface changes and borders before adding shadow. A shadow should explain a temporary layer or a canvas boundary.
 
 ## Shapes
 
-Clayface uses a five-step Morph Scale:
+The shape language is modest and geometric: 4px for tags, page rows, and small icon buttons; 6px for controls and fields; 8px for cards and medium containers; 12px for overlays and dialogs. Use 1px neutral borders by default and the accent border for active selection. Avoid defaulting to large 16–24px SaaS radii.
 
-- **Pressed `12px`:** inputs, buttons, selects, compact controls.
-- **Soft `18px`:** cards, panels, repeated items.
-- **Molded `24px`:** chat bubbles, larger grouped controls.
-- **Inflated `32px`:** AI generation surfaces and special states.
-- **Melted `40px`:** hero sections or large brand moments.
-
-Use the tokenized scale instead of arbitrary radius values. Product cards should normally stay at Pressed or Soft. Larger radii are reserved for surfaces where the material metaphor has a real role.
+Focus is visible and consistent: buttons and links receive a 2px accent outline with a 3px offset; fields and selects shift to an accent border with a 2px subtle accent ring. Selection outlines belong to the editor layer and never enter exported rendered UI.
 
 ## Components
 
-Implemented primitives live in `components/ui` and are re-exported from `components/ui/index.ts`. The current shared layer includes Button, Input, Textarea, Select, Checkbox, Switch, Label, Badge, Card, Alert, Skeleton, EmptyState, Separator, Tabs, Tooltip, Dialog, Popover, DropdownMenu, Toast, FormSection, FormField, FormLabel, FormDescription, FormError, FormActions, Heading, Text, Kicker, CodeText, and Avatar.
+The component language is compact, semantic, and stateful. Shared primitives in `apps/web/src/components/ui.tsx` provide buttons, icon buttons, the Clayface mark, accessible navigation and modal dialogs, and an explicit empty state. Product chrome is token-driven in `globals.css`; rendered website components use the shared renderer styles from `packages/component-library/src/styles.ts`.
 
-Clayface-specific components live in `components/clayface` and are re-exported from `components/clayface/index.ts`. The current product layer includes PromptBox, CodePreview, GenerationPreview, ProjectCard, DesignSystemReferenceCard, OnboardingStep, OnboardingFlow, MetricTile, StatusPill, PageHeader, ProjectHeader, ActivityTimeline, ChatMessage, ChatMetaBadge, ConfirmDialog, and ReferenceInspector.
+### Buttons
 
-The live component inventory is available at `/design-system`. Use it as the visual QA surface when adding or changing components.
+- **Character:** Compact controls with clear action hierarchy and no oversized marketing treatment.
+- **Primary:** Clay background (`#965B40`), near-white text, 6px radius, `7px 12px` padding, and a 32px minimum height. Hover uses `#7F4932`.
+- **Secondary:** White elevated surface, strong neutral border, primary ink, same geometry and padding.
+- **Ghost:** Transparent at rest, secondary ink, and a neutral hover surface.
+- **Danger:** `#B64036` with white text, reserved for the explicit destructive action point.
+- **Focus:** Use the shared visible focus treatment; icon-only buttons always provide an accessible name and tooltip title.
 
-Buttons use familiar shapes and clear hierarchy. Primary buttons use Fired Bronze material treatment and should be limited to the most important action in a local workflow. Secondary, outline, ghost, and destructive variants should preserve size, radius, and motion vocabulary. Every button needs default, hover, focus, active, disabled, and loading behavior.
+### Chips
 
-Inputs and textareas are Pressed surfaces with clear labels, visible focus rings, and readable placeholders. Selects should look like part of the same control family. Use helper text and inline errors instead of hiding validation inside toasts.
+- **Style:** Small 4px radius, 1px default border, muted ink, and compact padding. Sample chips identify fixture content such as “Sample project” and “Sample preview.”
+- **State:** Chips label context; they do not carry the only indication of a state.
 
-Cards and panels group real workflow content. Avoid nested cards. Use cards for repeated items, forms, settings sections, project references, code previews, and modals. Full page sections should be layout bands or app regions, not floating card stacks.
+### Cards / Containers
 
-Chat surfaces should keep the prompt as the dominant creation control. Attachment controls, stack selection, design-system selection, and send states must be compact, keyboard accessible, and visually subordinate to the prompt.
+- **Corner Style:** 8px for direction cards and medium containers.
+- **Background:** Elevated white or panel paper against app paper or canvas stone.
+- **Shadow Strategy:** Flat at rest, with borders doing most of the work; use the elevation vocabulary only for temporary layers or canvas paper.
+- **Border:** 1px default line; dashed strong line for an add-new placeholder.
+- **Internal Padding:** Use the 4px scale, commonly 12–17px in compact cards and 17px in inspector groups.
 
-Project and design-system management screens should favor scannable lists, clear primary/reference states, and direct actions. Empty states should teach the next action, such as attaching a Figma file or creating a first project, without long explanatory copy.
+### Inputs / Fields
 
-Generated code previews should use IBM Plex Mono, strong overflow handling, and clear file/context labels. Generated UI previews should honor the user's chosen design system first; Clayface brand tokens are the shell, not a forced style for every output.
+- **Style:** Elevated white background, 1px strong border, 6px control radius, `8px 9px` padding, 33px input height, and 13px body text.
+- **Focus:** Accent border plus a 2px `#F2E9E2` ring.
+- **Error / Disabled:** Danger uses explicit danger color and danger background; disabled controls reduce opacity and keep their geometry readable.
 
-Motion should run 150-250ms for routine product interactions. Use the existing clay physics vocabulary: compress for buttons, imprint for surfaces entering, fuse for attachment/merge moments, stretch for AI thinking. Provide reduced-motion alternatives and never gate content visibility on animation.
+### Navigation
+
+- **Desktop:** 224px panel-paper rail with 12px labels, 34px minimum navigation rows, and 3px vertical row gaps. Active rows use the subtle accent surface and accent text.
+- **Page tree:** 12px rows with 4px radius, a restrained connector line, and an accent selection dot.
+- **Mobile:** The rail becomes a 244–260px drawer over a scrim below 760px. The drawer preserves the same hierarchy and exposes an explicit close control.
+
+### Workbench Frame
+
+The top bar keeps project, active direction, preview, export availability, browser save status, and account actions visible. The inspector groups component, variant, content, layout, and appearance controls; an empty inspector gives a direct route to selecting the hero. The canvas selection treatment is editor-only.
+
+### Dialogs and Empty States
+
+Dialogs use the 12px overlay radius, modal shadow, a clear heading/description pair, and a labeled close icon button. Empty states use a geometric symbol, concise explanation, and a direct next action. Error, limit, delete, and browser-storage states retain the same calm hierarchy and explain recovery.
 
 ## Do's and Don'ts
 
-- Do keep product UI familiar, dense, and predictable.
-- Do use Fired Bronze for primary actions, selected states, focus, and important AI moments.
-- Do ask onboarding questions when user role, stack, and design-system preference matter.
-- Do use Figma-like clarity where it helps: direct manipulation, stable panels, precise controls, and inspectable outputs.
-- Do make generated outputs accessible, typed, and reviewable by default.
-- Don't make Clayface look like a generic AI SaaS dashboard or a shadcn clone.
-- Don't default to dark developer-tool UI unless a specific workflow earns it.
-- Don't introduce blue, purple, neon, gradient text, or decorative multi-color AI effects into the Clayface shell.
-- Don't use Instrument Serif inside app controls, labels, settings, tables, or code workflows.
-- Don't use decorative motion, glassmorphism, nested cards, side-stripe card accents, or arbitrary large radii.
+### Do:
+
+- **Do** use the warm neutral product surfaces and exact shared tokens for new workbench UI.
+- **Do** build spacing from the 4px base and preserve the 4/6/8/12px radius family.
+- **Do** keep labels compact, weights restrained, and controls semantic.
+- **Do** keep the 48px top bar, 224px navigation, and 288px inspector proportions unless a responsive rule applies.
+- **Do** use the shared renderer for editor canvas and preview so the visible design stays consistent.
+- **Do** provide keyboard access, named icon buttons, visible focus, and `prefers-reduced-motion` behavior.
+- **Do** label fixture content and browser-local state clearly.
+
+### Don't:
+
+- **Don't** introduce a separate brand visual workshop or imply a visual direction beyond the current Operate workbench.
+- **Don't** use large 16–24px radii, oversized UI typography, or decorative gradients in the product chrome.
+- **Don't** wrap every settings group in a bordered or shadowed card.
+- **Don't** let the clay accent dominate the editor or recolor generated site content.
+- **Don't** imply live auth, Figma connection, server generation, or Next.js export in fixture UI.
+- **Don't** make color the sole carrier of selection, status, danger, or success.
+- **Don't** add motion that shifts the canvas unexpectedly; remove transitions and animation under reduced-motion preferences.
