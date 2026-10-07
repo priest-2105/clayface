@@ -25,7 +25,7 @@ beforeAll(async () => {
   await admin.query(`CREATE SCHEMA ${schema}`);
   schemaCreated = true;
   db = new Pool({ connectionString: config.DATABASE_URL, options: `-c search_path=${schema},public` });
-  for (const name of ['0001_server_foundation.sql','0002_accounts_onboarding.sql']) await db.query(await readFile(new URL(`../../../packages/persistence/migrations/${name}`, import.meta.url), 'utf8'));
+  for (const name of ['0001_server_foundation.sql','0002_accounts_onboarding.sql','0003_canonical_project_documents.sql']) await db.query(await readFile(new URL(`../../../packages/persistence/migrations/${name}`, import.meta.url), 'utf8'));
   app = await createServer(db, config, async (to, value) => { emails.push({ to, token: value }); });
 });
 afterAll(async () => {
@@ -68,7 +68,7 @@ describe('PostgreSQL account and onboarding flow', () => {
     const stale = await app.inject({ method: 'PUT', url: '/api/project', headers: headers(primaryCookie), payload: { project, version: 1 } });
     expect(stale.statusCode).toBe(409);
     const stored = await app.inject({ method: 'GET', url: '/api/project', headers: headers(primaryCookie) });
-    expect(stored.json().project.workspace_document).toEqual(project);
+    expect(stored.json().project).toEqual(project);
     expect((await db.query('SELECT count(*)::int AS count FROM direction')).rows[0].count).toBe(1);
   });
 

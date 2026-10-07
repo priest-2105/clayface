@@ -13,11 +13,11 @@ export function SessionWorkspace({ children }: { children: ReactNode }) {
       const { user } = await api<{ user: Account }>('/auth/session');
       if (!active) return;
       if (user.onboardingStep !== 'complete') { router.replace(accountPath(user)); return; }
-      const result = await api<{ project: { workspace_document: Project | null; project_version: number } | null }>('/project');
+      const result = await api<{ project: Project | null; version: number | null }>('/project');
       if (!active) return;
-      if (!result.project?.workspace_document) throw new Error('Your account has no saved workspace. Please finish project setup or contact support.');
-      let version = result.project.project_version;
-      connectWorkspace(result.project.workspace_document, async project => {
+      if (!result.project || result.version === null) throw new Error('Your account has no saved workspace. Please finish project setup or contact support.');
+      let version = result.version;
+      connectWorkspace(result.project, async project => {
         const saved = await api<{ project: Project; version: number }>('/project', { project, version }, 'PUT'); version = saved.version; return saved.project;
       }); setReady(true);
     } catch (err) { if (!active) return; if (err instanceof ApiError && err.status === 401) router.replace('/signin'); else setError(err instanceof Error ? err.message : 'Your workspace could not be opened.'); } }

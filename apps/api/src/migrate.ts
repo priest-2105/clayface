@@ -7,7 +7,7 @@ try {
   await transaction(db, async tx => {
     await tx.query('SELECT pg_advisory_xact_lock(730214)');
     await tx.query('CREATE TABLE IF NOT EXISTS clayface_migrations (name text PRIMARY KEY, applied_at timestamptz NOT NULL DEFAULT now())');
-    for (const name of ['0001_server_foundation.sql', '0002_accounts_onboarding.sql']) {
+    for (const name of ['0001_server_foundation.sql', '0002_accounts_onboarding.sql', '0003_canonical_project_documents.sql']) {
       if ((await tx.query('SELECT 1 FROM clayface_migrations WHERE name=$1', [name])).rowCount) continue;
       await tx.query(await readFile(new URL(`../../../packages/persistence/migrations/${name}`, import.meta.url), 'utf8'));
       await tx.query('INSERT INTO clayface_migrations(name) VALUES ($1)', [name]);

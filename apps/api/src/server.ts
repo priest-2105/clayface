@@ -69,6 +69,16 @@ export async function createServer(db: Database, config: Config, sendMail = crea
   function setSession(reply: FastifyReply, session: { raw: string; seconds: number }) { reply.setCookie(cookieName, session.raw, { ...cookieOptions, maxAge: session.seconds }); }
   async function requirePassword(user: User, password: string) { if (!await verifyPassword(password, user.password_hash)) throw new HttpError(400, 'Your current password is incorrect.'); }
 
+  async function loadProject(source: Database | Transaction, userId: string, projectId?: string) {
+    const projectResult = await source.query("SELECT p.id,p.name,p.product_type,p.brief,p.page_names,p.workspace_document,p.project_version,ds.id AS design_system_id,dsv.tokens AS design_tokens,dsv.version AS design_version FROM project p LEFT JOIN design_system ds ON ds.project_id=p.id LEFT JOIN LATERAL (SELECT tokens,version FROM design_system_version WHERE design_system_id=ds.id ORDER BY version DESC LIMIT 1) dsv ON true WHERE p.user_id=$1 AND p.status='ACTIVE' AND ($2::uuid IS NULL OR p.id=$2) LIMIT 1", [userId, projectId ?? null]);
+    const row = projectResult.rows[0]; if (!row) return null;
+    const directions = await source.query("SELECT id,name,strategy,document FROM direction WHERE project_id=$1 AND status IN ('READY','DRAFT','GENERATING','FAILED') ORDER BY created_at ASC", [row.id]);
+    if (!row.design_system_id || !row.design_tokens || !directions.rows.length) return row.workspace_document ? projectSchema.parse(row.workspace_document) : null;
+    const productType = row.product_type === 'AGENCY_STUDIO' ? 'Agency / studio' : row.product_type === 'SERVICE_BUSINESS' ? 'Service business' : 'Software / SaaS';
+    try { return projectSchema.parse({ schemaVersion: 1, id: row.id, name: row.name, productType, brief: row.brief, designSystem: { ...row.design_tokens, id: row.design_system_id, version: row.design_version }, directions: directions.rows.map(item => ({ id: item.id, name: item.name, description: item.description, strategy: String(item.strategy).toLowerCase() === 'minimal' ? 'minimal' : String(item.strategy).toLowerCase() === 'editorial' ? 'editorial' : 'product', document: item.document })) }); }
+    catch { return row.workspace_document ? projectSchema.parse(row.workspace_document) : null; }
+  }
+
   app.get('/api/health', async () => { await db.query('SELECT 1'); return { ok: true }; });
   app.get('/api/auth/session', async request => ({ user: publicUser(await current(request)) }));
   app.post('/api/auth/signup', async (request, reply) => {
@@ -220,15 +230,15 @@ export async function createServer(db: Database, config: Config, sendMail = crea
     });
   });
   app.get('/api/project', async request => {
-    const user = await current(request); const { rows } = await db.query("SELECT id,name,product_type,brief,page_names,workspace_document,project_version FROM project WHERE user_id=$1 AND status='ACTIVE'", [user.id]);
-    return { project: rows[0] ?? null };
+    const user = await current(request); const project = await loadProject(db, user.id); const { rows } = await db.query("SELECT project_version FROM project WHERE user_id=$1 AND status='ACTIVE'", [user.id]);
+    return { project, version: rows[0]?.project_version ?? null };
   });
   app.post('/api/onboarding/design', async request => {
     const { strategy } = z.object({ strategy: strategySchema }).parse(request.body);
     return transaction(db, async tx => {
       const user = await lockUser(request, tx);
       const row = (await tx.query("SELECT * FROM project WHERE user_id=$1 AND status='ACTIVE' FOR UPDATE", [user.id])).rows[0];
-      if (user.onboarding_step === 'complete' && row?.workspace_document) return { user: publicUser(user), project: row.workspace_document, version: row.project_version };
+      if (user.onboarding_step === 'complete') return { user: publicUser(user), project: await loadProject(tx, user.id, row?.id) ?? (row?.workspace_document ? projectSchema.parse(row.workspace_document) : null), version: row?.project_version };
       if (user.onboarding_step !== 'design' || !row) throw new HttpError(409, 'Finish your project details first.');
       const project = createSampleProject(); project.id = row.id; project.name = row.name; project.brief = row.brief;
       project.productType = row.product_type === 'AGENCY_STUDIO' ? 'Agency / studio' : row.product_type === 'SERVICE_BUSINESS' ? 'Service business' : 'Software / SaaS';
@@ -238,7 +248,7 @@ export async function createServer(db: Database, config: Config, sendMail = crea
       const versionId = randomUUID();
       await tx.query('INSERT INTO design_system(id,project_id,name) VALUES($1,$2,$3)', [project.designSystem.id,row.id,project.designSystem.name]);
       await tx.query('INSERT INTO design_system_version(id,design_system_id,version,tokens) VALUES($1,$2,1,$3)', [versionId,project.designSystem.id,JSON.stringify(project.designSystem)]);
-      await tx.query("INSERT INTO direction(id,project_id,design_system_version_id,name,strategy,status,document) VALUES($1,$2,$3,$4,$5,'READY',$6)", [generated.direction.id,row.id,versionId,generated.direction.name,strategy.toUpperCase(),JSON.stringify(generated.direction.document)]);
+      await tx.query("INSERT INTO direction(id,project_id,design_system_version_id,name,description,strategy,status,document) VALUES($1,$2,$3,$4,$5,$6,'READY',$7)", [generated.direction.id,row.id,versionId,generated.direction.name,generated.direction.description,strategy.toUpperCase(),JSON.stringify(generated.direction.document)]);
       await tx.query('UPDATE project SET active_design_system_version_id=$2,workspace_document=$3 WHERE id=$1', [row.id,versionId,JSON.stringify(project)]);
       const updated = (await tx.query("UPDATE app_user SET onboarding_step='complete' WHERE id=$1 RETURNING *", [user.id])).rows[0];
       return { user: publicUser(updated), project, version: row.project_version };
@@ -258,7 +268,8 @@ export async function createServer(db: Database, config: Config, sendMail = crea
       const row = (await tx.query("SELECT * FROM project WHERE user_id=$1 AND id=$2 AND status='ACTIVE' FOR UPDATE", [user.id,project.id])).rows[0];
       if (!row) throw new HttpError(404, 'Project not found.');
       if (row.project_version !== version) throw new HttpError(409, 'This project changed in another tab. Download your work, then reload before saving.');
-      const previous = projectSchema.parse(row.workspace_document);
+      const previous = await loadProject(tx, user.id, project.id) ?? (row.workspace_document ? projectSchema.parse(row.workspace_document) : null);
+      if (!previous) throw new HttpError(409, 'This project has no persisted design. Reload and try again.');
       if (project.designSystem.id !== previous.designSystem.id) throw new HttpError(400, 'The project design-system identity cannot change.');
       // Immutable snapshots also survive undo/redo: a reused version must have identical tokens.
       const stored = (await tx.query('SELECT * FROM design_system_version WHERE design_system_id=$1 AND version=$2', [project.designSystem.id,project.designSystem.version])).rows[0];
@@ -275,8 +286,8 @@ export async function createServer(db: Database, config: Config, sendMail = crea
         // Stable local IDs are mapped under the owned project; IDs never grant access.
         const old = (await tx.query('SELECT id FROM direction WHERE project_id=$1 AND legacy_design_id=$2', [project.id,`${project.id}:${direction.id}`])).rows[0];
         const direct = (await tx.query('SELECT id FROM direction WHERE project_id=$1 AND id::text=$2', [project.id,direction.id])).rows[0];
-        if (old || direct) await tx.query("UPDATE direction SET document=$2,design_system_version_id=$3,name=$4,strategy=$5,status='READY',direction_version=direction_version+1,updated_at=now() WHERE id=$1", [(old ?? direct).id,JSON.stringify(direction.document),versionId,direction.name,direction.strategy.toUpperCase()]);
-        else await tx.query("INSERT INTO direction(project_id,design_system_version_id,legacy_design_id,name,strategy,status,document) VALUES($1,$2,$3,$4,$5,'READY',$6)", [project.id,versionId,`${project.id}:${direction.id}`,direction.name,direction.strategy.toUpperCase(),JSON.stringify(direction.document)]);
+        if (old || direct) await tx.query("UPDATE direction SET document=$2,design_system_version_id=$3,name=$4,description=$5,strategy=$6,status='READY',direction_version=direction_version+1,updated_at=now() WHERE id=$1", [(old ?? direct).id,JSON.stringify(direction.document),versionId,direction.name,direction.description,direction.strategy.toUpperCase()]);
+        else await tx.query("INSERT INTO direction(project_id,design_system_version_id,legacy_design_id,name,description,strategy,status,document) VALUES($1,$2,$3,$4,$5,$6,'READY',$7)", [project.id,versionId,`${project.id}:${direction.id}`,direction.name,direction.description,direction.strategy.toUpperCase(),JSON.stringify(direction.document)]);
       }
       const productType = { 'Software / SaaS': 'SOFTWARE_SAAS', 'Agency / studio': 'AGENCY_STUDIO', 'Service business': 'SERVICE_BUSINESS' }[project.productType];
       await tx.query('UPDATE design_system SET name=$2 WHERE id=$1', [project.designSystem.id, project.designSystem.name]);

@@ -16,13 +16,13 @@ Component metadata, variants, field definitions, validation, and renderers live 
 
 ## Current duplication to watch
 
-The current persistence boundary keeps `project.workspace_document` as a complete editable aggregate and also maintains normalized `direction` and design-system records. This makes reads simple and gives us a durable snapshot, but it means a save can write the aggregate plus direction records. It is acceptable for the current milestone, but it should be reduced before high-volume production use.
+The current persistence boundary keeps `project.workspace_document` as a complete editable aggregate and also maintains normalized `direction` and design-system records. The production optimization is now in place: API reads rebuild the project from normalized direction and design-system rows, while the snapshot remains only as a compatibility and rollback field during this migration window. New saves treat direction rows as canonical.
 
 ## Efficiency plan
 
 1. Keep the registry immutable and shared. Never create per-user component rows for standard components.
 2. Store user-specific content, props, selected variants, and references to component/version IDs only.
-3. Treat normalized direction rows as the canonical persisted documents, and use a lightweight project summary or snapshot for fast dashboard reads.
+3. Treat normalized direction rows as the canonical persisted documents, and use the project row only for lightweight summary fields and optimistic versioning.
 4. Add JSONB size limits and measure document size before accepting saves.
 5. Store assets by checksum and reuse an existing object when the same user or project uploads the same file.
 6. Add indexes for active project ownership, direction lookup, and updated timestamps before adding background generation or status reporting.
